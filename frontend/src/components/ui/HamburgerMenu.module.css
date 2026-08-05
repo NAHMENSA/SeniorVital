@@ -1,0 +1,213 @@
+/*
+ * HamburgerMenu.module.css
+ *
+ * Responsive + WCAG 2.1 AA + Senior-friendly:
+ * - All interactive elements >= 56px (3.5rem) for seniors
+ * - High contrast colors (>= 4.5:1 ratio)
+ * - Focus-visible ring for keyboard navigation
+ * - Smooth transitions respecting prefers-reduced-motion
+ * - Relative units throughout (rem, %, vh)
+ */
+
+.toggleButton {
+  /* Senior-friendly: 56px (3.5rem) minimum touch target */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.5rem; /* 56px */
+  min-height: 3.5rem; /* 56px */
+  padding: 0.625rem;
+  background: transparent;
+  border: 0.125rem solid transparent;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggleButton:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* WCAG: visible focus ring for keyboard users */
+.toggleButton:focus-visible {
+  outline: 0.25rem solid #9f4021;
+  outline-offset: 0.125rem;
+}
+
+/* Hamburger icon bars */
+.hamburgerIcon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.375rem;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  height: 0.25rem;
+  background-color: #1c1c18;
+  border-radius: 0.125rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Animate to X when open */
+.hamburgerIcon.open .bar:nth-child(1) {
+  transform: translateY(0.625rem) rotate(45deg);
+}
+
+.hamburgerIcon.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerIcon.open .bar:nth-child(3) {
+  transform: translateY(-0.625rem) rotate(-45deg);
+}
+
+/* Overlay backdrop */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 45;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Slide-in panel — mobile: full-width sidebar */
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(85%, 22rem);
+  height: 100vh;
+  height: 100dvh;
+  background-color: #ffffff;
+  z-index: 50;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+  padding: 2rem;
+  box-shadow: 0.25rem 0 1rem rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.panelOpen {
+  transform: translateX(0);
+}
+
+/* Navigation list */
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/* Each nav link — Senior-friendly: 56px height, large text */
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 3.5rem; /* 56px */
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #1c1c18;
+  font-weight: 600;
+  font-size: 1.375rem;
+  transition: background-color 0.15s ease;
+}
+
+.navLink:hover {
+  background-color: #f0eee8;
+}
+
+.navLink:focus-visible {
+  outline: 0.25rem solid #9f4021;
+  outline-offset: 0.125rem;
+}
+
+.navLinkActive {
+  background-color: rgba(159, 64, 33, 0.1);
+  color: #9f4021;
+  border-left: 0.25rem solid #9f4021;
+}
+
+.navIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  white-space: nowrap;
+}
+
+/* User info section */
+.userInfo {
+  margin-top: auto;
+  padding: 1.25rem 0;
+  border-top: 0.0625rem solid #c4c6cd;
+}
+
+.userName {
+  font-size: 1.125rem;
+  color: #44474c;
+  font-weight: 600;
+}
+
+/* Logout button — Senior-friendly: 56px min height */
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 3.5rem; /* 56px */
+  padding: 1rem 1.25rem;
+  border: 0.125rem solid #ba1a1a;
+  border-radius: 0.75rem;
+  background: transparent;
+  color: #ba1a1a;
+  font-weight: 700;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.logoutButton:hover {
+  background-color: #ffdad6;
+}
+
+.logoutButton:focus-visible {
+  outline: 0.25rem solid #ba1a1a;
+  outline-offset: 0.125rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* WCAG: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .bar,
+  .overlay {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Tablet breakpoint: slightly wider panel */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .panel {
+    width: min(50%, 24rem);
+  }
+}

@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project runtime
+logs/
+*.pid
+*.log
+seniorvital_analytics.duckdb
+*.zip
+
+# Junk / local artifacts
+start
+stop
+query
+.atl
+resultados.txt
+.pytest_cache/
+prompt/
+tests/get_pg_credential.py
+tests/get_pg_credential2.py
+tests/get_pgpass.py
+tests/get_windows_credential.py

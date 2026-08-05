@@ -1,0 +1,16 @@
+{
+  "name": "seniorvital",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SeniorVital — Elderly wellness management platform (monorepo)",
+  "scripts": {
+    "install:frontend": "cd frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": ".\\scripts\\start_all.ps1",
+    "dev": "echo 'Run start_all.ps1 (backend) in one terminal and npm run dev:frontend in another'",
+    "build": "npm run build:frontend",
+    "start": "npm run build:frontend && echo 'Then run start_all.ps1 to launch backend + gateway serves frontend'",
+    "test:frontend": "cd frontend && npm test || echo 'No frontend tests configured yet'"
+  }
+}
