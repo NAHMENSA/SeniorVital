@@ -12,7 +12,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import importlib.util
 import pytest
 from dotenv import load_dotenv
-from seniorvital_shared import init_pool, close_pool, get_pool
 
 load_dotenv()
 
@@ -42,6 +41,8 @@ def load_service_app(service_name: str):
 @pytest.fixture(scope="session", autouse=True)
 async def init_database():
     """Fixture de sesión que crea todas las tablas antes de cualquier test."""
+    from seniorvital_shared import init_pool, close_pool, get_pool
+
     await init_pool(min_size=1, max_size=5, owner="session")
     pool = await get_pool()
     async with pool.acquire() as conn:
@@ -56,6 +57,8 @@ async def init_database():
 @pytest.fixture(autouse=True)
 async def auto_init_pool():
     """Fixture que inicializa el pool de BD antes de cada test y lo cierra al finalizar."""
+    from seniorvital_shared import init_pool, close_pool
+
     await init_pool(min_size=1, max_size=5, owner="test")
     yield
     await close_pool(owner="test")
@@ -64,6 +67,8 @@ async def auto_init_pool():
 @pytest.fixture(autouse=True)
 async def cleanup():
     """Fixture que limpia todas las tablas después de cada test."""
+    from seniorvital_shared import get_pool
+
     yield
     pool = await get_pool()
     async with pool.acquire() as conn:

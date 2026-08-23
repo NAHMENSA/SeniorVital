@@ -1,0 +1,308 @@
+{
+  "version": "1.0",
+  "created": "2026-08-22",
+  "description": "Conjunto de consultas de prueba para evaluación del pipeline RAG de SeniorVital",
+  "total_queries": 30,
+  "queries": [
+    {
+      "id": "E01",
+      "query": "¿Cuáles son los alimentos recomendados para personas mayores?",
+      "expected_macrodomain": "E",
+      "expected_agent": "Nutri-Buddy",
+      "relevant_chunk_ids": ["54057e85-b42e-44a2-8d03-b9af92a90b40", "5e81a0cc-4316-4f3c-a11b-7a6c947cef16", "1a9c00c7-5fdc-426d-94af-c735a1d00e9c"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["verduras", "frutas", "cereales", "proteína", "lácteos"]
+    },
+    {
+      "id": "E02",
+      "query": "¿Qué dieta debe seguir un mayor con diabetes?",
+      "expected_macrodomain": "E",
+      "expected_agent": "Nutri-Buddy",
+      "relevant_chunk_ids": ["e99153f6-c192-469e-97c8-91fa1a8ff469", "54057e85-b42e-44a2-8d03-b9af92a90b40"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["diabetes", "alimentos", "médico", "nutricionista"]
+    },
+    {
+      "id": "E03",
+      "query": "¿Cuántas calorías necesitan las personas de más de 60 años?",
+      "expected_macrodomain": "E",
+      "expected_agent": "Nutri-Buddy",
+      "relevant_chunk_ids": ["48c1b266-26a3-4f65-9905-ba9b102efa8f", "8d0dc1db-545a-41fa-b162-259ddc485330"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["calorías", "actividad", "mujeres", "hombres"]
+    },
+    {
+      "id": "E04",
+      "query": "¿Cómo reducir el consumo de sal en la alimentación de un adulto mayor?",
+      "expected_macrodomain": "E",
+      "expected_agent": "Nutri-Buddy",
+      "relevant_chunk_ids": ["35100b20-7aab-43b8-9483-21e889e3ed39", "addccc15-8a02-4e5a-a0cb-02c9f10f7f8f"],
+      "difficulty": "easy",
+      "category": "procedural",
+      "expected_answer_keywords": ["sodio", "sal", "procesados", "etiqueta"]
+    },
+    {
+      "id": "E05",
+      "query": "¿Qué alimentos son ricos en calcio para prevenir osteoporosis?",
+      "expected_macrodomain": "E",
+      "expected_agent": "Nutri-Buddy",
+      "relevant_chunk_ids": ["54057e85-b42e-44a2-8d03-b9af92a90b40", "c2381782-e430-4903-96e7-a642c5d59429"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["calcio", "lácteos", "leche", "osteoporosis"]
+    },
+    {
+      "id": "A01",
+      "query": "¿Qué es la sarcopenia y cómo se relaciona con el envejecimiento?",
+      "expected_macrodomain": "A",
+      "expected_agent": "Physio-Evaluator",
+      "relevant_chunk_ids": ["d0dc0d1f-48d0-4b0e-b8c1-3f7e5a1d0c00", "22bfb090-ca4d-4e8f-b5a3-1c2d3e4f5a6b", "bcb3cf09-c22e-4d3f-a1b2-3c4d5e6f7a8b"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["sarcopenia", "masa muscular", "fuerza", "envejecimiento"]
+    },
+    {
+      "id": "A02",
+      "query": "¿Cómo afecta la diabetes al cuerpo de una persona mayor?",
+      "expected_macrodomain": "A",
+      "expected_agent": "Physio-Evaluator",
+      "relevant_chunk_ids": ["23762670-b32e-4a1f-8c9d-0e1f2a3b4c5d", "91be5d8d-8d0a-4b2c-9e3f-1a2b3c4d5e6f", "fcccda29-bb3a-4d5e-8f0a-1b2c3d4e5f6a"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["diabetes", "insulina", "glucosa", "crónica"]
+    },
+    {
+      "id": "A03",
+      "query": "¿Qué es la osteoporosis y por qué es peligrosa para los mayores?",
+      "expected_macrodomain": "A",
+      "expected_agent": "Physio-Evaluator",
+      "relevant_chunk_ids": ["6d46f32f-ccbe-4c44-8757-e758ee104fbc", "f4e8b0fe-60e5-422c-bfcc-e13e78604bd1"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["osteoporosis", "hueso", "densidad", "fracturas"]
+    },
+    {
+      "id": "A04",
+      "query": "¿Cómo se diagnostica la sarcopenia en adultos mayores?",
+      "expected_macrodomain": "A",
+      "expected_agent": "Physio-Evaluator",
+      "relevant_chunk_ids": ["9485e5b7-a23e-4d1f-8c0a-1b2c3d4e5f6a", "bcb3cf09-c22e-4d3f-a1b2-3c4d5e6f7a8b"],
+      "difficulty": "hard",
+      "category": "factual",
+      "expected_answer_keywords": ["diagnóstico", "fuerza", "dinamometría", "masa muscular"]
+    },
+    {
+      "id": "A05",
+      "query": "¿Qué ejercicios de movilidad articular son recomendables para artritis?",
+      "expected_macrodomain": "A",
+      "expected_agent": "Physio-Evaluator",
+      "relevant_chunk_ids": ["bcecdb01-784e-4d2f-a3b1-5c6d7e8f9a0b", "868f2999-b1e7-4a3d-9f0c-2d3e4f5a6b7c"],
+      "difficulty": "medium",
+      "category": "procedural",
+      "expected_answer_keywords": ["movilidad", "articular", "artritis", "repeticiones"]
+    },
+    {
+      "id": "B01",
+      "query": "¿Cuánto ejercicio aeróbico debe hacer un adulto mayor por semana?",
+      "expected_macrodomain": "B",
+      "expected_agent": "Exercise Architect",
+      "relevant_chunk_ids": ["257788d8-7644-4627-9d3a-8f642e007fcc"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["150 minutos", "semanales", "aeróbico", "moderada"]
+    },
+    {
+      "id": "B02",
+      "query": "¿Qué ejercicios de fuerza son seguros para mayores de 60 años?",
+      "expected_macrodomain": "B",
+      "expected_agent": "Exercise Architect",
+      "relevant_chunk_ids": ["5316fa81-9bf6-4a2d-8e1c-3d4e5f6a7b8c", "2a6d8f32-937e-4a1f-b5c8-2d3e4f5a6b7c"],
+      "difficulty": "medium",
+      "category": "procedural",
+      "expected_answer_keywords": ["fuerza", "pesas", "series", "repeticiones"]
+    },
+    {
+      "id": "B03",
+      "query": "¿Cómo debe progresar el entrenamiento de fuerza en una persona con sarcopenia?",
+      "expected_macrodomain": "B",
+      "expected_agent": "Exercise Architect",
+      "relevant_chunk_ids": ["6ef9fa38-1f8e-4a2d-b5c9-3d4e5f6a7b8c", "c7bc1d55-cf4e-4a2d-9e1b-3d4e5f6a7b8c"],
+      "difficulty": "hard",
+      "category": "procedural",
+      "expected_answer_keywords": ["progresión", "carga", "repeticiones", "fuerza"]
+    },
+    {
+      "id": "B04",
+      "query": "¿Qué ejercicios de equilibrio ayudan a prevenir caídas?",
+      "expected_macrodomain": "B",
+      "expected_agent": "Exercise Architect",
+      "relevant_chunk_ids": ["64daa5fe-f4e8-4a2d-9c1b-3d4e5f6a7b8c", "6e5898a0-4f5a-4c6a-93de-a3e9abf37d8b"],
+      "difficulty": "medium",
+      "category": "procedural",
+      "expected_answer_keywords": ["equilibrio", "caídas", "estabilidad", "piernas"]
+    },
+    {
+      "id": "B05",
+      "query": "¿Cómo adaptar ejercicios para alguien con osteoporosis?",
+      "expected_macrodomain": "B",
+      "expected_agent": "Exercise Architect",
+      "relevant_chunk_ids": ["7df196d4-73b2-4a1f-9e0c-2d3e4f5a6b7c", "2a6d8f32-937e-4a1f-b5c8-2d3e4f5a6b7c", "0efaed8a-2a6e-4a1f-9c0b-2d3e4f5a6b7c"],
+      "difficulty": "hard",
+      "category": "procedural",
+      "expected_answer_keywords": ["osteoporosis", "adaptar", "consulta médica", "precaución"]
+    },
+    {
+      "id": "C01",
+      "query": "¿Qué precauciones tomar al hacer ejercicio al aire libre?",
+      "expected_macrodomain": "C",
+      "expected_agent": "Context-Adaptor",
+      "relevant_chunk_ids": ["b623075f-4ae8-4a2d-9c1b-3d4e5f6a7b8c", "3f39f8cf-176e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "procedural",
+      "expected_answer_keywords": ["aire libre", "identificación", "destino", "regreso"]
+    },
+    {
+      "id": "C02",
+      "query": "¿Cómo adaptar el ejercicio en el hogar para una persona con movilidad reducida?",
+      "expected_macrodomain": "C",
+      "expected_agent": "Context-Adaptor",
+      "relevant_chunk_ids": ["3f39f8cf-176e-4a2d-9c1b-3d4e5f6a7b8c", "8fbfef06-12e8-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "procedural",
+      "expected_answer_keywords": ["hogar", "adaptar", "interiores", "movilidad"]
+    },
+    {
+      "id": "C03",
+      "query": "¿Qué hacer para mantenerse activo cuando no se puede salir de casa?",
+      "expected_macrodomain": "C",
+      "expected_agent": "Context-Adaptor",
+      "relevant_chunk_ids": ["3f39f8cf-176e-4a2d-9c1b-3d4e5f6a7b8c", "8fbfef06-12e8-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "procedural",
+      "expected_answer_keywords": ["casa", "activos", "interiores", "videos"]
+    },
+    {
+      "id": "C04",
+      "query": "¿Cómo caminar de forma segura en la ciudad siendo mayor?",
+      "expected_macrodomain": "C",
+      "expected_agent": "Context-Adaptor",
+      "relevant_chunk_ids": ["8fbfef06-12e8-4a2d-9c1b-3d4e5f6a7b8c", "b623075f-4ae8-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "procedural",
+      "expected_answer_keywords": ["caminar", "tráfico", "distancia", "seguridad"]
+    },
+    {
+      "id": "C05",
+      "query": "¿Qué equipo deportivo es recomendable para mayores?",
+      "expected_macrodomain": "C",
+      "expected_agent": "Context-Adaptor",
+      "relevant_chunk_ids": ["43eb0bb2-e42e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["casco", "cordones", "ropa", "zapatos"]
+    },
+    {
+      "id": "D01",
+      "query": "¿Puede una persona con diabetes hacer ejercicio físico?",
+      "expected_macrodomain": "D",
+      "expected_agent": "Safety Guardian",
+      "relevant_chunk_ids": ["58fb01ed-bbc0-4a2d-9c1b-3d4e5f6a7b8c", "0e680b96-f28e-4a2d-9c1b-3d4e5f6a7b8c", "f9a67457-acb0-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["diabetes", "ejercicio", "médico", "actividad física"]
+    },
+    {
+      "id": "D02",
+      "query": "¿Qué ejercicios son seguros para alguien con artritis?",
+      "expected_macrodomain": "D",
+      "expected_agent": "Safety Guardian",
+      "relevant_chunk_ids": ["f0e31ade-4b6e-4a2d-9c1b-3d4e5f6a7b8c", "ff2fd21c-fd4e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["artritis", "ejercicio", "dolor", "ropa cómoda"]
+    },
+    {
+      "id": "D03",
+      "query": "¿Cuáles son las contraindicaciones del ejercicio en personas mayores?",
+      "expected_macrodomain": "D",
+      "expected_agent": "Safety Guardian",
+      "relevant_chunk_ids": ["93100486-a21e-4a2d-9c1b-3d4e5f6a7b8c", "ff2fd21c-fd4e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "hard",
+      "category": "factual",
+      "expected_answer_keywords": ["contraindicaciones", "médico", "precaución", "dolor"]
+    },
+    {
+      "id": "D04",
+      "query": "¿Cómo afecta el ejercicio a personas con demencia leve?",
+      "expected_macrodomain": "D",
+      "expected_agent": "Safety Guardian",
+      "relevant_chunk_ids": ["9b657ec4-1d8e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["demencia", "cognitivo", "ejercicio", "Alzheimer"]
+    },
+    {
+      "id": "D05",
+      "query": "¿Qué hacer si un mayor siente mareos durante el ejercicio?",
+      "expected_macrodomain": "D",
+      "expected_agent": "Safety Guardian",
+      "relevant_chunk_ids": ["1b603549-6c2e-41cd-970d-4ebf0b657466", "ff2fd21c-fd4e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "procedural",
+      "expected_answer_keywords": ["mareos", "detenerse", "médico", "precaución"]
+    },
+    {
+      "id": "F01",
+      "query": "¿Qué ejercicios de memoria son recomendables para mayores?",
+      "expected_macrodomain": "F",
+      "expected_agent": "Mind & Soul",
+      "relevant_chunk_ids": ["821b38af-b51e-4a2d-9c1b-3d4e5f6a7b8c", "19dfbafb-6e2e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["memoria", "cognitivo", "ejercicios", "estimulación"]
+    },
+    {
+      "id": "F02",
+      "query": "¿Cómo puede el ejercicio ayudar con la depresión en personas mayores?",
+      "expected_macrodomain": "F",
+      "expected_agent": "Mind & Soul",
+      "relevant_chunk_ids": ["ef02937c-109e-4a2d-9c1b-3d4e5f6a7b8c", "821b38af-b51e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["depresión", "ánimo", "ejercicio", "bienestar"]
+    },
+    {
+      "id": "F03",
+      "query": "¿Qué tipo de gimnasia es adecuada para adultos mayores?",
+      "expected_macrodomain": "F",
+      "expected_agent": "Mind & Soul",
+      "relevant_chunk_ids": ["821b38af-b51e-4a2d-9c1b-3d4e5f6a7b8c", "cb30b049-7ba0-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "easy",
+      "category": "factual",
+      "expected_answer_keywords": ["gimnasia", "mayores", "activa", "adaptada"]
+    },
+    {
+      "id": "F04",
+      "query": "¿Cómo mejorar la calidad del sueño en personas mayores mediante ejercicio?",
+      "expected_macrodomain": "F",
+      "expected_agent": "Mind & Soul",
+      "relevant_chunk_ids": ["821b38af-b51e-4a2d-9c1b-3d4e5f6a7b8c", "5316fa81-9bf6-4a2d-8e1c-3d4e5f6a7b8c"],
+      "difficulty": "medium",
+      "category": "factual",
+      "expected_answer_keywords": ["sueño", "ejercicio", "descanso", "calidad"]
+    },
+    {
+      "id": "F05",
+      "query": "¿Qué ejercicios de flexibilidad son seguros para mayores con hipertensión?",
+      "expected_macrodomain": "F",
+      "expected_agent": "Mind & Soul",
+      "relevant_chunk_ids": ["cb30b049-7ba0-4a2d-9c1b-3d4e5f6a7b8c", "037e9158-ed0e-4a2d-9c1b-3d4e5f6a7b8c"],
+      "difficulty": "hard",
+      "category": "procedural",
+      "expected_answer_keywords": ["flexibilidad", "hipertensión", "seguro", "médico"]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "total_queries": 5,
+  "valid_queries": 5,
+  "errored_queries": 0,
+  "k": 5,
+  "retrieval": {
+    "precision_at_k": 0.08,
+    "recall_at_k": 0.267,
+    "mrr": 0.4,
+    "hit_rate": 0.4
+  },
+  "detection": {
+    "macrodomain_accuracy": 0.4
+  },
+  "quality": {
+    "keyword_coverage": 0.76,
+    "citation_rate": 0.8,
+    "hallucination_rate": 1.0,
+    "answer_length": {
+      "min": 113,
+      "max": 328,
+      "mean": 214.2,
+      "median": 157,
+      "std": 100.5
+    }
+  },
+  "per_domain": {
+    "A": {
+      "count": 1,
+      "precision_at_k": 0.0,
+      "recall_at_k": 0.0,
+      "keyword_coverage": 1.0
+    },
+    "E": {
+      "count": 1,
+      "precision_at_k": 0.2,
+      "recall_at_k": 0.333,
+      "keyword_coverage": 0.8
+    },
+    "F": {
+      "count": 1,
+      "precision_at_k": 0.0,
+      "recall_at_k": 0.0,
+      "keyword_coverage": 0.5
+    },
+    "D": {
+      "count": 1,
+      "precision_at_k": 0.0,
+      "recall_at_k": 0.0,
+      "keyword_coverage": 0.75
+    },
+    "B": {
+      "count": 1,
+      "precision_at_k": 0.2,
+      "recall_at_k": 1.0,
+      "keyword_coverage": 0.75
+    }
+  },
+  "per_difficulty": {
+    "easy": {
+      "count": 5,
+      "precision_at_k": 0.08,
+      "recall_at_k": 0.267,
+      "keyword_coverage": 0.76
+    }
+  }
+}

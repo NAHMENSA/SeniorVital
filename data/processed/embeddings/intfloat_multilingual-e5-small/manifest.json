@@ -1,0 +1,8 @@
+{
+  "model": "intfloat/multilingual-e5-small",
+  "dimension": 384,
+  "chunk_count": 363,
+  "chunk_source": "data\\processed\\chunks\\all_chunks.json",
+  "metadata_file": "embeddings_metadata.json",
+  "vectors_file": "embeddings.npy"
+}

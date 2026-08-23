@@ -1,0 +1,207 @@
+[
+  {
+    "chunk_id": "d0dc0d1f-48da-49f4-bb9f-5d52bf72b91a",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "semantic",
+    "chunk_index": 0,
+    "total_chunks": 10,
+    "char_count": 726,
+    "word_count": 106,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": "sarcopenia",
+    "keywords": [
+      "fuerza"
+    ],
+    "content": "Sarcopenia y dinapenia son dos condiciones relacionadas con el\nenvejecimiento que a menudo se confunden. La sarcopenia implica pérdida\nde masa y fuerza muscular. La dinapenia implica pérdida de fuerza,\nincluso sin pérdida significativa de masa. No son lo mismo.\n\nEntender sus\ndiferencias es clave para el diagnóstico, la prevención y el diseño de\nprogramas de ejercicio eficaces. La sarcopenia es un síndrome\ncaracterizado por la pérdida progresiva de masa muscular esquelética\nacompañada de disminución de fuerza y rendimiento físico. Los consensos\ninternacionales, como el europeo EWGSOP2, establecen que el criterio\nprincipal para el diagnóstico es la baja fuerza muscular, confirmada\nposteriormente con baja masa muscular."
+  },
+  {
+    "chunk_id": "0cf52b11-e16c-4050-a9d1-7a7010d74e93",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "semantic",
+    "chunk_index": 1,
+    "total_chunks": 10,
+    "char_count": 828,
+    "word_count": 111,
+    "has_markdown_headers": false,
+    "level": "Frágil",
+    "pathology": null,
+    "keywords": [
+      "fuerza",
+      "equilibrio"
+    ],
+    "content": "Comienza a desarrollarse a partir\nde los 40-50 años y se acelera significativamente después de los 65.\n\nPuede agravarse por enfermedad, hospitalización o sedentarismo. Los\nmecanismos son multifactoriales: disminución de la síntesis proteica\nmuscular, aumento de la inflamación crónica de bajo grado, disminución\nde hormonas anabólicas como testosterona y hormona de crecimiento,\ndisminución de la activación neuromuscular, inactividad física e ingesta\nproteica insuficiente. Las consecuencias incluyen mayor riesgo de\ncaídas, fragilidad, pérdida de autonomía y mayor morbimortalidad. La\ndinapenia se define como la pérdida de fuerza muscular asociada al\nenvejecimiento, independientemente de la masa muscular. Una persona\npuede mantener una masa muscular relativamente normal, pero presentar\nuna pérdida significativa de fuerza."
+  },
+  {
+    "chunk_id": "22bfb090-ca40-4e8d-8cb2-062674f6752a",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 2,
+    "total_chunks": 10,
+    "char_count": 798,
+    "word_count": 124,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": "sarcopenia",
+    "keywords": [
+      "fuerza"
+    ],
+    "content": "Este concepto surge porque la\ndisminución de fuerza ocurre más rápido que la pérdida de masa muscular.\n\nLa pérdida de fuerza sin perder masa ocurre principalmente por\nalteraciones en el sistema nervioso central, menor reclutamiento de\nunidades motoras, cambios en la calidad del tejido muscular, pérdida de\nfibras tipo II y disminución de la potencia muscular. En muchos casos,\nla dinapenia aparece antes que la sarcopenia y puede considerarse un\nmarcador precoz de deterioro funcional. Las diferencias entre sarcopenia\ny dinapenia son las siguientes. En la sarcopenia se pierde masa y\nfuerza, mientras que en la dinapenia se pierde solo fuerza. Para el\ndiagnóstico de sarcopenia es imprescindible la pérdida de masa muscular,\nmientras que la dinapenia puede existir con masa normal. El diagnóstico"
+  },
+  {
+    "chunk_id": "bcb3cf09-c220-43c9-9eb0-7f31f58a6d53",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 3,
+    "total_chunks": 10,
+    "char_count": 499,
+    "word_count": 81,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": "sarcopenia",
+    "keywords": [
+      "fuerza"
+    ],
+    "content": "mientras que la dinapenia puede existir con masa normal. El diagnóstico\nactual de sarcopenia requiere baja fuerza y baja masa, mientras que el\nde dinapenia requiere baja fuerza sin masa baja. El impacto funcional es\nalto en ambas, pero es muy alto en la dinapenia porque afecta tareas\ncotidianas. En la práctica clínica moderna, la fuerza es el principal\nindicador de riesgo funcional, por lo que la dinapenia tiene una\nrelevancia enorme en prevención. El diagnóstico se realiza mediante tres\npasos."
+  },
+  {
+    "chunk_id": "9485e5b7-a233-4df9-97a7-599970375d62",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "semantic",
+    "chunk_index": 4,
+    "total_chunks": 10,
+    "char_count": 499,
+    "word_count": 82,
+    "has_markdown_headers": false,
+    "level": "Frágil",
+    "pathology": "sarcopenia",
+    "keywords": [
+      "fuerza",
+      "equilibrio"
+    ],
+    "content": "Primero, se mide la fuerza con dinamometría manual, test de\nlevantarse de la silla o evaluación de fuerza máxima en miembros\ninferiores. Segundo, se mide la masa muscular con DXA, bioimpedancia o\nanálisis antropométrico avanzado. Tercero, se evalúa la función con\nvelocidad de la marcha, test Timed Up and Go o pruebas de equilibrio. El\nalgoritmo actual es claro: baja fuerza indica sospecha; confirmación con\nbaja masa indica sarcopenia. Si la fuerza es baja pero la masa no, se\nhabla de dinapenia."
+  },
+  {
+    "chunk_id": "4fee5505-ec81-4fdb-a78c-7c9cccb97a33",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 5,
+    "total_chunks": 10,
+    "char_count": 674,
+    "word_count": 100,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": null,
+    "keywords": [
+      "fuerza",
+      "equilibrio"
+    ],
+    "content": "Desde el punto de vista funcional, la pérdida de\nfuerza predice mejor la discapacidad que la pérdida de masa. La fuerza\nmuscular está directamente relacionada con la capacidad para levantarse,\nsubir escaleras, mantener equilibrio y prevenir caídas. En el ámbito del\nejercicio físico y la readaptación, la prioridad es entrenar fuerza\nantes que centrarse exclusivamente en hipertrofia. La prevención y el\ntratamiento se basan en tres pilares. El entrenamiento de fuerza es la\nintervención más eficaz y con mayor evidencia científica. Se recomiendan\n2-3 sesiones por semana con intensidad moderada-alta, ejercicios\nmultiarticulares y trabajo de potencia en fases avanzadas. Es"
+  },
+  {
+    "chunk_id": "6ab66498-cafa-481c-9579-7276c95b70a7",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 6,
+    "total_chunks": 10,
+    "char_count": 679,
+    "word_count": 94,
+    "has_markdown_headers": false,
+    "level": "Activo",
+    "pathology": null,
+    "keywords": [
+      "nutrición"
+    ],
+    "content": "multiarticulares y trabajo de potencia en fases avanzadas. Es\nespecialmente importante entrenar miembros inferiores, core y\nmovimientos funcionales. El entrenamiento de potencia, que consiste en\nmovimientos rápidos con carga moderada, es clave para combatir la\ndinapenia. La nutrición adecuada requiere 1.2-1.6 g de proteína por kg\nde peso al día en adultos mayores activos, distribuir la proteína en\ntodas las comidas, ingerir leucina suficiente y vitamina D adecuada. En\nalgunos casos puede valorarse la suplementación con creatina bajo\nsupervisión profesional. El enfoque integral incluye mantener actividad\nfísica diaria, evitar periodos prolongados de inactividad, controlar"
+  },
+  {
+    "chunk_id": "ba26b24d-8c3b-4efa-936f-90bb71fc7bec",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 7,
+    "total_chunks": 10,
+    "char_count": 688,
+    "word_count": 105,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": "sarcopenia",
+    "keywords": [
+      "fuerza"
+    ],
+    "content": "física diaria, evitar periodos prolongados de inactividad, controlar\nenfermedades crónicas y priorizar la calidad del sueño. La sarcopenia y\nla dinapenia pueden revertirse, especialmente en fases iniciales. La\nplasticidad muscular y neuromuscular se mantiene incluso en edades\navanzadas. Numerosos estudios demuestran que personas mayores de 80 años\npueden aumentar fuerza y masa con entrenamiento adecuado. Lo que no se\nusa se pierde; lo que se entrena se mejora. Desde el punto de vista\nfuncional y preventivo, la fuerza muscular es el factor más\ndeterminante. El entrenamiento de fuerza no es solo una herramienta\nestética o deportiva, sino una intervención esencial para la salud y la"
+  },
+  {
+    "chunk_id": "b9bb2ffc-a569-4217-9da8-89893216106d",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 8,
+    "total_chunks": 10,
+    "char_count": 694,
+    "word_count": 108,
+    "has_markdown_headers": false,
+    "level": "Frágil",
+    "pathology": null,
+    "keywords": [
+      "fuerza",
+      "equilibrio"
+    ],
+    "content": "estética o deportiva, sino una intervención esencial para la salud y la\nautonomía en el envejecimiento. La fuerza muscular es el principal\npredictor de autonomía, riesgo de caídas y discapacidad. La pérdida de\nfuerza suele aparecer antes que la pérdida significativa de masa\nmuscular y tiene mayor impacto en la capacidad para realizar actividades\ncotidianas como levantarse de una silla o subir escaleras. La pérdida de\nmasa muscular puede comenzar a partir de los 40-50 años, aunque suele\nacelerarse después de los 65. La disminución de fuerza puede empezar\nantes si existe sedentarismo prolongado, enfermedad crónica o\ninactividad. El entrenamiento de fuerza es el más efectivo para prevenir"
+  },
+  {
+    "chunk_id": "c925e409-165d-4298-bbf7-1601263250bf",
+    "document_name": "Sarcopenia y dinapenia.md",
+    "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+    "macrodomain": "A",
+    "macrodomain_name": "Fundamentos fisiológicos y patologías",
+    "section_path": "",
+    "chunk_type": "fallback",
+    "chunk_index": 9,
+    "total_chunks": 10,
+    "char_count": 675,
+    "word_count": 104,
+    "has_markdown_headers": false,
+    "level": null,
+    "pathology": null,
+    "keywords": [
+      "fuerza",
+      "aeróbico"
+    ],
+    "content": "inactividad. El entrenamiento de fuerza es el más efectivo para prevenir\nla pérdida muscular. Se recomiendan 2-3 sesiones por semana con\nintensidad moderada a alta, ejercicios multiarticulares y trabajo de\npotencia en fases avanzadas. Caminar es beneficioso para la salud\ngeneral, pero no es suficiente por sí solo para prevenir la pérdida de\nfuerza asociada al envejecimiento. Es posible perder fuerza muscular sin\nuna pérdida significativa de masa muscular, por cambios en el sistema\nnervioso, menor activación de unidades motoras y pérdida de calidad\nmuscular.\n\nPor eso, la fuerza debe evaluarse de manera específica y no\ninferirse únicamente a partir de la masa corporal."
+  }
+]

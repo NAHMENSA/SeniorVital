@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-08-22T08:49:40.613309+00:00",
+  "total_documents": 19,
+  "total_chunks": 363,
+  "chunks_by_macrodomain": {
+    "E": 13,
+    "A": 35,
+    "B": 182,
+    "C": 23,
+    "F": 101,
+    "D": 9
+  },
+  "chunks_by_type": {
+    "semantic": 148,
+    "fallback": 212,
+    "structural": 3
+  },
+  "avg_chunk_chars": 665.801652892562,
+  "avg_chunk_words": 101.16804407713498
+}

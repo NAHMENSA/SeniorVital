@@ -43,11 +43,13 @@ graph TD
         TRK["Tracking (8004)"]
         DASH["Dashboard (8005)"]
         NOTIF["Notification (8006)"]
+        RAG["RAG Service (8007)"]
     end
 
     subgraph Data["Datos"]
         PG[("PostgreSQL<br/>seniorvital<br/>15 tablas + event_queue")]
         DUCK[("DuckDB<br/>analítica offline")]
+        CHROMA[("ChromaDB<br/>RAG embeddings<br/>363 chunks")]
     end
 
     subgraph External["Externos"]
@@ -64,11 +66,14 @@ graph TD
     PROXY -->|"/tracking /habits"| TRK
     PROXY -->|"/dashboard"| DASH
     PROXY -->|"/notify"| NOTIF
+    PROXY -->|"/rag"| RAG
 
     STREAM --> AI
 
     AI -->|"POST /api/generate (stream)"| OLLAMA
     AI -->|"INSERT routines + evento"| PG
+    RAG -->|"search embeddings"| CHROMA
+    RAG -->|"POST /api/generate"| OLLAMA
     TRK -->|"INSERT tracking + evento"| PG
     AUTH --> PG
     CAT --> PG
@@ -144,3 +149,77 @@ graph LR
 > **Nota**: aún no hay Docker/docker-compose ni CI/CD (los archivos `.github/workflows`
 > de `node_modules` son de dependencias de terceros, no del proyecto). Esto queda
 > documentado como *pendiente de definir* en la sección de mejoras.
+
+## Diagrama de flujo RAG (consulta de conocimiento)
+
+Flujo completo de una consulta RAG desde el usuario hasta la respuesta generada:
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant G as Gateway (8000)
+    participant R as RAG Service (8007)
+    participant QP as QueryProcessor
+    participant RET as Retriever
+    participant C as ChromaDB
+    participant CA as ContextAssembler
+    participant GEN as RAGGenerator
+    participant P as PromptBuilder
+    participant O as Ollama (phi3:mini)
+
+    U->>G: POST /rag/query {"query": "¿Qué ejercicios de fuerza son seguros?", "k": 5}
+    G->>R: Proxy /rag/query
+
+    Note over QP: 1. Preprocesamiento
+    R->>QP: process(query)
+    QP->>QP: normalizar (lowercase, collapse whitespace)
+    QP->>QP: detectar dominio por keywords
+    QP-->>R: {normalized, detected_domain: "B", agent: "Exercise Architect"}
+
+    Note over RET: 2. Recuperación
+    R->>RET: retrieve(query, k=5, filters)
+    RET->>C: embedding query → cosine similarity
+    C-->>RET: top-5 chunks con metadatos y distancias
+    RET-->>R: [{chunk_id, content, metadata, distance}]
+
+    Note over CA: 3. Ensamblaje de contexto
+    R->>CA: assemble(chunks)
+    CA->>CA: deduplicar (first-200 chars key)
+    CA->>CA: truncar a ≤4096 tokens
+    CA-->>R: contexto formateado con fuentes
+
+    Note over GEN: 4. Generación
+    R->>GEN: generate(query, context, agent)
+    GEN->>P: build(query, context, "Exercise Architect")
+    P-->>GEN: (system_prompt_es, user_prompt)
+    GEN->>O: POST /api/generate (phi3:mini)
+    O-->>GEN: respuesta generada (streaming)
+    GEN->>GEN: ResponseParser.parse()
+    GEN-->>R: {answer, sources, warnings}
+
+    R-->>G: 200 + {answer, sources, agent, macrodomain, warnings, query_info}
+    G-->>U: Respuesta estructurada
+```
+
+## Diagrama de ingesta RAG (indexación de documentos)
+
+Proceso de indexación del conocimiento en el vector store:
+
+```mermaid
+graph LR
+    KB["knowledge_base/<br/>19 docs .md"] -->|"run_chunking.py"| CHUNKS["chunks/<br/>363 chunks + metadatos"]
+    CHUNKS -->|"generate_embeddings.py"| EMB["embeddings/<br/>363 × 384 matrix"]
+    CHUNKS -->|"index_knowledge_base.py"| VS[("ChromaDB<br/>vector_store/")]
+    EMB -->|"index_knowledge_base.py"| VS
+
+    style KB fill:#e1f5fe
+    style VS fill:#c8e6c9
+```
+
+### Descripción de la ingesta
+
+1. **Documentos fuente**: 19 archivos Markdown en `data/knowledge_base/`
+2. **Chunking**: `scripts/indexing/run_chunking.py` separa en fragmentos de ~100 palabras con metadatos
+3. **Embeddings**: `scripts/ingestion/generate_embeddings.py` genera representaciones vectoriales (384-dim)
+4. **Indexación**: `scripts/ingestion/index_knowledge_base.py` inserta en ChromaDB
+5. **Pipeline automatizado**: `IndexingPipeline` orquesta chunks → embeddings → vector store

@@ -1,0 +1,764 @@
+[
+  {
+    "query_id": "E01",
+    "query": "¿Cuáles son los alimentos recomendados para personas mayores?",
+    "expected_macrodomain": "E",
+    "expected_agent": "Nutri-Buddy",
+    "relevant_chunk_ids": [
+      "54057e85-b42e-44a2-8d03-b9af92a90b40",
+      "5e81a0cc-4316-4f3c-a11b-7a6c947cef16",
+      "1a9c00c7-5fdc-426d-94af-c735a1d00e9c"
+    ],
+    "difficulty": "easy",
+    "category": "factual",
+    "expected_answer_keywords": [
+      "verduras",
+      "frutas",
+      "cereales",
+      "proteína",
+      "lácteos"
+    ],
+    "detected_macrodomain": null,
+    "detected_agent": null,
+    "answer": "Para las personas mayores, se recomienda una dieta variada que incluya verduras, frutas, cereales y proteínas. Específicamente, se sugiere consumir de 2 a 3,5 tazas de verduras, de 1,5 a 2 tazas de frutas y de 5 a 9 onzas de cereales. Las verduras pueden incluir hojas verdes y otros tipos, mientras que las frutas pueden ser duraznos frescos o uvas. Los cereales pueden ser panecillos pequeños, pan integral o cereales en hojuelas. Además, se recomienda una ingesta de carbohidratos del 55-60%, proteínas del 10-15% y grasas del 20-30%. Para las personas frágiles, se debe disminuir la ingesta calórica total en un 20%. Es importante mantenerse bien hidratado y hacer comidas atractivas con colores vistosos. Se recomienda evitar alimentos con alto contenido de grasa y optar por especias y sal moderada. También es crucial mantener una hidratación adecuada, especialmente para personas muy activas, bebiendo líquido antes, durante y después del ejercicio.\n\nFuente: WEB-GUIA-MAYORES-version-publicacion.md | Macrodominio F",
+    "sources": [
+      {
+        "chunk_id": "5e81a0cc-4316-4f3c-a11b-7a6c947cef16",
+        "content": "Coma variedad de cada grupo de alimentos para obtener nutrientes.\n\nLas Guías\nAlimentarias para Estadounidenses 2020-2025 del USDA y HHS describen modelos\nflexibles para una alimentación saludable según gustos, disponibilidad y\npresupuesto. Sugieren que las personas de 60 años o más elijan alimentos diarios\nde estos grupos:\nVerduras: de 2 a 3,5 tazas. Una taza de verduras en pedacitos equivale a dos\ntazas de verduras de hojas verdes sin cocinar. Frutas: de 1,5 a 2 tazas. Media taza de fruta en pedacitos equivale a un durazno\nfresco de 2 pulgadas (5 cm) o 0,5 taza de uvas. Cereales: de 5 a 9 onzas. Una onza de cereales equivale a un panecillo pequeño\ntipo bagel, una rebanada de pan integral, una taza de cereal en hojuelas listo",
+        "metadata": {
+          "keywords": [
+            "nutrición"
+          ],
+          "chunk_id": "5e81a0cc-4316-4f3c-a11b-7a6c947cef16",
+          "source_path": "data/knowledge_base/Alimentación saludable para personas mayores.md",
+          "chunk_index": 1,
+          "total_chunks": 13,
+          "macrodomain": "E",
+          "document_name": "Alimentación saludable para personas mayores.md",
+          "macrodomain_name": "Nutrición y metabolismo",
+          "section_path": "",
+          "char_count": 735,
+          "word_count": 126,
+          "chunk_type": "fallback",
+          "has_markdown_headers": false
+        },
+        "distance": 0.21244961023330688
+      },
+      {
+        "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+        "content": "sentidos ágiles, refuerza la actividad intelectual y contribuye al equilibrio\npsicoafectivo mejorando el estado de ánimo y reduciendo la ansiedad. Existen cuatro grupos de ejercicios recomendados para personas mayores.\n\nEjercicios de resistencia o aeróbicos: son ejercicios regulares mantenidos en el\ntiempo, de intensidad regular, como caminar, ir en bicicleta o nadar. Se\nrecomienda realizarlos al menos cinco veces por semana, con duración de veinte a\nsesenta minutos por sesión, iniciando progresivamente. Beneficios: mejoran la función cardiovascular, disminuyen la frecuencia cardiaca\nbasal y la tensión arterial, contribuyen al descenso de glucosa y colesterol,\nmejoran la capacidad respiratoria y cardiaca, mejoran el estado de ánimo,\naumentan la energía para actividades diarias como levantarse, moverse, subir\nescaleras, hacer compras y viajar. Previenen y retrasan enfermedades del",
+        "metadata": {
+          "chunk_index": 3,
+          "source_path": "data/knowledge_base/guia-ejercicio-mayores-segg.md",
+          "chunk_type": "fallback",
+          "section_path": "",
+          "macrodomain": "B",
+          "has_markdown_headers": false,
+          "total_chunks": 44,
+          "document_name": "guia-ejercicio-mayores-segg.md",
+          "char_count": 892,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+          "word_count": 123
+        },
+        "distance": 0.21322683990001678
+      },
+      {
+        "chunk_id": "3996927d-bae7-4eda-87ba-7e99f1f96175",
+        "content": "incremente los ejercicios para mantenerte en forma a diario. Es muy\nrecomendable seguir un programa de ejercicio en el medio acuático. Nutrición. Con la edad disminuye el metabolismo basal. Reduzca el\nconsumo energético. Las personas mayores que no realizan ejercicio deben\ndisminuir la ingesta energética pero no de micronutrientes. Aporte:\ncarbohidratos 55-60%, proteínas 10-15%, grasas 20-30%. Personas\nfrágiles: actividad física ligera. Reduzca un 20% la ingesta calórica\ntotal.\n\nManténgase bien hidratado. Haga comidas atractivas con colores\nvistosos. Personas activas: gasto energético más elevado. Técnicas\nculinarias con poca grasa.",
+        "metadata": {
+          "macrodomain": "F",
+          "chunk_id": "3996927d-bae7-4eda-87ba-7e99f1f96175",
+          "source_path": "data/knowledge_base/WEB-GUIA-MAYORES-version-publicacion.md",
+          "section_path": "",
+          "keywords": [
+            "nutrición"
+          ],
+          "chunk_type": "fallback",
+          "has_markdown_headers": false,
+          "total_chunks": 92,
+          "char_count": 640,
+          "macrodomain_name": "Estimulación cognitiva y bienestar emocional",
+          "chunk_index": 83,
+          "level": "Frágil",
+          "word_count": 88,
+          "document_name": "WEB-GUIA-MAYORES-version-publicacion.md"
+        },
+        "distance": 0.2144583761692047
+      },
+      {
+        "chunk_id": "e60f7f68-d128-43bd-8921-d7de4cd820b0",
+        "content": "Use especias, consuma sal moderada.\n\nMantenga\nhidratación adecuada. Personas muy activas: balance energético\nequilibrado. Beba líquido antes, durante y después de la actividad.\n\nComidas frecuentes y ligeras. Recomendaciones para ejercicio físico: 2\nhoras antes, coma hidratos de carbono (frutas, barrita de cereales,\nbocadillo pequeño). Durante el ejercicio, mantenga hidratación con agua\no bebida deportiva. Después del ejercicio, asegure hidratación y consuma\nhidratos de carbono y proteínas. Problemas y enfermedades frecuentes. Problemas bucales: elija alimentos de alta densidad energética,\nconsistencia blanda o triturados. Aparato digestivo: reduzca cantidad de\nalimento por toma y aumente número de comidas. Estreñimiento: practique\nejercicio, consuma fibra soluble e insoluble. Osteoporosis: aumente",
+        "metadata": {
+          "chunk_type": "fallback",
+          "char_count": 808,
+          "keywords": [
+            "nutrición"
+          ],
+          "source_path": "data/knowledge_base/WEB-GUIA-MAYORES-version-publicacion.md",
+          "pathology": "osteoporosis",
+          "has_markdown_headers": false,
+          "chunk_id": "e60f7f68-d128-43bd-8921-d7de4cd820b0",
+          "total_chunks": 92,
+          "section_path": "",
+          "macrodomain": "F",
+          "document_name": "WEB-GUIA-MAYORES-version-publicacion.md",
+          "chunk_index": 84,
+          "word_count": 105,
+          "macrodomain_name": "Estimulación cognitiva y bienestar emocional"
+        },
+        "distance": 0.21498334407806396
+      },
+      {
+        "chunk_id": "d922f42d-f121-46d0-9f1a-c946266d3221",
+        "content": "ejercicio, consuma fibra soluble e insoluble. Osteoporosis: aumente\ningesta de lácteos desnatados ricos en calcio y vitamina D, limite café,\nrealice ejercicio, tome sol 5-10 min al día. Enfermedades\ncardiovasculares: disminuya ingesta de sal, consuma folatos, vitaminas\nB6 y B12, productos vegetales ricos en potasio. Evite conservas,\nencurtidos, procesados, precocinados, embutidos, salsas, aperitivos\nsalados. Para ateroesclerosis: consuma ácidos grasos monoinsaturados y\npoliinsaturados (aceite de oliva, pescados azules, nueces), fibra y\nantioxidantes. Obesidad: en España, el estudio EXERNET observó que el\n46,7% de las personas mayores tienen sobrepeso y el 37,6% obesidad.",
+        "metadata": {
+          "macrodomain_name": "Estimulación cognitiva y bienestar emocional",
+          "word_count": 91,
+          "chunk_index": 85,
+          "document_name": "WEB-GUIA-MAYORES-version-publicacion.md",
+          "has_markdown_headers": false,
+          "pathology": "osteoporosis",
+          "char_count": 679,
+          "keywords": [
+            "aeróbico"
+          ],
+          "total_chunks": 92,
+          "source_path": "data/knowledge_base/WEB-GUIA-MAYORES-version-publicacion.md",
+          "macrodomain": "F",
+          "section_path": "",
+          "chunk_id": "d922f42d-f121-46d0-9f1a-c946266d3221",
+          "chunk_type": "fallback"
+        },
+        "distance": 0.21512603759765625
+      }
+    ],
+    "warnings": [],
+    "retrieved_ids": [
+      "5e81a0cc-4316-4f3c-a11b-7a6c947cef16",
+      "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+      "3996927d-bae7-4eda-87ba-7e99f1f96175",
+      "e60f7f68-d128-43bd-8921-d7de4cd820b0",
+      "d922f42d-f121-46d0-9f1a-c946266d3221"
+    ],
+    "elapsed_seconds": 211.069,
+    "error": null
+  },
+  {
+    "query_id": "A03",
+    "query": "¿Qué es la osteoporosis y por qué es peligrosa para los mayores?",
+    "expected_macrodomain": "A",
+    "expected_agent": "Physio-Evaluator",
+    "relevant_chunk_ids": [
+      "6d46f32f-ccbe-4c44-8757-e758ee104fbc",
+      "f4e8b0fe-60e5-422c-bfcc-e13e78604bd1"
+    ],
+    "difficulty": "easy",
+    "category": "factual",
+    "expected_answer_keywords": [
+      "osteoporosis",
+      "hueso",
+      "densidad",
+      "fracturas"
+    ],
+    "detected_macrodomain": "A",
+    "detected_agent": "Physio-Evaluator",
+    "answer": "La osteoporosis es una patología en la que los huesos se vuelven frágiles y más susceptibles a fracturas, lo cual es especialmente peligroso para los mayores debido a que aumenta su riesgo de sufrir caídas y lesiones graves. Según la fuente \"Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md\", la osteoporosis es una condición que puede afectar la salud ósea y que requiere atención médica y una estrategia de prevención adecuada.\n\n\nEs importante para los mayores realizar ejercicios de bajo impacto y seguir recomendaciones médicas para minimizar el riesgo de fracturas. Además, es fundamental mantener una dieta rica en calcio y vitamina D, y evitar el sedentarismo para ayudar a mantener la densidad ósea. Si se presentan síntomas como dolor óseo o se sospecha de una fractura, es crucial detenerse inmediatamente y buscar atende de manera médica.\n\n\nFuente: Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md | Macrodominio A",
+    "sources": [
+      {
+        "chunk_id": "b9bb2ffc-a569-4217-9da8-89893216106d",
+        "content": "estética o deportiva, sino una intervención esencial para la salud y la\nautonomía en el envejecimiento. La fuerza muscular es el principal\npredictor de autonomía, riesgo de caídas y discapacidad. La pérdida de\nfuerza suele aparecer antes que la pérdida significativa de masa\nmuscular y tiene mayor impacto en la capacidad para realizar actividades\ncotidianas como levantarse de una silla o subir escaleras. La pérdida de\nmasa muscular puede comenzar a partir de los 40-50 años, aunque suele\nacelerarse después de los 65. La disminución de fuerza puede empezar\nantes si existe sedentarismo prolongado, enfermedad crónica o\ninactividad. El entrenamiento de fuerza es el más efectivo para prevenir",
+        "metadata": {
+          "word_count": 108,
+          "level": "Frágil",
+          "chunk_index": 8,
+          "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+          "chunk_type": "fallback",
+          "macrodomain_name": "Fundamentos fisiológicos y patologías",
+          "total_chunks": 10,
+          "char_count": 694,
+          "keywords": [
+            "fuerza",
+            "equilibrio"
+          ],
+          "has_markdown_headers": false,
+          "document_name": "Sarcopenia y dinapenia.md",
+          "chunk_id": "b9bb2ffc-a569-4217-9da8-89893216106d",
+          "macrodomain": "A",
+          "section_path": ""
+        },
+        "distance": 0.2898857593536377
+      },
+      {
+        "chunk_id": "ba26b24d-8c3b-4efa-936f-90bb71fc7bec",
+        "content": "física diaria, evitar periodos prolongados de inactividad, controlar\nenfermedades crónicas y priorizar la calidad del sueño. La sarcopenia y\nla dinapenia pueden revertirse, especialmente en fases iniciales. La\nplasticidad muscular y neuromuscular se mantiene incluso en edades\navanzadas. Numerosos estudios demuestran que personas mayores de 80 años\npueden aumentar fuerza y masa con entrenamiento adecuado. Lo que no se\nusa se pierde; lo que se entrena se mejora. Desde el punto de vista\nfuncional y preventivo, la fuerza muscular es el factor más\ndeterminante. El entrenamiento de fuerza no es solo una herramienta\nestética o deportiva, sino una intervención esencial para la salud y la",
+        "metadata": {
+          "pathology": "sarcopenia",
+          "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+          "document_name": "Sarcopenia y dinapenia.md",
+          "macrodomain_name": "Fundamentos fisiológicos y patologías",
+          "section_path": "",
+          "chunk_type": "fallback",
+          "total_chunks": 10,
+          "chunk_index": 7,
+          "word_count": 105,
+          "chunk_id": "ba26b24d-8c3b-4efa-936f-90bb71fc7bec",
+          "char_count": 688,
+          "keywords": [
+            "fuerza"
+          ],
+          "macrodomain": "A",
+          "has_markdown_headers": false
+        },
+        "distance": 0.29848650097846985
+      },
+      {
+        "chunk_id": "0cf52b11-e16c-4050-a9d1-7a7010d74e93",
+        "content": "Comienza a desarrollarse a partir\nde los 40-50 años y se acelera significativamente después de los 65.\n\nPuede agravarse por enfermedad, hospitalización o sedentarismo. Los\nmecanismos son multifactoriales: disminución de la síntesis proteica\nmuscular, aumento de la inflamación crónica de bajo grado, disminución\nde hormonas anabólicas como testosterona y hormona de crecimiento,\ndisminución de la activación neuromuscular, inactividad física e ingesta\nproteica insuficiente. Las consecuencias incluyen mayor riesgo de\ncaídas, fragilidad, pérdida de autonomía y mayor morbimortalidad. La\ndinapenia se define como la pérdida de fuerza muscular asociada al\nenvejecimiento, independientemente de la masa muscular. Una persona\npuede mantener una masa muscular relativamente normal, pero presentar\nuna pérdida significativa de fuerza.",
+        "metadata": {
+          "level": "Frágil",
+          "keywords": [
+            "fuerza",
+            "equilibrio"
+          ],
+          "total_chunks": 10,
+          "document_name": "Sarcopenia y dinapenia.md",
+          "chunk_type": "semantic",
+          "char_count": 828,
+          "chunk_index": 1,
+          "word_count": 111,
+          "macrodomain": "A",
+          "source_path": "data/knowledge_base/Sarcopenia y dinapenia.md",
+          "has_markdown_headers": false,
+          "chunk_id": "0cf52b11-e16c-4050-a9d1-7a7010d74e93",
+          "section_path": "",
+          "macrodomain_name": "Fundamentos fisiológicos y patologías"
+        },
+        "distance": 0.306649774312973
+      },
+      {
+        "chunk_id": "fc75f640-6a17-45f9-93a4-577bf3a2e3c8",
+        "content": "(aceptable) de dolor (no aceptable). Dolor durante sesión: detenerse (IOF,\n2022). Regresión o derivación médica. Transición a hábitos: evidencia hábitos\nentrenables y sostenibles (WHO, 2025). Preguntas frecuentes:\n¿Cuándo mejora la salud ósea? En 6-12 semanas se nota estabilidad y control;\ncambios densitométricos requieren más tiempo. ¿Necesito mucho peso?\n\nNo, precisión y progresión razonable; técnica es\namplificador. ¿Puedo entrenar con dolor? No. Si dolor antes de sesión, cambiar objetivo\n(movilidad suave, respiración, técnica sin carga o trabajar otra zona). Si\naparece durante, detenerse. Diferencia: tensión (sensación muscular, tendinosa,\nlocal, aparece con esfuerzo, disminuye al parar, no altera técnica) vs dolor\n(punzante, eléctrico, quemante, articular u óseo, cambia patrón). Si persiste,\nconsultar médico.",
+        "metadata": {
+          "source_path": "data/knowledge_base/Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md",
+          "char_count": 825,
+          "chunk_index": 6,
+          "word_count": 111,
+          "has_markdown_headers": false,
+          "total_chunks": 8,
+          "chunk_id": "fc75f640-6a17-45f9-93a4-577bf3a2e3c8",
+          "macrodomain_name": "Fundamentos fisiológicos y patologías",
+          "section_path": "",
+          "document_name": "Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md",
+          "keywords": [
+            "equilibrio"
+          ],
+          "macrodomain": "A",
+          "chunk_type": "fallback"
+        },
+        "distance": 0.30816882848739624
+      },
+      {
+        "chunk_id": "7c3fab72-01b3-46fb-ad93-02b2e56338e2",
+        "content": "Microimpactos. Son movimientos breves e intensos que estimulan el hueso sin\nriesgo elevado (Brooke-Wavell et al., 2022).\n\nSe integran en la vida diaria. Control del riesgo: aterrizajes silenciosos (si suena fuerte, falta control);\ntronco y pelvis estables; si hay rigidez defensiva o miedo, usar variante más\nestable. Fuerza para mejorar densidad ósea. El ejercicio de fuerza mejora densidad\nmineral ósea y función (Cochrane, 2025). La clave es mover con claridad: series\ncortas, alineación estable, control.",
+        "metadata": {
+          "total_chunks": 8,
+          "chunk_type": "semantic",
+          "chunk_index": 2,
+          "document_name": "Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md",
+          "chunk_id": "7c3fab72-01b3-46fb-ad93-02b2e56338e2",
+          "word_count": 75,
+          "macrodomain_name": "Fundamentos fisiológicos y patologías",
+          "char_count": 508,
+          "keywords": [
+            "fuerza"
+          ],
+          "macrodomain": "A",
+          "source_path": "data/knowledge_base/Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md",
+          "section_path": "",
+          "has_markdown_headers": false
+        },
+        "distance": 0.31031131744384766
+      }
+    ],
+    "warnings": [],
+    "retrieved_ids": [
+      "b9bb2ffc-a569-4217-9da8-89893216106d",
+      "ba26b24d-8c3b-4efa-936f-90bb71fc7bec",
+      "0cf52b11-e16c-4050-a9d1-7a7010d74e93",
+      "fc75f640-6a17-45f9-93a4-577bf3a2e3c8",
+      "7c3fab72-01b3-46fb-ad93-02b2e56338e2"
+    ],
+    "elapsed_seconds": 103.552,
+    "error": null
+  },
+  {
+    "query_id": "B01",
+    "query": "¿Cuánto ejercicio aeróbico debe hacer un adulto mayor por semana?",
+    "expected_macrodomain": "B",
+    "expected_agent": "Exercise Architect",
+    "relevant_chunk_ids": [
+      "257788d8-7644-4627-9d3a-8f642e007fcc"
+    ],
+    "difficulty": "easy",
+    "category": "factual",
+    "expected_answer_keywords": [
+      "150 minutos",
+      "semanales",
+      "aeróbico",
+      "moderada"
+    ],
+    "detected_macrodomain": "B",
+    "detected_agent": "Exercise Architect",
+    "answer": "Según la información proporcionada en la Fuente 2 y la Fuente 3, un adulto mayor debe realizar entre 150 y 300 minutos semanales de ejercicio aeróbico de intensidad moderada. Esto se puede lograr realizando tres sesiones semanales, como se sugiere en la Fuente 4. Es importante adaptar la intensidad y duración del ejercicio a las capacidades y condiciones médicas del individuo. Además, se recomienda hablar con un médico si se tiene alguna afección crónica que dificulte alcanzar la cantidad recomendada. La seguridad es clave, por lo que se debe tener una silla resistente o una persona cerca para agarrarse si se siente inestable durante el ejercicio. (Fuentes: Fuente 2, Fuente 3, Fuente 4)",
+    "sources": [
+      {
+        "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+        "content": "Las personas mayores deben realizar al menos 150 minutos semanales de ejercicio\naeróbico de intensidad moderada, como caminar a paso ligero o bailar rápido. Lo\nideal es estar activo por lo menos tres días a la semana. También deben realizar\nactividades para fortalecer los músculos, como levantar pesas o hacer\nabdominales, al menos dos días a la semana. Las pautas recomiendan combinar una\nvariedad de ejercicios, incluyendo actividades de equilibrio, aeróbicas y de\nfortalecimiento muscular. Si se prefiere actividad aeróbica de intensidad\nvigorosa, como correr, se recomiendan al menos 75 minutos semanales. El ejercicio y la actividad física benefician la salud mental y física. Ayudan a",
+        "metadata": {
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "total_chunks": 7,
+          "char_count": 691,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "section_path": "",
+          "word_count": 106,
+          "level": "Activo",
+          "source_path": "data/knowledge_base/Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "chunk_type": "fallback",
+          "has_markdown_headers": false,
+          "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+          "chunk_index": 0,
+          "document_name": "Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "macrodomain": "B"
+        },
+        "distance": 0.14210110902786255
+      },
+      {
+        "chunk_id": "c4b0e374-a49f-40a4-8ff8-59318e657530",
+        "content": "hacia los músculos en actividad. El ejercicio aeróbico aumenta el ritmo\nrespiratorio y cardíaco. Ser físicamente activo de manera consistente\nmejora la resistencia y la salud de pulmones, corazón y sistema\ncirculatorio. Reduce el riesgo de diabetes, ciertos tipos de cáncer y\nenfermedades cardíacas. Aumente gradualmente la actividad física hasta\nalcanzar 150 minutos semanales de ejercicio aeróbico de intensidad\nmoderada, como caminatas rápidas. Si una afección crónica dificulta\nalcanzar la cantidad recomendada, hable con el médico. Sea tan activo\ncomo pueda; el movimiento de intensidad leve es beneficioso.",
+        "metadata": {
+          "chunk_id": "c4b0e374-a49f-40a4-8ff8-59318e657530",
+          "word_count": 88,
+          "keywords": [
+            "aeróbico"
+          ],
+          "char_count": 612,
+          "source_path": "data/knowledge_base/Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "macrodomain": "B",
+          "document_name": "Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "pathology": "diabetes",
+          "has_markdown_headers": false,
+          "level": "Activo",
+          "total_chunks": 9,
+          "chunk_type": "fallback",
+          "chunk_index": 1,
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "section_path": ""
+        },
+        "distance": 0.18621614575386047
+      },
+      {
+        "chunk_id": "33e1dcc2-9230-46c3-8c31-bfe45609fb7c",
+        "content": "Favorece la independencia funcional en actividades diarias. Recomendaciones generales según guías oficiales (OMS, CSD) para mayores de 65\naños:\nActividad aeróbica: 3 a 5 días por semana, intensidad moderada (capaz de hablar\npero no cantar), duración de 150 a 300 minutos semanales. Entrenamiento de fuerza: 2 a 3 días por semana, intensidad moderada a intensa,\nde 8 a 10 ejercicios por sesión, de 1 a 3 series. Equilibrio y coordinación: 3 o más días por semana, intensidad suave a moderada,\nde 15 a 20 minutos por sesión. Movilidad y flexibilidad: diaria o intercalada, intensidad suave, de 10 a 15\nminutos. Siempre adaptar las recomendaciones a capacidades, patologías y experiencia de",
+        "metadata": {
+          "word_count": 110,
+          "has_markdown_headers": false,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "flexibilidad"
+          ],
+          "chunk_id": "33e1dcc2-9230-46c3-8c31-bfe45609fb7c",
+          "total_chunks": 12,
+          "document_name": "Entrenamiento en adultos mayores - guía completa - ESHI.md",
+          "macrodomain": "B",
+          "section_path": "",
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "chunk_index": 2,
+          "char_count": 687,
+          "chunk_type": "fallback",
+          "source_path": "data/knowledge_base/Entrenamiento en adultos mayores - guía completa - ESHI.md"
+        },
+        "distance": 0.20224344730377197
+      },
+      {
+        "chunk_id": "ba01489e-45c2-4849-81be-ddef6e997021",
+        "content": "Realice aproximadamente tres sesiones semanales. Ejemplos:\ntai chi (meditación en movimiento con movimientos lentos, suaves y\nprecisos y respiración profunda), yoga, pararse en un solo pie, caminar\nen fila con el talón delante del otro, marcha equilibrada, caminar hacia\natrás o de lado, pararse desde posición sentada, usar tabla inestable. Sugerencias de seguridad: si se siente inestable, estabilícese.\n\nVaya\ndespacio y con atención para prevenir caídas. Consulte al médico ante\ndudas. Tenga una silla resistente o persona cerca para agarrarse.\n\nUse\ncalzado cómodo y estable o vaya descalzo para buen agarre. Los adultos\nmayores necesitan una combinación de actividades físicas. Incluya\nactividad aeróbica, de fortalecimiento muscular y de equilibrio cada\nsemana.\n\nPuede combinar más de un tipo en la misma sesión. Actividades\ncomo bailar, yoga, tai chi, jardinería o deportes incorporan múltiples\ntipos de actividad física.",
+        "metadata": {
+          "chunk_type": "semantic",
+          "chunk_index": 8,
+          "macrodomain": "B",
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "chunk_id": "ba01489e-45c2-4849-81be-ddef6e997021",
+          "has_markdown_headers": false,
+          "word_count": 136,
+          "level": "Frágil",
+          "document_name": "Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "source_path": "data/knowledge_base/Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "char_count": 927,
+          "keywords": [
+            "equilibrio",
+            "aeróbico",
+            "seguridad"
+          ],
+          "total_chunks": 9,
+          "section_path": ""
+        },
+        "distance": 0.20277638733386993
+      },
+      {
+        "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+        "content": "sentidos ágiles, refuerza la actividad intelectual y contribuye al equilibrio\npsicoafectivo mejorando el estado de ánimo y reduciendo la ansiedad. Existen cuatro grupos de ejercicios recomendados para personas mayores.\n\nEjercicios de resistencia o aeróbicos: son ejercicios regulares mantenidos en el\ntiempo, de intensidad regular, como caminar, ir en bicicleta o nadar. Se\nrecomienda realizarlos al menos cinco veces por semana, con duración de veinte a\nsesenta minutos por sesión, iniciando progresivamente. Beneficios: mejoran la función cardiovascular, disminuyen la frecuencia cardiaca\nbasal y la tensión arterial, contribuyen al descenso de glucosa y colesterol,\nmejoran la capacidad respiratoria y cardiaca, mejoran el estado de ánimo,\naumentan la energía para actividades diarias como levantarse, moverse, subir\nescaleras, hacer compras y viajar. Previenen y retrasan enfermedades del",
+        "metadata": {
+          "char_count": 892,
+          "chunk_index": 3,
+          "document_name": "guia-ejercicio-mayores-segg.md",
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "section_path": "",
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+          "total_chunks": 44,
+          "source_path": "data/knowledge_base/guia-ejercicio-mayores-segg.md",
+          "word_count": 123,
+          "macrodomain": "B",
+          "chunk_type": "fallback",
+          "has_markdown_headers": false
+        },
+        "distance": 0.20813468098640442
+      }
+    ],
+    "warnings": [],
+    "retrieved_ids": [
+      "257788d8-7644-4627-9d3a-8f642e007fcc",
+      "c4b0e374-a49f-40a4-8ff8-59318e657530",
+      "33e1dcc2-9230-46c3-8c31-bfe45609fb7c",
+      "ba01489e-45c2-4849-81be-ddef6e997021",
+      "23e507ef-3db4-4d69-8f9a-5745cb78b2b2"
+    ],
+    "elapsed_seconds": 68.4,
+    "error": null
+  },
+  {
+    "query_id": "D01",
+    "query": "¿Puede una persona con diabetes hacer ejercicio físico?",
+    "expected_macrodomain": "D",
+    "expected_agent": "Safety Guardian",
+    "relevant_chunk_ids": [
+      "58fb01ed-bbc0-4a2d-9c1b-3d4e5f6a7b8c",
+      "0e680b96-f28e-4a2d-9c1b-3d4e5f6a7b8c",
+      "f9a67457-acb0-4a2d-9c1b-3d4e5f6a7b8c"
+    ],
+    "difficulty": "easy",
+    "category": "factual",
+    "expected_answer_keywords": [
+      "diabetes",
+      "ejercicio",
+      "médico",
+      "actividad física"
+    ],
+    "detected_macrodomain": "B",
+    "detected_agent": "Exercise Architect",
+    "answer": "Según la información proporcionada en la Fuente 2: guia-ejercicio-mayores-segg.md | Macrodominio B, las personas con diabetes pueden realizar ejercicio físico, recomendándose una combinación de ejercicios aeróbicos y de resistencia. Es importante para las personas con diabetes tipo 2 ajustar horarios, comidas o medicamentos al planificar actividades. Sin embargo, siempre es recomendable consultar con un médico antes de comenzar cualquier nuevo ejercicio, especialmente si se tiene una condición médica como la diabetes.\n\n\nSi la pregunta fuera sobre ejercicios específicos para personas con diabetes, la respuesta sería: \"La guía recomienda una combinación de ejercicios aeróbicos y de resistencia para personas con diabetes tipo 2, pero es fundamental ajustar el plan de ejercicio a las necesidades individuales y consultar con un médico para evitar complicaciones relacionadas con la condición.\"\n\n\nSi la pregunta fuera sobre seguridad y ejercicio, la respuesta sería: \"Para personas con diabetes, es crucial evitar ejercicios que puedan causar hipoglucemia. Se debe tener en cuenta la respuesta de glucosa y tener carbohidratos a mano si es necesario. Además, se debe ser consciente de los signos de sobreexertión y dejar de ejercitarse si se experimentan dolores intensos, mareos o dificultad para respirar.\"\n\n\nSi la pregunta fuera sobre ejercicios para personas con artritis, la respuesta sería: \"Las personas con artritis deben evitar ciertas actividades cuando las articulaciones están inflamadas. Se recomienda ejercicios de bajo impacto y aquellos que no causen dolor en las articulaciones afectadas.\"\n\n\nSi la pregunta fuera sobre ejercicios para personas con insuficiencia renal crónica, la respuesta sería: \"Para personas con insuficiencia renal crónica, es recomendable realizar ejercicios aeróbicos y de resistencia para ayudar a controlar la diabetes y reducir la tensión arterial, siempre bajo la supervisión de un médico.\"\n\n\nSi la pregunta fuera sobre ejercicios para personas con depresión, la respuesta sería: \"El ejercicio físico ayuda a mejorar el estado de ánimo y puede reducir la ansiedad y la depresión. Se recomienda comenzar con actividades de bajo",
+    "sources": [
+      {
+        "chunk_id": "1b603549-6c2e-41cd-970d-4ebf0b657466",
+        "content": "dolor en articulaciones, mareos o dificultad para respirar. El médico puede\nrecomendar posponer el ejercicio hasta diagnosticar y tratar problemas. Se debe\npreguntar si el cuidado preventivo está actualizado y si se necesitan pruebas,\ncomo la revisión de osteoporosis para mujeres mayores de 65 años. También se\ndebe preguntar cómo afecta el problema de salud a la capacidad para hacer\nejercicio. Personas con artritis deben evitar ciertas actividades cuando las\narticulaciones están inflamadas. Personas con diabetes pueden necesitar ajustar\nhorarios, comidas o medicamentos al planificar actividades. Para mantenerse motivado, se deben establecer metas específicas, realistas e\nimportantes.",
+        "metadata": {
+          "char_count": 692,
+          "chunk_index": 4,
+          "has_markdown_headers": false,
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "section_path": "",
+          "chunk_id": "1b603549-6c2e-41cd-970d-4ebf0b657466",
+          "document_name": "Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "pathology": "osteoporosis",
+          "chunk_type": "fallback",
+          "word_count": 97,
+          "total_chunks": 7,
+          "source_path": "data/knowledge_base/Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "macrodomain": "B"
+        },
+        "distance": 0.20266850292682648
+      },
+      {
+        "chunk_id": "5c5d1bb8-3f98-4f81-a427-a7e6871f92fc",
+        "content": "colesterol HDL, reducir la resistencia a la insulina, mejorar la marcha y el\nequilibrio, aumentar la capacidad física y mejorar la alimentación. Para diabetes tipo 2, recomiende una combinación de ejercicios aeróbicos y de\nresistencia. Conseguirá aumentar la autoestima, mejorar el patrón de sueño y\nreducir la ansiedad. Para insuficiencia renal crónica, con ejercicios aeróbicos y de resistencia\nlogrará descender la tensión arterial y controlar mejor la diabetes mellitus 2. Para depresión, el ejercicio físico ayuda a mejorar el estado de ánimo y reduce\nla ansiedad. Para incontinencia urinaria de estrés, los ejercicios de equilibrio y de Kegel",
+        "metadata": {
+          "total_chunks": 44,
+          "chunk_type": "fallback",
+          "section_path": "",
+          "chunk_index": 11,
+          "has_markdown_headers": false,
+          "chunk_id": "5c5d1bb8-3f98-4f81-a427-a7e6871f92fc",
+          "pathology": "diabetes",
+          "document_name": "guia-ejercicio-mayores-segg.md",
+          "keywords": [
+            "equilibrio",
+            "aeróbico",
+            "nutrición"
+          ],
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "char_count": 648,
+          "macrodomain": "B",
+          "source_path": "data/knowledge_base/guia-ejercicio-mayores-segg.md",
+          "word_count": 98
+        },
+        "distance": 0.2254432737827301
+      },
+      {
+        "chunk_id": "c4b0e374-a49f-40a4-8ff8-59318e657530",
+        "content": "hacia los músculos en actividad. El ejercicio aeróbico aumenta el ritmo\nrespiratorio y cardíaco. Ser físicamente activo de manera consistente\nmejora la resistencia y la salud de pulmones, corazón y sistema\ncirculatorio. Reduce el riesgo de diabetes, ciertos tipos de cáncer y\nenfermedades cardíacas. Aumente gradualmente la actividad física hasta\nalcanzar 150 minutos semanales de ejercicio aeróbico de intensidad\nmoderada, como caminatas rápidas. Si una afección crónica dificulta\nalcanzar la cantidad recomendada, hable con el médico. Sea tan activo\ncomo pueda; el movimiento de intensidad leve es beneficioso.",
+        "metadata": {
+          "document_name": "Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "total_chunks": 9,
+          "keywords": [
+            "aeróbico"
+          ],
+          "word_count": 88,
+          "chunk_id": "c4b0e374-a49f-40a4-8ff8-59318e657530",
+          "char_count": 612,
+          "pathology": "diabetes",
+          "source_path": "data/knowledge_base/Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "macrodomain": "B",
+          "section_path": "",
+          "level": "Activo",
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "has_markdown_headers": false,
+          "chunk_index": 1,
+          "chunk_type": "fallback"
+        },
+        "distance": 0.22698137164115906
+      },
+      {
+        "chunk_id": "82bc9669-3823-4dea-945d-404e2a759b08",
+        "content": "Casi todos los mayores pueden realizar los ejercicios de esta guía. Existen\npocas razones de salud para no hacerlos. Si tiene dudas, consulte a su médico de\nfamilia o geriatra. El ejercicio y la actividad física son buenos para la salud física, mental y\nafectivo-relacional. Nunca es tarde para comenzar a cuidarse y hacer ejercicio. Todas las personas obtienen beneficios importantes con el ejercicio. La\ninactividad física y el sedentarismo perjudican la salud. Permanecer físicamente\nactivo previene y retrasa enfermedades y discapacidades. Beneficios de la actividad física: frena la atrofia muscular, favorece la\nmovilidad articular, evita la descalcificación ósea, hace más efectiva la",
+        "metadata": {
+          "has_markdown_headers": false,
+          "macrodomain": "B",
+          "keywords": [
+            "flexibilidad"
+          ],
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "total_chunks": 44,
+          "char_count": 691,
+          "document_name": "guia-ejercicio-mayores-segg.md",
+          "chunk_type": "fallback",
+          "section_path": "",
+          "chunk_id": "82bc9669-3823-4dea-945d-404e2a759b08",
+          "source_path": "data/knowledge_base/guia-ejercicio-mayores-segg.md",
+          "level": "Activo",
+          "word_count": 103,
+          "chunk_index": 1
+        },
+        "distance": 0.2421325445175171
+      },
+      {
+        "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+        "content": "Las personas mayores deben realizar al menos 150 minutos semanales de ejercicio\naeróbico de intensidad moderada, como caminar a paso ligero o bailar rápido. Lo\nideal es estar activo por lo menos tres días a la semana. También deben realizar\nactividades para fortalecer los músculos, como levantar pesas o hacer\nabdominales, al menos dos días a la semana. Las pautas recomiendan combinar una\nvariedad de ejercicios, incluyendo actividades de equilibrio, aeróbicas y de\nfortalecimiento muscular. Si se prefiere actividad aeróbica de intensidad\nvigorosa, como correr, se recomiendan al menos 75 minutos semanales. El ejercicio y la actividad física benefician la salud mental y física. Ayudan a",
+        "metadata": {
+          "word_count": 106,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "chunk_index": 0,
+          "source_path": "data/knowledge_base/Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "section_path": "",
+          "level": "Activo",
+          "chunk_type": "fallback",
+          "char_count": 691,
+          "has_markdown_headers": false,
+          "macrodomain": "B",
+          "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+          "total_chunks": 7,
+          "document_name": "Cómo pueden las personas mayores comenzar a hacer ejercicio.md"
+        },
+        "distance": 0.24273410439491272
+      }
+    ],
+    "warnings": [],
+    "retrieved_ids": [
+      "1b603549-6c2e-41cd-970d-4ebf0b657466",
+      "5c5d1bb8-3f98-4f81-a427-a7e6871f92fc",
+      "c4b0e374-a49f-40a4-8ff8-59318e657530",
+      "82bc9669-3823-4dea-945d-404e2a759b08",
+      "257788d8-7644-4627-9d3a-8f642e007fcc"
+    ],
+    "elapsed_seconds": 209.937,
+    "error": null
+  },
+  {
+    "query_id": "F01",
+    "query": "¿Qué ejercicios de memoria son recomendables para mayores?",
+    "expected_macrodomain": "F",
+    "expected_agent": "Mind & Soul",
+    "relevant_chunk_ids": [
+      "821b38af-b51e-4a2d-9c1b-3d4e5f6a7b8c",
+      "19dfbafb-6e2e-4a2d-9c1b-3d4e5f6a7b8c"
+    ],
+    "difficulty": "easy",
+    "category": "factual",
+    "expected_answer_keywords": [
+      "memoria",
+      "cognitivo",
+      "ejercicios",
+      "estimulación"
+    ],
+    "detected_macrodomain": "B",
+    "detected_agent": "Exercise Architect",
+    "answer": "Según la información proporcionada en las fuentes, no hay ejercicios específicos de memoria mencionados para mayores. Sin embargo, se puede inferir que la actividad física, como se describe en las fuentes, tiene beneficios para la función cognitiva y puede ayudar a reducir el riesgo de demencia. Por ejemplo, la fuente [Fuente 3: Entrenamiento en adultos mayores - guía completa - ESHI.md | Macrodominio B] indica que el ejercicio mejora la función cognitiva y reduce el riesgo de demencia.\n\nPara mejorar la memoria en adultos mayores, se recomienda incorporar ejercicios aeróbicos moderados o vigorosos, como caminar a paso ligero o correr, al menos 150 minutos semanales, y actividades de fortalecimiento muscular dos veces por semana. Estas actividades pueden ayudar a mejorar la función cognitiva y, por extensión, la memoria.\n\nAdemás, es importante que las personas mayores se mantengan activas y sociales, ya que el ejercicio y la actividad física sociales pueden beneficiar la salud mental y física, y potenciar el bienestar emocional y la autoestima.\n\nSi bien no se mencionan ejercicios específicos de memoria, se recomienda que las personas mayores participen en una variedad de actividades físicas que incluyan ejercicios aeróbicos, de fortalecimiento muscular y de equilibrio, como se sugiere en la fuente [Fuente 4: Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md | Macrodominio B].\n\nEs importante tener en cuenta las precauciones de seguridad al realizar ejercicios de equilibrio, como pararse en un solo pie o usar una tabla inestable, para prevenir caídas. Además, se recomienda que las personas mayores consulten con un médico antes de comenzar cualquier nueva actividad y que tengan a mano un soporte de seguridad, como una silla resistente o una persona cercana para agarrarse.\n\nEn resumen, aunque no hay ejercicios específicos de memoria mencionados, se recomienda que las personas mayores participen en una variedad de actividades físicas que incluyan ejercicios aeróbicos, de fortalecimiento muscular y de equilibrio, para mejorar su salud y función cognitiva, lo que puede tener",
+    "sources": [
+      {
+        "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+        "content": "sentidos ágiles, refuerza la actividad intelectual y contribuye al equilibrio\npsicoafectivo mejorando el estado de ánimo y reduciendo la ansiedad. Existen cuatro grupos de ejercicios recomendados para personas mayores.\n\nEjercicios de resistencia o aeróbicos: son ejercicios regulares mantenidos en el\ntiempo, de intensidad regular, como caminar, ir en bicicleta o nadar. Se\nrecomienda realizarlos al menos cinco veces por semana, con duración de veinte a\nsesenta minutos por sesión, iniciando progresivamente. Beneficios: mejoran la función cardiovascular, disminuyen la frecuencia cardiaca\nbasal y la tensión arterial, contribuyen al descenso de glucosa y colesterol,\nmejoran la capacidad respiratoria y cardiaca, mejoran el estado de ánimo,\naumentan la energía para actividades diarias como levantarse, moverse, subir\nescaleras, hacer compras y viajar. Previenen y retrasan enfermedades del",
+        "metadata": {
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "has_markdown_headers": false,
+          "total_chunks": 44,
+          "char_count": 892,
+          "chunk_id": "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+          "section_path": "",
+          "source_path": "data/knowledge_base/guia-ejercicio-mayores-segg.md",
+          "chunk_index": 3,
+          "chunk_type": "fallback",
+          "macrodomain": "B",
+          "document_name": "guia-ejercicio-mayores-segg.md",
+          "word_count": 123,
+          "macrodomain_name": "Taxonomía del ejercicio"
+        },
+        "distance": 0.1754862368106842
+      },
+      {
+        "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+        "content": "Las personas mayores deben realizar al menos 150 minutos semanales de ejercicio\naeróbico de intensidad moderada, como caminar a paso ligero o bailar rápido. Lo\nideal es estar activo por lo menos tres días a la semana. También deben realizar\nactividades para fortalecer los músculos, como levantar pesas o hacer\nabdominales, al menos dos días a la semana. Las pautas recomiendan combinar una\nvariedad de ejercicios, incluyendo actividades de equilibrio, aeróbicas y de\nfortalecimiento muscular. Si se prefiere actividad aeróbica de intensidad\nvigorosa, como correr, se recomiendan al menos 75 minutos semanales. El ejercicio y la actividad física benefician la salud mental y física. Ayudan a",
+        "metadata": {
+          "chunk_id": "257788d8-7644-4627-9d3a-8f642e007fcc",
+          "chunk_index": 0,
+          "macrodomain": "B",
+          "source_path": "data/knowledge_base/Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "document_name": "Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+          "level": "Activo",
+          "word_count": 106,
+          "section_path": "",
+          "has_markdown_headers": false,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico"
+          ],
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "chunk_type": "fallback",
+          "char_count": 691,
+          "total_chunks": 7
+        },
+        "distance": 0.19569319486618042
+      },
+      {
+        "chunk_id": "87f81a22-f674-4edf-b042-1a3ca2abc609",
+        "content": "masa muscular (sarcopenia), reducción de fuerza, menor equilibrio, menor\nflexibilidad y disminución de densidad ósea. El ejercicio regular ayuda a frenar\ny revertir gran parte de estos procesos. Beneficios comprobados del ejercicio en personas mayores:\nAumenta la fuerza y la masa muscular. Mejora la movilidad.\n\nReduce el riesgo de caídas. Mejora el equilibrio. Fortalece huesos y articulaciones. Previene osteoporosis y artrosis. Protege el sistema cardiovascular. Controla la tensión arterial. Mejora la función cognitiva. Reduce el riesgo de demencia. Potencia el bienestar emocional y la autoestima.",
+        "metadata": {
+          "char_count": 604,
+          "macrodomain": "B",
+          "pathology": "osteoporosis",
+          "source_path": "data/knowledge_base/Entrenamiento en adultos mayores - guía completa - ESHI.md",
+          "chunk_id": "87f81a22-f674-4edf-b042-1a3ca2abc609",
+          "has_markdown_headers": false,
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "flexibilidad",
+            "aeróbico"
+          ],
+          "chunk_type": "fallback",
+          "total_chunks": 12,
+          "document_name": "Entrenamiento en adultos mayores - guía completa - ESHI.md",
+          "chunk_index": 1,
+          "word_count": 85,
+          "section_path": "",
+          "macrodomain_name": "Taxonomía del ejercicio"
+        },
+        "distance": 0.20249240100383759
+      },
+      {
+        "chunk_id": "ba01489e-45c2-4849-81be-ddef6e997021",
+        "content": "Realice aproximadamente tres sesiones semanales. Ejemplos:\ntai chi (meditación en movimiento con movimientos lentos, suaves y\nprecisos y respiración profunda), yoga, pararse en un solo pie, caminar\nen fila con el talón delante del otro, marcha equilibrada, caminar hacia\natrás o de lado, pararse desde posición sentada, usar tabla inestable. Sugerencias de seguridad: si se siente inestable, estabilícese.\n\nVaya\ndespacio y con atención para prevenir caídas. Consulte al médico ante\ndudas. Tenga una silla resistente o persona cerca para agarrarse.\n\nUse\ncalzado cómodo y estable o vaya descalzo para buen agarre. Los adultos\nmayores necesitan una combinación de actividades físicas. Incluya\nactividad aeróbica, de fortalecimiento muscular y de equilibrio cada\nsemana.\n\nPuede combinar más de un tipo en la misma sesión. Actividades\ncomo bailar, yoga, tai chi, jardinería o deportes incorporan múltiples\ntipos de actividad física.",
+        "metadata": {
+          "source_path": "data/knowledge_base/Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "section_path": "",
+          "level": "Frágil",
+          "total_chunks": 9,
+          "has_markdown_headers": false,
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "document_name": "Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+          "chunk_id": "ba01489e-45c2-4849-81be-ddef6e997021",
+          "chunk_type": "semantic",
+          "chunk_index": 8,
+          "char_count": 927,
+          "keywords": [
+            "equilibrio",
+            "aeróbico",
+            "seguridad"
+          ],
+          "macrodomain": "B",
+          "word_count": 136
+        },
+        "distance": 0.21618704497814178
+      },
+      {
+        "chunk_id": "dd64559c-9115-4017-87ea-5a520b93b96b",
+        "content": "Mejores ejercicios de fuerza para mayores de 60 años - Guía. El entrenamiento de fuerza en adultos mayores es una intervención eficaz para\nmejorar salud, funcionalidad y autonomía. El objetivo del entrenador es revertir\npatrones de deterioro, reducir riesgo de caídas, mejorar calidad de movimiento y\naumentar confianza corporal. La fuerza permite levantarse de una silla sin\nesfuerzo, caminar con seguridad, subir escaleras sin dolor, mantener equilibrio\nen superficies irregulares y reducir riesgo de caídas. Las personas mayores que\nrealizan entrenamiento de fuerza ganan masa muscular, mejoran densidad ósea,\naumentan potencia, disminuyen dolor articular y lumbar, y mejoran estado de",
+        "metadata": {
+          "level": "Frágil",
+          "chunk_index": 0,
+          "char_count": 688,
+          "section_path": "",
+          "has_markdown_headers": false,
+          "chunk_id": "dd64559c-9115-4017-87ea-5a520b93b96b",
+          "macrodomain": "B",
+          "total_chunks": 28,
+          "macrodomain_name": "Taxonomía del ejercicio",
+          "keywords": [
+            "fuerza",
+            "equilibrio",
+            "aeróbico",
+            "seguridad"
+          ],
+          "chunk_type": "fallback",
+          "source_path": "data/knowledge_base/Mejores ejercicios de fuerza para mayores de 60 años - Guía.md",
+          "document_name": "Mejores ejercicios de fuerza para mayores de 60 años - Guía.md",
+          "word_count": 100
+        },
+        "distance": 0.21857070922851562
+      }
+    ],
+    "warnings": [],
+    "retrieved_ids": [
+      "23e507ef-3db4-4d69-8f9a-5745cb78b2b2",
+      "257788d8-7644-4627-9d3a-8f642e007fcc",
+      "87f81a22-f674-4edf-b042-1a3ca2abc609",
+      "ba01489e-45c2-4849-81be-ddef6e997021",
+      "dd64559c-9115-4017-87ea-5a520b93b96b"
+    ],
+    "elapsed_seconds": 259.444,
+    "error": null
+  }
+]

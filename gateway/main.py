@@ -55,6 +55,7 @@ ROUTES = {
     "/habits": "http://localhost:8004",
     "/dashboard/": "http://localhost:8005",
     "/notify/": "http://localhost:8006",
+    "/rag/": "http://localhost:8007",
     "/storage/": "http://localhost:8002",
 }
 

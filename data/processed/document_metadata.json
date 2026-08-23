@@ -1,0 +1,135 @@
+[
+  {
+    "filename": "Alimentación saludable para personas mayores.md",
+    "macrodominio": "E",
+    "agente": "Nutri-Buddy",
+    "nivel": "Todos",
+    "fuente": "USDA, HHS, DASH"
+  },
+  {
+    "filename": "Cómo frenar la osteoporosis 8 claves basadas en la evidencia - ESHI.md",
+    "macrodominio": "A",
+    "agente": "Physio-Evaluator",
+    "nivel": "Frágil, Activo",
+    "fuente": "ESHI"
+  },
+  {
+    "filename": "Cómo pueden las personas mayores comenzar a hacer ejercicio.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Todos",
+    "fuente": "Desconocida"
+  },
+  {
+    "filename": "Diferencias en el entrenamiento entre hombres y mujeres lo que dice la ciencia - ESHI.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Todos",
+    "fuente": "ESHI"
+  },
+  {
+    "filename": "DOCUMENTO DE CONOCIMIENTO SENIORVITAL.md",
+    "macrodominio": "General",
+    "agente": "General",
+    "nivel": "Todos",
+    "fuente": "Propio"
+  },
+  {
+    "filename": "Ejercicio_y_actividad_fisicasmaller-39-100.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Todos",
+    "fuente": "Desconocida"
+  },
+  {
+    "filename": "Entrenamiento en adultos mayores - guía completa - ESHI.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Todos",
+    "fuente": "ESHI, OMS"
+  },
+  {
+    "filename": "Exercising Outdoors_ Safety Tips for Older Adults.md",
+    "macrodominio": "C",
+    "agente": "Context-Adaptor",
+    "nivel": "Todos",
+    "fuente": "Guía de seguridad"
+  },
+  {
+    "filename": "Gimnasia para mayores guía oficial para una vida activa y feliz.md",
+    "macrodominio": "F",
+    "agente": "Mind & Soul",
+    "nivel": "Activo",
+    "fuente": "Guía oficial"
+  },
+  {
+    "filename": "guia-ejercicio-mayores-segg.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Todos",
+    "fuente": "SEGG"
+  },
+  {
+    "filename": "Hacer ejercicio con enfermedades crónicas.md",
+    "macrodominio": "D",
+    "agente": "Safety Guardian",
+    "nivel": "Todos",
+    "fuente": "Guía clínica"
+  },
+  {
+    "filename": "La diabetes.md",
+    "macrodominio": "A",
+    "agente": "Physio-Evaluator",
+    "nivel": "Todos",
+    "fuente": "OMS"
+  },
+  {
+    "filename": "Los tres tipos de ejercicio que pueden mejorar su salud y capacidad física.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Activo",
+    "fuente": "ACSM"
+  },
+  {
+    "filename": "Manual_ejercicio_persona_mayor_domicilio2.md",
+    "macrodominio": "C",
+    "agente": "Context-Adaptor",
+    "nivel": "Frágil, Activo",
+    "fuente": "Manual práctico"
+  },
+  {
+    "filename": "Mejores ejercicios de fuerza para mayores de 60 años - Guía.md",
+    "macrodominio": "B",
+    "agente": "Exercise Architect",
+    "nivel": "Activo, Muy activo",
+    "fuente": "Guía práctica"
+  },
+  {
+    "filename": "Movilidad articular en adultos mayores + ejercicios - ESHI.md",
+    "macrodominio": "A",
+    "agente": "Physio-Evaluator",
+    "nivel": "Frágil, Activo",
+    "fuente": "ESHI"
+  },
+  {
+    "filename": "Sarcopenia y dinapenia.md",
+    "macrodominio": "A",
+    "agente": "Physio-Evaluator",
+    "nivel": "Todos",
+    "fuente": "EWGSOP2"
+  },
+  {
+    "filename": "Tips for Getting and Staying Active as You Age.md",
+    "macrodominio": "C",
+    "agente": "Context-Adaptor",
+    "nivel": "Todos",
+    "fuente": "NIH (inferido)"
+  },
+  {
+    "filename": "WEB-GUIA-MAYORES-version-publicacion.md",
+    "macrodominio": "E",
+    "agente": "Nutri-Buddy",
+    "nivel": "Todos",
+    "fuente": "Guía integral"
+  }
+]
