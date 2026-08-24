@@ -8,6 +8,7 @@ y limpia los datos entre ejecuciones de tests.
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import importlib.util
 import pytest
@@ -72,4 +73,4 @@ async def cleanup():
     yield
     pool = await get_pool()
     async with pool.acquire() as conn:
-        await conn.execute("TRUNCATE admin_logs, agent_insights, agent_queue, push_subscriptions, workout_sets, workout_exercises, workout_sessions, caregiver_links, event_queue, tracking, routines, projections, habits, exercises, users RESTART IDENTITY CASCADE")
+        await conn.execute("TRUNCATE admin_logs, agent_insights, agent_queue, conversation_history, push_subscriptions, workout_sets, workout_exercises, workout_sessions, caregiver_links, event_queue, tracking, routines, projections, habits, exercises, users RESTART IDENTITY CASCADE")

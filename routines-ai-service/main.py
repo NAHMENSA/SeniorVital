@@ -3,6 +3,9 @@
 Utiliza Ollama (phi3:mini) para generar rutinas personalizadas
 basadas en el perfil de salud del usuario y los ejercicios
 disponibles en el catálogo, respetando restricciones médicas.
+
+Estrategia Strangler Fig: código refactorizado se activa con
+USE_REFACTORED_AGENT=true. Rollback cambiando la env var a false.
 """
 
 import os
@@ -11,15 +14,17 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import json
 import re
-import asyncio
 from datetime import date
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 import httpx
 
 from seniorvital_shared import get_pool, init_pool, close_pool, publish_event, init_db
+
+# -- Feature flag: toggle between old and new implementation --
+USE_REFACTORED_AGENT = os.getenv("USE_REFACTORED_AGENT", "false").lower() == "true"
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:mini")
@@ -35,6 +40,103 @@ DEFAULT_ROUTINE = {
     "warmup": [{"name": "Rotación de cuello", "sets": 1, "reps": 5, "duration_min": 1}],
 }
 
+
+# ── Refactored components (lazy init) ──
+_refactored_agent = None
+_coach_agent = None
+
+
+async def _get_refactored_agent():
+    """Lazy-init del agente refactorizado (solo cuando se necesita)."""
+    global _refactored_agent
+    if _refactored_agent is None:
+        from src.agents.wellness import WellnessAgent, WellnessConfig
+        from src.services.llm import LLMService
+        from src.services.user_data import UserDataService
+        from src.database.repositories import UserRepository, ExerciseRepository, RoutineRepository
+        from src.database import Database
+
+        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        # Convert asyncpg URL to async SQLAlchemy URL
+        db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
+
+        db = Database(db_url_async)
+        session = db.session()
+
+        config = WellnessConfig(
+            llm_url=OLLAMA_URL,
+            llm_model=OLLAMA_MODEL,
+            llm_timeout=OLLAMA_TIMEOUT,
+        )
+        llm = LLMService(base_url=config.llm_url, model=config.llm_model, timeout=config.llm_timeout)
+        user_data = UserDataService(UserRepository(session), ExerciseRepository(session))
+        routine_repo = RoutineRepository(session)
+
+        _refactored_agent = WellnessAgent(
+            llm=llm,
+            user_data=user_data,
+            routine_repo=routine_repo,
+            config=config,
+        )
+    return _refactored_agent
+
+
+async def _get_coach_agent():
+    """Lazy-init del Wellness Coach Agent 2.0 con memoria conversacional."""
+    global _coach_agent
+    if _coach_agent is None:
+        from src.agents.wellness.coach import WellnessCoachAgent
+        from src.agents.wellness.config import WellnessConfig
+        from src.services.llm import LLMService
+        from src.services.user_data import UserDataService
+        from src.database.repositories import UserRepository, ExerciseRepository
+        from src.database import Database
+        from src.memory.postgres_store import PostgresMemoryStore
+        from src.tools.wellness import (
+            ExerciseCatalogTool, GenerateRoutineTool, GetHabitsTool,
+            LogHabitTool, GetProgressTool, GetRoutineTool,
+            RAGSearchTool, SafetyCheckTool,
+        )
+
+        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
+
+        db = Database(db_url_async)
+        session = db.session()
+
+        pool = await get_pool()
+        memory = PostgresMemoryStore(pool)
+
+        config = WellnessConfig(
+            llm_url=OLLAMA_URL,
+            llm_model=OLLAMA_MODEL,
+            llm_timeout=OLLAMA_TIMEOUT,
+        )
+        llm = LLMService(base_url=config.llm_url, model=config.llm_model, timeout=config.llm_timeout)
+        user_data = UserDataService(UserRepository(session), ExerciseRepository(session))
+
+        tools = [
+            ExerciseCatalogTool(session),
+            GenerateRoutineTool(llm=llm, user_data=user_data),
+            GetHabitsTool(session),
+            LogHabitTool(session),
+            GetProgressTool(session),
+            GetRoutineTool(session),
+            RAGSearchTool(),
+            SafetyCheckTool(session),
+        ]
+
+        _coach_agent = WellnessCoachAgent(
+            llm=llm,
+            user_data=user_data,
+            tools=tools,
+            memory_store=memory,
+            config=config,
+        )
+    return _coach_agent
+
+
+# ── Legacy helpers (used by old code path and SSE streaming) ──
 
 def map_exercises(exercises: list) -> list:
     """Convierte ejercicios del formato BD al formato esperado por el frontend."""
@@ -67,85 +169,9 @@ class GenerateRequest(BaseModel):
 
 def build_prompt(profile: dict, health_profile: dict, preferences: dict,
                  safe_exercises: list) -> str:
-    """Construye el prompt para Ollama con el perfil completo del usuario.
-
-    :param profile: Perfil adicional del usuario (jsonb).
-    :param health_profile: Perfil de salud (edad, peso, restricciones, etc.).
-    :param preferences: Preferencias del usuario (ejercicios favoritos, etc.).
-    :param safe_exercises: Lista de ejercicios sin contraindicaciones.
-    :return: Prompt formateado para el modelo.
-    """
-    age = health_profile.get('age', profile.get('age', 'desconocida'))
-    fitness_level = health_profile.get('fitness_level', profile.get('fitness_level', 'bajo'))
-    goals = health_profile.get('goals', profile.get('goals', []))
-    medical_restrictions = health_profile.get('medical_restrictions', profile.get('medical_restrictions', []))
-    equipment = health_profile.get('equipment', profile.get('equipment', []))
-    conditions = health_profile.get('conditions', [])
-    medications = health_profile.get('medications', [])
-    wake_time = health_profile.get('wake_time', '08:00')
-    sleep_time = health_profile.get('sleep_time', '22:00')
-    duration_pref = health_profile.get('duration_pref', 30)
-
-    favorite_exercises = preferences.get('favorite_exercises', [])
-    avoid_exercises = preferences.get('avoid_exercises', [])
-
-    exercise_list = []
-    for ex in safe_exercises:
-        exercise_list.append({
-            "id": ex.get("id", 0),
-            "name": ex.get("name", ""),
-            "description": ex.get("description", ""),
-            "level": ex.get("level", 1),
-            "duration_min": ex.get("duration_min", 5),
-            "contraindications": (ex.get("contraindications") or "").split(",") if ex.get("contraindications") else [],
-        })
-
-    return f"""
-Genera una rutina de ejercicios para un adulto mayor con el siguiente perfil DETALLADO:
-
-PERFIL DEL USUARIO:
-- Edad: {age}
-- Nivel de condición física: {fitness_level}
-- Objetivos: {', '.join(goals) if goals else 'mantener actividad'}
-- Equipo disponible: {', '.join(equipment) if equipment else 'ninguno'}
-- Condiciones médicas: {', '.join(conditions) if conditions else 'ninguna'}
-- Medicamentos: {', '.join(medications) if medications else 'ninguno'}
-- Restricciones médicas/contraindicaciones: {', '.join(medical_restrictions) if medical_restrictions else 'ninguna'}
-- Horario: se levanta a las {wake_time}, duerme a las {sleep_time}
-- Duración preferida: {duration_pref} minutos
-
-PREFERENCIAS:
-- Ejercicios favoritos: {', '.join(favorite_exercises) if favorite_exercises else 'ninguno'}
-- Ejercicios a evitar: {', '.join(avoid_exercises) if avoid_exercises else 'ninguno'}
-
-EJERCICIOS DISPONIBLES SEGUROS (usa los IDs para referenciar):
-{json.dumps(exercise_list, ensure_ascii=False)}
-
-INSTRUCCIONES:
-1. Prioriza ejercicios favoritos si son seguros.
-2. Evita ejercicios en "evitar" y cualquier ejercicio con contraindicaciones que coincidan con restricciones.
-3. Incluye un ejercicio de calentamiento suave (2-3 min).
-4. Cada ejercicio debe tener: exercise_id (número del catálogo), name, sets, reps, duration_min, rest_duration_sec.
-5. Total de ejercicios: 3-4. Duración total: ~{duration_pref} minutos.
-
-Responde SOLO con JSON válido:
-{{
-  "exercises": [
-    {{"exercise_id": 1, "name": "string", "sets": 2, "reps": 8, "duration_min": 5, "rest_duration_sec": 30, "description": "string"}}
-  ],
-  "warmup": [
-    {{"name": "string", "sets": 1, "reps": 5, "duration_min": 2, "description": "string"}}
-  ]
-}}
-"""
-
-
-async def _ollama_urls():
-    """Genera la lista de URLs a intentar (localhost primero, luego 127.0.0.1)."""
-    urls = [OLLAMA_URL]
-    if "localhost" in OLLAMA_URL:
-        urls.append(OLLAMA_URL.replace("localhost", "127.0.0.1"))
-    return urls
+    """Construye el prompt para Ollama (legacy — delega a RoutinePromptBuilder)."""
+    from src.agents.wellness.prompts import RoutinePromptBuilder
+    return RoutinePromptBuilder().build(profile, health_profile, preferences, safe_exercises)
 
 
 def _clean_ollama_response(response_text: str) -> str:
@@ -159,37 +185,30 @@ def _clean_ollama_response(response_text: str) -> str:
     return response_text
 
 
-async def call_ollama_stream(prompt: str):
-    """Envía un prompt a Ollama con streaming y yieldea chunks de respuesta.
+async def _ollama_urls():
+    """Genera la lista de URLs a intentar."""
+    urls = [OLLAMA_URL]
+    if "localhost" in OLLAMA_URL:
+        urls.append(OLLAMA_URL.replace("localhost", "127.0.0.1"))
+    return urls
 
-    :param prompt: Texto del prompt para el modelo.
-    :yield: Chunks de texto generados por el modelo.
-    """
+
+async def call_ollama_stream(prompt: str):
+    """Envía un prompt a Ollama con streaming (legacy)."""
     urls = await _ollama_urls()
     last_error = None
-
     payload = {
         "model": OLLAMA_MODEL,
         "prompt": prompt,
         "stream": True,
         "format": "json",
-        "options": {
-            "num_predict": 600,
-            "temperature": 0.2,
-            "top_p": 0.9,
-            "num_ctx": 4096,
-        },
+        "options": {"num_predict": 600, "temperature": 0.2, "top_p": 0.9, "num_ctx": 4096},
     }
-
     for ollama_url in urls:
         try:
             async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT) as client:
-                async with client.stream(
-                    "POST",
-                    f"{ollama_url}/api/generate",
-                    json=payload,
-                ) as resp:
-                    resp.raise_for_status()
+                async with client.stream("POST", f"{ollama_url}/api/generate", json=payload) as resp:
+                    resp.raise_status()
                     async for chunk in resp.aiter_lines():
                         if chunk:
                             yield chunk
@@ -199,29 +218,11 @@ async def call_ollama_stream(prompt: str):
             continue
         except Exception:
             raise
-
     raise last_error
 
 
-async def call_ollama(prompt: str) -> dict:
-    """Envía un prompt a Ollama de forma no bloqueante y parsea la respuesta JSON.
-
-    :param prompt: Texto del prompt para el modelo.
-    :raises httpx.HTTPError: Si la llamada a Ollama falla.
-    :raises json.JSONDecodeError: Si la respuesta no es JSON válido.
-    :return: Diccionario con la respuesta parseada.
-    """
-    full_response = ""
-    async for chunk in call_ollama_stream(prompt):
-        full_response = _accumulate_ollama_stream(chunk, full_response)
-
-    response_text = full_response.strip()
-    response_text = _clean_ollama_response(response_text)
-    return json.loads(response_text)
-
-
 def _accumulate_ollama_stream(chunk: str, accumulated: str) -> str:
-    """Acumula chunks SSE de Ollama en una sola cadena de respuesta."""
+    """Acumula chunks SSE de Ollama."""
     try:
         data = json.loads(chunk)
         if data.get("done"):
@@ -232,6 +233,48 @@ def _accumulate_ollama_stream(chunk: str, accumulated: str) -> str:
         pass
     return accumulated
 
+
+async def call_ollama(prompt: str) -> dict:
+    """Envía un prompt a Ollama y parsea la respuesta JSON (legacy)."""
+    full_response = ""
+    async for chunk in call_ollama_stream(prompt):
+        full_response = _accumulate_ollama_stream(chunk, full_response)
+    response_text = full_response.strip()
+    response_text = _clean_ollama_response(response_text)
+    return json.loads(response_text)
+
+
+async def _get_user_data(user_id: int, pool):
+    """Obtiene usuario, perfil, y ejercicios seguros (legacy)."""
+    today = date.today()
+    async with pool.acquire() as conn:
+        user = await conn.fetchrow("SELECT * FROM users WHERE id = $1", user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        existing = await conn.fetchrow(
+            "SELECT * FROM routines WHERE user_id = $1 AND date = $2 AND active = true",
+            user_id, today,
+        )
+        profile = json.loads(user["profile"]) if isinstance(user["profile"], str) else (user["profile"] or {})
+        health_profile = json.loads(user["health_profile"]) if isinstance(user["health_profile"], str) else (user["health_profile"] or {})
+        preferences = json.loads(user["preferences"]) if isinstance(user["preferences"], str) else (user["preferences"] or {})
+        exercises = await conn.fetch("SELECT * FROM exercises")
+        safe_exercises = []
+        restrictions = set(health_profile.get("medical_restrictions", profile.get("medical_restrictions", [])))
+        for ex in exercises:
+            raw = ex.get("contraindications")
+            ex_contra = set(x.strip() for x in raw.split(",") if x.strip()) if raw else set()
+            if not ex_contra.intersection(restrictions):
+                safe_exercises.append(dict(ex))
+        return user, profile, health_profile, preferences, safe_exercises, existing
+
+
+def _send_sse_event(event_type: str, data: dict) -> str:
+    """Formatea un evento SSE."""
+    return f"event: {event_type}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
+# ── FastAPI App ──
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -244,7 +287,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Routines AI Service",
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan,
     docs_url="/docs",
 )
@@ -254,67 +297,33 @@ app = FastAPI(
 async def global_exception_handler(request, exc):
     import traceback
     traceback.print_exc()
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Error interno del servidor"},
-    )
+    return JSONResponse(status_code=500, content={"detail": "Error interno del servidor"})
 
 
-async def _get_user_data(user_id: int, pool):
-    """Obtiene usuario, perfil, y ejercicios seguros de la base de datos.
-
-    :param user_id: ID del usuario.
-    :param pool: Pool de conexiones asyncpg.
-    :return: Tuple de (user_row, profile_dict, health_profile_dict, preferences_dict, safe_exercises_list).
-    :raises HTTPException 404: Si el usuario no existe.
-    """
-    today = date.today()
-    async with pool.acquire() as conn:
-        user = await conn.fetchrow("SELECT * FROM users WHERE id = $1", user_id)
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-
-        existing = await conn.fetchrow(
-            "SELECT * FROM routines WHERE user_id = $1 AND date = $2 AND active = true",
-            user_id,
-            today,
-        )
-
-        profile = json.loads(user["profile"]) if isinstance(user["profile"], str) else (user["profile"] or {})
-        health_profile = json.loads(user["health_profile"]) if isinstance(user["health_profile"], str) else (user["health_profile"] or {})
-        preferences = json.loads(user["preferences"]) if isinstance(user["preferences"], str) else (user["preferences"] or {})
-
-        exercises = await conn.fetch("SELECT * FROM exercises")
-        safe_exercises = []
-        restrictions = set(health_profile.get("medical_restrictions", profile.get("medical_restrictions", [])))
-        for ex in exercises:
-            raw = ex.get("contraindications")
-            if raw:
-                ex_contra = set(x.strip() for x in raw.split(",") if x.strip())
-            else:
-                ex_contra = set()
-            if not ex_contra.intersection(restrictions):
-                safe_exercises.append(dict(ex))
-
-        return user, profile, health_profile, preferences, safe_exercises, existing
-
-
-def _send_sse_event(event_type: str, data: dict) -> str:
-    """Formatea un evento SSE."""
-    return f"event: {event_type}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
-
+# ── Endpoints ──
 
 @app.post("/routines/generate")
 async def generate_routine(req: GenerateRequest):
-    """Genera una rutina de ejercicios para el día de hoy.
+    """Genera una rutina de ejercicios para el día de hoy."""
+    if USE_REFACTORED_AGENT:
+        return await _generate_routine_refactored(req)
+    return await _generate_routine_legacy(req)
 
-    Si ya existe una rutina activa para hoy y force=false, la retorna.
-    Si Ollama falla, usa una rutina por defecto como fallback.
 
-    :param req: Solicitud con user_id y flag force.
-    :raises HTTPException 404: Si el usuario no existe.
-    :return: Rutina generada con ID, ejercicios y warmup.
-    """
+async def _generate_routine_refactored(req: GenerateRequest):
+    """NUEVO: delega a WellnessAgent."""
+    from src.database.repositories.user_repository import UserNotFoundError
+
+    try:
+        agent = await _get_refactored_agent()
+        result = await agent.generate_routine(int(req.user_id), req.force)
+        return result.to_dict()
+    except UserNotFoundError:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+async def _generate_routine_legacy(req: GenerateRequest):
+    """VIEJO: código inline (se mantiene para rollback)."""
     today = date.today()
     pool = await get_pool()
     user_id = int(req.user_id)
@@ -358,16 +367,12 @@ async def generate_routine(req: GenerateRequest):
     async with pool.acquire() as conn:
         row = await conn.fetchrow(
             "INSERT INTO routines (user_id, date, exercises, warmup, generated_by) VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at",
-            user_id,
-            today,
+            user_id, today,
             json.dumps(routine_data.get("exercises", [])),
             json.dumps(routine_data.get("warmup", [])),
             "ollama" if llm_available else "fallback",
         )
-        await publish_event("rutina-generada", {
-            "user_id": req.user_id,
-            "routine_id": str(row["id"]),
-        })
+        await publish_event("rutina-generada", {"user_id": req.user_id, "routine_id": str(row["id"])})
 
     return {
         "id": str(row["id"]),
@@ -384,12 +389,33 @@ async def generate_routine(req: GenerateRequest):
 
 @app.post("/routines/generate-stream")
 async def generate_routine_stream(req: GenerateRequest):
-    """Genera una rutina con server-sent events (SSE) para mostrar progreso en tiempo real.
+    """Genera una rutina con server-sent events (SSE)."""
+    if USE_REFACTORED_AGENT:
+        return await _generate_stream_refactored(req)
+    return await _generate_stream_legacy(req)
 
-    :param req: Solicitud con user_id y flag force.
-    :raises HTTPException 404: Si el usuario no existe.
-    :return: Stream SSE con eventos de progreso y resultado final.
-    """
+
+async def _generate_stream_refactored(req: GenerateRequest):
+    """NUEVO: delega a WellnessAgent con SSE wrapper."""
+    from src.database.repositories.user_repository import UserNotFoundError
+
+    async def event_stream():
+        try:
+            agent = await _get_refactored_agent()
+            result = await agent.generate_routine(int(req.user_id), req.force)
+            yield _send_sse_event("progress", {"step": 1, "message": "Generando rutina..."})
+            yield _send_sse_event("progress", {"step": 5, "message": "Rutina generada"})
+            yield _send_sse_event("complete", result.to_dict())
+        except UserNotFoundError:
+            yield _send_sse_event("error", {"detail": "User not found"})
+        except Exception as e:
+            yield _send_sse_event("error", {"detail": str(e)})
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+async def _generate_stream_legacy(req: GenerateRequest):
+    """VIEJO: código SSE inline (se mantiene para rollback)."""
     today = date.today()
     pool = await get_pool()
     user_id = int(req.user_id)
@@ -414,8 +440,7 @@ async def generate_routine_stream(req: GenerateRequest):
                 "exercises": map_exercises(exercises),
                 "generated_at": existing["created_at"].isoformat() if existing.get("created_at") else existing["date"].isoformat(),
                 "generated_by": existing.get("generated_by") or "ollama",
-                "llm_available": True,
-                "llm_model": "cached",
+                "llm_available": True, "llm_model": "cached",
             })
             return
 
@@ -455,10 +480,7 @@ async def generate_routine_stream(req: GenerateRequest):
             try:
                 response_text = _clean_ollama_response(accumulated)
                 raw_routine = json.loads(response_text)
-                routine_data = {
-                    "exercises": raw_routine.get("exercises", []),
-                    "warmup": raw_routine.get("warmup", []),
-                }
+                routine_data = {"exercises": raw_routine.get("exercises", []), "warmup": raw_routine.get("warmup", [])}
             except (json.JSONDecodeError, KeyError) as e:
                 print(f"STREAM_PARSE_ERROR: {e}", flush=True)
                 llm_available = False
@@ -470,16 +492,12 @@ async def generate_routine_stream(req: GenerateRequest):
         async with pool.acquire() as conn:
             row = await conn.fetchrow(
                 "INSERT INTO routines (user_id, date, exercises, warmup, generated_by) VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at",
-                user_id,
-                today,
+                user_id, today,
                 json.dumps(routine_data.get("exercises", [])),
                 json.dumps(routine_data.get("warmup", [])),
                 "ollama" if llm_available else "fallback",
             )
-            await publish_event("rutina-generada", {
-                "user_id": req.user_id,
-                "routine_id": str(row["id"]),
-            })
+            await publish_event("rutina-generada", {"user_id": req.user_id, "routine_id": str(row["id"])})
 
         yield _send_sse_event("complete", {
             "id": str(row["id"]),
@@ -498,27 +516,14 @@ async def generate_routine_stream(req: GenerateRequest):
 
 @app.get("/ollama/status")
 async def ollama_status():
-    """Health check: verifica si Ollama está disponible y el modelo cargado.
-
-    Usa /api/tags (ligero) en lugar de generar texto, que tardaría
-    más de 100 segundos en CPU.
-
-    :return: Estado de conectividad con Ollama y nombre del modelo.
-    """
+    """Health check: verifica si Ollama está disponible y el modelo cargado."""
     try:
         async with httpx.AsyncClient(timeout=OLLAMA_HEALTH_CHECK_TIMEOUT) as client:
             resp = await client.get(f"{OLLAMA_URL}/api/tags")
             resp.raise_for_status()
             models = [m.get("name") for m in resp.json().get("models", [])]
-            loaded = OLLAMA_MODEL in models or any(
-                m.startswith(OLLAMA_MODEL) for m in models
-            )
-            return {
-                "available": True,
-                "model": OLLAMA_MODEL,
-                "ollama_url": OLLAMA_URL,
-                "installed": loaded,
-            }
+            loaded = OLLAMA_MODEL in models or any(m.startswith(OLLAMA_MODEL) for m in models)
+            return {"available": True, "model": OLLAMA_MODEL, "ollama_url": OLLAMA_URL, "installed": loaded}
     except Exception as e:
         return {"available": False, "model": OLLAMA_MODEL, "ollama_url": OLLAMA_URL,
                 "error": f"{type(e).__name__}: {str(e)}"}
@@ -526,19 +531,32 @@ async def ollama_status():
 
 @app.get("/routines/today")
 async def get_today_routine(user_id: str):
-    """Obtiene la rutina activa del día de hoy para un usuario.
+    """Obtiene la rutina activa del día de hoy para un usuario."""
+    if USE_REFACTORED_AGENT:
+        return await _get_today_refactored(user_id)
+    return await _get_today_legacy(user_id)
 
-    :param user_id: ID del usuario.
-    :raises HTTPException 404: Si no hay rutina para hoy.
-    :return: Rutina del día con ejercicios y warmup.
-    """
+
+async def _get_today_refactored(user_id: str):
+    """NUEVO: delega a WellnessAgent."""
+    from src.database.repositories.user_repository import UserNotFoundError
+
+    try:
+        agent = await _get_refactored_agent()
+        result = await agent.get_today_routine(int(user_id))
+        return result.to_dict()
+    except ValueError:
+        raise HTTPException(status_code=404, detail="No routine for today")
+
+
+async def _get_today_legacy(user_id: str):
+    """VIEJO: código inline (se mantiene para rollback)."""
     today = date.today()
     pool = await get_pool()
     async with pool.acquire() as conn:
         row = await conn.fetchrow(
             "SELECT * FROM routines WHERE user_id = $1 AND date = $2 AND active = true",
-            int(user_id),
-            today,
+            int(user_id), today,
         )
         if not row:
             raise HTTPException(status_code=404, detail="No routine for today")
@@ -551,3 +569,26 @@ async def get_today_routine(user_id: str):
             "generated_at": row["created_at"].isoformat() if row.get("created_at") else row["date"].isoformat(),
             "generated_by": row.get("generated_by") or "ollama",
         }
+
+
+# ── Wellness Coach Agent 2.0 (S2-03) ──
+
+class ChatRequest(BaseModel):
+    """Solicitud para el Wellness Coach Agent."""
+    user_id: str
+    message: str
+
+
+@app.post("/chat")
+async def chat(req: ChatRequest):
+    """Endpoint conversacional del Wellness Coach Agent 2.0.
+
+    Mantiene contexto multi-turno via memoria conversacional persistente
+    en PostgreSQL (conversation_history table).
+    """
+    try:
+        agent = await _get_coach_agent()
+        response = await agent.chat(int(req.user_id), req.message)
+        return {"user_id": req.user_id, "response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en el coach: {str(e)}")

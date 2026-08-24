@@ -237,6 +237,20 @@ CREATE TABLE IF NOT EXISTS agent_insights (
 CREATE INDEX IF NOT EXISTS idx_agent_insights_user_displayed ON agent_insights(user_id, displayed);
 
 -- ============================================================
+-- Tabla: conversation_history (S2-03 — memoria conversacional)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS conversation_history (
+    id          SERIAL PRIMARY KEY,
+    user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role        TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content     TEXT NOT NULL,
+    metadata    JSONB DEFAULT '{}',
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_conv_history_user_created
+    ON conversation_history(user_id, created_at DESC);
+
+-- ============================================================
 -- Tabla: admin_logs (auditoría de acciones de administradores)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS admin_logs (

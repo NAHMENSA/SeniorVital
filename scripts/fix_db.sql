@@ -229,6 +229,19 @@ CREATE TABLE admin_logs (
 CREATE INDEX IF NOT EXISTS idx_admin_logs_admin ON admin_logs(admin_user_id);
 CREATE INDEX IF NOT EXISTS idx_admin_logs_created ON admin_logs(created_at);
 
+-- =========== conversation_history (S2-03 — memoria conversacional) ===========
+CREATE TABLE conversation_history (
+    id          SERIAL PRIMARY KEY,
+    user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role        TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content     TEXT NOT NULL,
+    metadata    JSONB DEFAULT '{}',
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_conv_history_user_created
+    ON conversation_history(user_id, created_at DESC);
+
 -- Note: updated_at triggers are defined in init_db.sql for manual DB setup.
 -- Application code manually sets updated_at = NOW() in UPDATE queries.
 -- Do NOT include CREATE FUNCTION/trigger here — asyncpg cannot parse
