@@ -1,12 +1,25 @@
 # Python
 __pycache__/
 *.py[cod]
+*.class
+*.so
+.Python
 venv/
 .venv*/
-.env
+env/
+ENV/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Variables de entorno y secretos
+.env
+.env.local
+.env.*.local
+*.env
 
 # Node / Frontend
 frontend/node_modules/
@@ -14,30 +27,53 @@ frontend/dist/
 frontend/.env
 node_modules/
 
-# IDE
+# IDE / Editores
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
 
-# OS
+# Sistema Operativo
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Project runtime
+# Logs y Procesos
 logs/
 *.pid
 *.log
+
+# Archivos Binarios Multimedia
+storage/videos/*
+!storage/videos/.gitkeep
+*.mp4
+*.mov
+*.avi
+*.webm
+
+# Almacenamiento Vectorial y Bases de Datos Locales
+data/vector_store/*
+!data/vector_store/.gitkeep
+data/processed/embeddings/*
+!data/processed/embeddings/.gitkeep
+chroma/
+.chroma/
+*.sqlite3
+*.db
+*.bin
+*.npy
+*.duckdb
+*.duckdb.wal
 seniorvital_analytics.duckdb
 *.zip
 
-# Junk / local artifacts
+# Artefactos locales / Temporales
 start
 stop
 query
 .atl
 resultados.txt
-.pytest_cache/
 prompt/
 tests/get_pg_credential.py
 tests/get_pg_credential2.py
