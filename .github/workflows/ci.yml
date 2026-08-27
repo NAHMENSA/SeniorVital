@@ -1,0 +1,97 @@
+# ============================================================
+# SeniorVital - Pipeline de Integración Continua (CI)
+# Solo valida calidad de código. NO incluye despliegue (CD).
+# Se ejecuta en cada PR hacia main y en push a main.
+# ============================================================
+name: CI
+
+on:
+  pull_request:
+    branches: [equipo5-desarrollo]
+  push:
+    branches: [equipo5-desarrollo]
+
+jobs:
+  # ------------------------------------------------------------
+  # Job: backend-tests
+  # Valida los microservicios FastAPI con pytest.
+  # Requiere PostgreSQL (service container) porque los tests
+  # crean el schema real desde scripts/fix_db.sql (conftest.py).
+  # Los tests marcados "slow" (descarga modelos) se excluyen.
+  # ------------------------------------------------------------
+  backend-tests:
+    name: Run backend tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_test_password
+          POSTGRES_DB: seniorvital
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # El schema se crea automáticamente: tests/conftest.py ejecuta
+      # scripts/fix_db.sql en la fixture de sesión init_database.
+      - name: Run backend tests
+        env:
+          DATABASE_URL: postgresql://postgres:ci_test_password@localhost:5432/seniorvital
+          JWT_SECRET: ci_test_jwt_secret_for_testing_only
+          VAPID_PUBLIC_KEY: ci_test_vapid_public_key
+          VAPID_PRIVATE_KEY: ci_test_vapid_private_key
+          VAPID_CLAIM_EMAIL: test@example.com
+        run: pytest tests/ -v -m "not slow"
+
+  # ------------------------------------------------------------
+  # Job: frontend-tests
+  # Valida el frontend React/Vite con Vitest (npm test).
+  # Nada de despliegue: solo pruebas en headless.
+  # ------------------------------------------------------------
+  frontend-tests:
+    name: Run frontend tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: npm test
