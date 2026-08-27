@@ -16,10 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 @pytest.fixture
 async def engine():
     """Create a SQLAlchemy async engine from the test DATABASE_URL."""
-    db_url = os.getenv(
-        "DATABASE_URL",
-        "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital",
-    )
+    db_url = os.getenv("DATABASE_URL")
     db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
     eng = create_async_engine(db_url_async, pool_size=2, max_overflow=2)
     yield eng

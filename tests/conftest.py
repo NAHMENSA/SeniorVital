@@ -16,8 +16,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-os.environ["DATABASE_URL"] = "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital"
-
 SCHEMA_SQL = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
     "scripts",
