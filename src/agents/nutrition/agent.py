@@ -1,43 +1,42 @@
-"""Wellness Coach Agent 2.0 — agente conversacional cognitivo.
+"""NutritionAgent — agente especializado en nutrición para adultos mayores.
 
-Extiende WellnessAgent con:
-- Tool calling (8 herramientas)
-- Memoria conversacional (MemoryStore)
-- Razonamiento ReAct (max 3 iteraciones)
-- Prompt parametrizable
+Herramientas:
+- rag_search: Busca información nutricional en la base de conocimiento.
+- safety_check: Verifica si la recomendación es segura para el usuario.
+
+Reutiliza:
+- ReActEngine para tool calling.
+- MemoryStore para persistencia conversacional.
 """
 
 import logging
-from datetime import date
 from typing import Any
 
-from src.agents.wellness.agent import WellnessAgent
+from src.agents.nutrition.prompts import NutritionPromptBuilder
 from src.agents.wellness.config import WellnessConfig
-from src.agents.wellness.prompts.wellness_coach import WellnessCoachPromptBuilder
 from src.agents.wellness.reasoning import ReActEngine
 from src.memory import MemoryStore, Message
 from src.services.llm import LLMService
 from src.services.user_data import UserDataService
-from src.tools import Tool, ToolResult
+from src.tools import Tool
 
 logger = logging.getLogger(__name__)
 
 
-class WellnessCoachAgent:
-    """Agente conversacional cognitivo con tool calling y ReAct.
+class NutritionAgent:
+    """Agente especializado en nutrición con tool calling y ReAct.
 
     Precondiciones:
         - LLMService con conexión a Ollama activa.
-        - Herramientas inyectadas y funcionales.
+        - Herramientas inyectadas (rag_search, safety_check).
         - MemoryStore implementado (puede ser None para modo sin memoria).
 
     Postcondiciones:
-        - Retorna respuesta personalizada basada en razonamiento.
+        - Retorna respuesta personalizada sobre nutrición.
         - Historial conversacional actualizado (si memory_store != None).
 
     Efectos secundarios:
-        - Ejecuta herramientas que pueden modificar BD (log_habit, generate_routine).
-        - Persiste mensajes en memory_store.
+        - Ejecuta herramientas que pueden consultar la BD (rag_search).
     """
 
     def __init__(
@@ -55,7 +54,7 @@ class WellnessCoachAgent:
         self._memory = memory_store
         self._config = config or WellnessConfig()
         self._firestore = firestore_client
-        self._prompt_builder = WellnessCoachPromptBuilder()
+        self._prompt_builder = NutritionPromptBuilder()
         self._react_engine = ReActEngine(
             llm=llm,
             tools=tools,
@@ -64,7 +63,7 @@ class WellnessCoachAgent:
         )
 
     async def chat(self, user_id: int, message: str) -> str:
-        """Procesa un mensaje del usuario y retorna una respuesta.
+        """Procesa un mensaje del usuario y retorna una respuesta sobre nutrición.
 
         Flujo:
             1. Obtener historial conversacional.
@@ -78,7 +77,7 @@ class WellnessCoachAgent:
             message: Mensaje del usuario.
 
         Returns:
-            Respuesta del coach en texto plano.
+            Respuesta del asistente de nutrición en texto plano.
         """
         user_str_id = str(user_id)
 
@@ -107,21 +106,15 @@ class WellnessCoachAgent:
         trace = await self._react_engine.run(system_prompt, user_prompt)
 
         logger.info(
-            f"ReAct trace: {trace.iterations} iterations, "
+            f"NutritionAgent trace: {trace.iterations} iterations, "
             f"{len(trace.steps)} steps, "
             f"final_answer={trace.final_answer[:100]}..."
         )
-        for i, step in enumerate(trace.steps):
-            logger.debug(
-                f"  Step {i + 1}: thought={step.thought[:60]}... "
-                f"action={step.action or '(direct)'} "
-                f"tool_success={step.tool_result.success if step.tool_result else 'N/A'}"
-            )
 
         # 4.1 Fallback si la respuesta está vacía
         if not trace.final_answer or not trace.final_answer.strip():
             trace.final_answer = (
-                "Disculpa, no pude procesar tu solicitud en este momento. "
+                "Disculpa, no pude procesar tu solicitud de nutrición en este momento. "
                 "¿Podrías reformularla o preguntar sobre algo diferente?"
             )
 
@@ -147,20 +140,19 @@ class WellnessCoachAgent:
     async def _get_user_profile(self, user_id: int) -> dict:
         """Obtiene el perfil del usuario para el prompt.
 
-        Si firestore_client está disponible, enriquece el perfil con
-        hábitos recientes y datos de tracking.
+        Si firestore_client está disponible, enriquece con hábitos
+        (agua, sueño) que afectan las recomendaciones nutricionales.
 
         Returns:
-            Dict con profile, health_profile, preferences, y datos adicionales.
+            Dict con name, age, health, restrictions, y datos adicionales.
         """
         try:
             data = await self._user_data.get_user_data(user_id)
             profile = {
                 "name": data.profile.get("name", ""),
                 "age": data.profile.get("age", ""),
-                "city": data.profile.get("city", ""),
                 "health": data.health_profile,
-                "preferences": data.preferences,
+                "restrictions": data.preferences.get("dietary_restrictions", []),
             }
         except Exception as e:
             logger.warning(f"Failed to get user profile for {user_id}: {e}")
@@ -172,9 +164,11 @@ class WellnessCoachAgent:
                 habits = await self._firestore.get_user_habits(user_id, days=7)
                 if habits:
                     profile["recent_habits"] = habits
-                tracking = await self._firestore.get_user_tracking(user_id, weeks=2)
-                if tracking:
-                    profile["recent_tracking_count"] = len(tracking)
+                health = await self._firestore.get_user_health(user_id)
+                if health and "weight" in health:
+                    profile["weight"] = health["weight"]
+                if health and "height" in health:
+                    profile["height"] = health["height"]
             except Exception as e:
                 logger.warning(f"Failed to enrich profile from Firestore for {user_id}: {e}")
 

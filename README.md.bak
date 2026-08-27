@@ -22,60 +22,7 @@ El sistema cuenta con tres capas de inteligencia:
 3. **Sistema multiagente**: Un Orchestrator clasifica la intencion del usuario y delega a agentes especializados (nutricion, bienestar general), con validacion centralizada de seguridad y trazabilidad completa.
 4. **Base de conocimiento RAG**: Pipeline de Retrieval-Augmented Generation con 363 chunks en 6 dominios del bienestar para adultos mayores, consultable por los agentes especializados.
 
-```mermaid
-flowchart TD
-    subgraph RAG["Pipeline RAG (Base de Conocimiento)"]
-        DOCS["19 documentos<br/>6 macrodominios A-F"]
-        CHROMA["ChromaDB<br/>363 chunks"]
-        EMBED["Embeddings<br/>multilingual-e5-small"]
-        DOCS --> CHROMA --> EMBED
-    end
-
-    subgraph Capa1["Capa 1 — Generacion de Rutinas"]
-        OLLAMA["Ollama phi3:mini"]
-        RTN["Rutinas personalizadas<br/>perfil de salud + restricciones"]
-        OLLAMA --> RTN
-    end
-
-    subgraph Capa2["Capa 2 — Coach Conversacional"]
-        COACH["WellnessCoachAgent"]
-        REACT["Razonamiento ReAct<br/>max 3 iteraciones"]
-        TOOLS["8 herramientas<br/>exercise_catalog, rag_search,<br/>safety_check, ..."]
-        COACH --> REACT --> TOOLS
-    end
-
-    subgraph Capa3["Capa 3 — Sistema Multiagente"]
-        ORCH["OrchestratorAgent<br/>IntentClassifier"]
-        NUTRI["NutritionAgent"]
-        MOTIV["MotivationAgent"]
-        ANALYTICS["AnalyticsAgent"]
-        SAFETY["SafetyGuardian"]
-        ORCH --> NUTRI
-        ORCH --> MOTIV
-        ORCH --> ANALYTICS
-        ORCH --> SAFETY
-    end
-
-    EMBED -->|"alimenta transversalmente"| Capa1
-    EMBED -->|"alimenta transversalmente"| Capa2
-    EMBED -->|"alimenta transversalmente"| Capa3
-
-    RTN -->|"fallback"| COACH
-    COACH -->|"delegacion"| ORCH
-    ORCH -->|"rag_search"| EMBED
-
-    classDef rag fill:#10B981,stroke:#047857,color:#FFFFFF
-    classDef capa1 fill:#F97316,stroke:#C2410C,color:#FFFFFF
-    classDef capa2 fill:#3B82F6,stroke:#1E40AF,color:#FFFFFF
-    classDef capa3 fill:#8B5CF6,stroke:#6D28D9,color:#FFFFFF
-
-    class DOCS,CHROMA,EMBED rag
-    class OLLAMA,RTN capa1
-    class COACH,REACT,TOOLS capa2
-    class ORCH,NUTRI,MOTIV,ANALYTICS,SAFETY capa3
-```
-
-Las tres capas de inteligencia de SeniorVital se organizan jerarquicamente: la **Capa 1** genera rutinas personalizadas usando IA local (Ollama), la **Capa 2** ofrece un coach conversacional con razonamiento ReAct y 8 herramientas, y la **Capa 3** coordina agentes especializados via un Orchestrator central. Todas las capas se alimentan del **Pipeline RAG** (363 chunks en 6 dominios), que actua como la base de conocimiento transversal del sistema.
+> **Imagen recomendada**: Diagrama de las 3 capas de inteligencia (rutinas, coach conversacional, multiagente) con el pipeline RAG como base de conocimiento.
 
 ### Publico objetivo
 
@@ -445,6 +392,8 @@ SeniorVital incluye un pipeline de Retrieval-Augmented Generation (RAG) que perm
 
 **Fuentes**: OMS, SEGG, ACSM clinical guidelines, ESHI practical manuals, articulos cientificos, guias contextuales latinoamericanas.
 
+> **Imagen recomendada**: Grafica de pastel mostrando la distribucion de chunks por macrodominio.
+
 ### Estrategia de chunking
 
 El sistema utiliza una estrategia **hibrida** con seleccion automatica:
@@ -696,78 +645,7 @@ flowchart TD
     Handle2 --> Return
 ```
 
-```mermaid
-flowchart TD
-    User["Usuario"]
-
-    subgraph Orchestrator["Orchestrator"]
-        ORCH["OrchestratorAgent<br/>IntentClassifier + Router"]
-    end
-
-    subgraph Agents["Agentes Especializados"]
-        COACH["WellnessCoachAgent<br/>General — 8 tools"]
-        NUTRI["NutritionAgent<br/>Nutricion + dieta"]
-        ANALYTICS["AnalyticsAgent<br/>Progreso y estadisticas"]
-        MOTIV["MotivationAgent<br/>Bienestar emocional"]
-        SAFETY["SafetyGuardianAgent<br/>Validacion transversal"]
-    end
-
-    subgraph Tools["Herramientas Externas"]
-        OLLAMA["Ollama phi3:mini<br/>:11434"]
-        RAG["rag_search<br/>Base de conocimiento RAG"]
-        SAFETY_CHECK["safety_check<br/>Perfil medico"]
-        CATALOG["exercise_catalog<br/>Catalogo de ejercicios"]
-        HABITS["get_habits / log_habit<br/>Habitos diarios"]
-        PROGRESS["get_progress / get_routine<br/>Progreso del usuario"]
-    end
-
-    subgraph Data["Fuentes de Datos"]
-        PG[("PostgreSQL<br/>16 tablas")]
-        CHROMA[("ChromaDB<br/>363 chunks — 6 dominios")]
-        CONV[("conversation_history<br/>Memoria conversacional")]
-    end
-
-    User -->|"Mensaje"| ORCH
-    ORCH -->|"delega dominio general"| COACH
-    ORCH -->|"delega dominio nutricion"| NUTRI
-    ORCH -->|"delega dominio progreso"| ANALYTICS
-    ORCH -->|"delega dominio cognitivo"| MOTIV
-    ORCH -->|"validacion seguridad"| SAFETY
-
-    COACH -->|"consulta"| RAG
-    COACH -->|"genera respuesta"| OLLAMA
-    COACH -->|"busca ejercicios"| CATALOG
-    COACH -->|"lee/escribe"| CONV
-
-    NUTRI -->|"consulta nutricion"| RAG
-    NUTRI -->|"genera recomendacion"| OLLAMA
-    NUTRI -->|"valida perfil"| SAFETY_CHECK
-
-    ANALYTICS -->|"lee metricas"| PG
-    ANALYTICS -->|"consulta habitos"| HABITS
-    ANALYTICS -->|"obtiene rutina"| PROGRESS
-
-    MOTIV -->|"consulta bienestar"| RAG
-    MOTIV -->|"registra habito"| HABITS
-
-    SAFETY -->|"verifica restricciones"| SAFETY_CHECK
-    SAFETY -->|"consulta contraindicaciones"| RAG
-
-    RAG -->|"busca chunks"| CHROMA
-    COACH -->|"guarda historial"| PG
-
-    classDef orchestrator fill:#8B5CF6,stroke:#6D28D9,color:#FFFFFF
-    classDef agent fill:#3B82F6,stroke:#1E40AF,color:#FFFFFF
-    classDef tool fill:#F97316,stroke:#C2410C,color:#FFFFFF
-    classDef data fill:#06B6D4,stroke:#0E7490,color:#FFFFFF
-
-    class ORCH orchestrator
-    class COACH,NUTRI,ANALYTICS,MOTIV,SAFETY agent
-    class OLLAMA,RAG,SAFETY_CHECK,CATALOG,HABITS,PROGRESS tool
-    class PG,CHROMA,CONV data
-```
-
-Este diagrama muestra la arquitectura completa del sistema multiagente. El **OrchestratorAgent** actua como punto central de entrada, clasificando la intencion del usuario y delegando al agente especializado correspondiente. Cada agente tiene acceso a herramientas externas (Ollama, RAG, safety_check) y fuentes de datos (PostgreSQL, ChromaDB, conversation_history) de acuerdo a su dominio de responsabilidad. Los agentes WellnessCoachAgent y NutritionAgent estan implementados; AnalyticsAgent, MotivationAgent y SafetyGuardianAgent estan planeados.
+> **Imagen recomendada**: Diagrama de la arquitectura multiagente mostrando el Orchestrator, los agentes, y las conexiones a herramientas y datos.
 
 ### Flujo de validacion de seguridad
 

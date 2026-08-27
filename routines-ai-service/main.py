@@ -25,6 +25,7 @@ from seniorvital_shared import get_pool, init_pool, close_pool, publish_event, i
 
 # -- Feature flag: toggle between old and new implementation --
 USE_REFACTORED_AGENT = os.getenv("USE_REFACTORED_AGENT", "false").lower() == "true"
+USE_ORCHESTRATOR_AGENT = os.getenv("USE_ORCHESTRATOR_AGENT", "false").lower() == "true"
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:mini")
@@ -44,6 +45,7 @@ DEFAULT_ROUTINE = {
 # ── Refactored components (lazy init) ──
 _refactored_agent = None
 _coach_agent = None
+_orchestrator_agent = None
 
 
 async def _get_refactored_agent():
@@ -134,6 +136,65 @@ async def _get_coach_agent():
             config=config,
         )
     return _coach_agent
+
+
+async def _get_orchestrator_agent():
+    """Lazy-init del Orchestrator Agent (multi-agente supervisor)."""
+    global _orchestrator_agent
+    if _orchestrator_agent is None:
+        from src.orchestration.router import OrchestratorAgent
+        from src.agents.wellness.coach_adapter import WellnessCoachAgentAdapter
+        from src.services.llm import LLMService
+
+        config = WellnessConfig(
+            llm_url=OLLAMA_URL,
+            llm_model=OLLAMA_MODEL,
+            llm_timeout=OLLAMA_TIMEOUT,
+        )
+        llm = LLMService(
+            base_url=config.llm_url,
+            model=config.llm_model,
+            timeout=config.llm_timeout,
+        )
+
+        _orchestrator_agent = OrchestratorAgent(llm)
+
+        # Register WellnessCoachAgent as fallback (general domain)
+        coach = await _get_coach_agent()
+        adapter = WellnessCoachAgentAdapter(coach)
+        _orchestrator_agent.register_agent("general", adapter)
+        _orchestrator_agent.set_fallback(adapter)
+
+        # Register NutritionAgent (specialized nutrition domain)
+        from src.agents.nutrition.agent import NutritionAgent
+        from src.agents.nutrition.adapter import NutritionAgentAdapter
+        from src.tools.wellness import RAGSearchTool, SafetyCheckTool
+        from src.services.user_data import UserDataService
+        from src.database.repositories import UserRepository, ExerciseRepository
+        from src.database import Database
+        from src.memory.postgres_store import PostgresMemoryStore
+
+        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
+        db_nutrition = Database(db_url_async)
+        session_nutrition = db_nutrition.session()
+        pool_nutrition = await get_pool()
+        memory_nutrition = PostgresMemoryStore(pool_nutrition)
+
+        user_data_nutrition = UserDataService(UserRepository(session_nutrition), ExerciseRepository(session_nutrition))
+        nutrition_tools = [RAGSearchTool(), SafetyCheckTool(session_nutrition)]
+
+        nutrition_agent = NutritionAgent(
+            llm=llm,
+            user_data=user_data_nutrition,
+            tools=nutrition_tools,
+            memory_store=memory_nutrition,
+        )
+        nutrition_adapter = NutritionAgentAdapter(nutrition_agent)
+        _orchestrator_agent.register_agent("nutrition", nutrition_adapter)
+
+        print(f"[Orchestrator] Initialized with fallback: {adapter.name}, nutrition: {nutrition_adapter.name}", flush=True)
+    return _orchestrator_agent
 
 
 # ── Legacy helpers (used by old code path and SSE streaming) ──
@@ -581,14 +642,37 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
-    """Endpoint conversacional del Wellness Coach Agent 2.0.
+    """Endpoint conversacional — soporta coach directo y orchestrator multi-agente.
 
-    Mantiene contexto multi-turno via memoria conversacional persistente
-    en PostgreSQL (conversation_history table).
+    Feature flag USE_ORCHESTRATOR_AGENT=true activa el Orchestrator Agent
+    que delega a agentes especializados. false (default) usa WellnessCoachAgent.
     """
     try:
-        agent = await _get_coach_agent()
-        response = await agent.chat(int(req.user_id), req.message)
-        return {"user_id": req.user_id, "response": response}
+        if USE_ORCHESTRATOR_AGENT:
+            from src.orchestration import AgentMessage
+
+            orchestrator = await _get_orchestrator_agent()
+            message = AgentMessage(
+                from_agent="user",
+                to_agent="orchestrator",
+                content={
+                    "message": req.message,
+                    "user_id": int(req.user_id),
+                    "user_profile": {},
+                    "conversation_history": [],
+                },
+                message_type="query",
+            )
+            result = await orchestrator.route(message)
+            return {
+                "user_id": req.user_id,
+                "response": result.content.get("response", ""),
+                "agent": result.content.get("agent", "unknown"),
+                "safety_level": result.content.get("safety_level", "safe"),
+            }
+        else:
+            agent = await _get_coach_agent()
+            response = await agent.chat(int(req.user_id), req.message)
+            return {"user_id": req.user_id, "response": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error en el coach: {str(e)}")

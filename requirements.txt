@@ -13,3 +13,6 @@ duckdb>=1.0.0
 pywebpush>=1.14.0
 pytest>=8.0.0
 pytest-asyncio>=0.24.0
+# GCP integrations (optional, for production mode)
+google-cloud-firestore>=2.16.0
+google-cloud-bigquery>=3.25.0

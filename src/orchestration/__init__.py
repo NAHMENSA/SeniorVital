@@ -22,7 +22,9 @@ Ejemplo de uso::
 """
 
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Protocol, runtime_checkable
+import uuid
 
 
 @dataclass
@@ -36,13 +38,18 @@ class AgentMessage:
         message_type: Tipo de mensaje. Valores válidos: "query", "response",
                       "delegation", "alert".
         correlation_id: ID de correlación para trazar el flujo entre agentes.
+                        Se genera automáticamente si no se proporciona.
+        parent_id: ID de correlación del mensaje padre (para delegaciones anidadas).
+        timestamp: Timestamp ISO-8601 del mensaje.
     """
 
     from_agent: str
     to_agent: str
     content: dict
     message_type: str  # "query" | "response" | "delegation" | "alert"
-    correlation_id: str = ""
+    correlation_id: str = field(default_factory=lambda: str(uuid.uuid4())[:12])
+    parent_id: str = ""
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
 class OrchestrationError(Exception):
