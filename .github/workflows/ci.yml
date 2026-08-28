@@ -7,9 +7,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [equipo5-desarrollo]
+    branches: [main, master, equipo5-desarrollo]
   push:
-    branches: [equipo5-desarrollo]
+    branches: [main, master, equipo5-desarrollo]
 
 jobs:
   # ------------------------------------------------------------
