@@ -435,6 +435,14 @@ graph LR
 - Documentación de capacidades/limitaciones en `docs/agents/nutrition-agent.md`.
 - Evidencias: 124/124 tests en `tests/nutrition/` + `tests/agents/`.
 
+**S3-04 (comunicación y delegación):**
+- Protocolo `dispatch` (`src/orchestration/dispatch.py`): `DispatchRequest`/`DispatchResponse`.
+- `orchestrator.dispatch(request)` con guard anti-ciclo (S3-04, `src/orchestration/router.py`).
+- Caso real de colaboración: `wellness_coach` → `nutrition` via `WorkflowEngine` (`{prev.text}`).
+- Logs nuevos: `dispatch_start`/`dispatch_end`.
+- Documento: `docs/architecture/interaction-protocol.md` (incluye nota MCP/A2A).
+- Evidencias: 66/66 tests en `tests/orchestration/` + `tests/integration/`.
+
 **Planificado:**
 - `AnalyticsAgent`, `MotivationAgent`, `SafetyGuardianAgent`
 - Streaming inter-agente (evolución MCP/A2A)

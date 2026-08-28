@@ -1,204 +1,143 @@
-# Interaction Protocol — Comunicación Inter-Agente
+# Interaction Protocol — Comunicación y Delegación entre Agentes
 
-## Resumen
+> **Issue**: S3-04 (#20) — Implementar comunicación y delegación entre agentes
+> **Módulo**: `src/orchestration/dispatch.py` + `src/orchestration/router.py`
+> **Mecanismo**: síncrono con timeouts (llamadas a métodos async; el handler del LLM tiene timeout en `LLMService`)
 
-Define el protocolo de comunicación entre el OrchestratorAgent y los agentes especializados del sistema multiagente de SeniorVital.
+## 1. Alcance
 
-## Arquitectura
+Define el protocolo formal de mensajería entre el Orchestrator Agent (S3-02)
+y los agentes especializados (S3-03), cubriendo:
 
-```
-User ──► OrchestratorAgent.route()
-           │
-           ├─ correlation_id = uuid4()[:12]  ← auto-generado
-           ├─ IntentClassifier.classify()
-           ├─ _select_agent()
-           ├─ agent.handle(AgentRequest)
-           │     └─ agent puede llamar delegate_callback(target, task)
-           │           └─ OrchestratorAgent.delegate()
-           │                 ├─ safety validation
-           │                 ├─ structured logging
-           │                 └─ agent.handle()
-           ├─ safety validation
-           └─ return AgentMessage(correlation_id=...)
-```
+- Formato de mensajes de solicitud/respuesta.
+- Contexto que acompaña cada solicitud.
+- Delegación y retorno de resultados.
+- Colaboración multi-agente (`WorkflowEngine`).
+- Trazabilidad de delegaciones (`OrchestrationLogger`).
+- Nota de evolución hacia MCP/A2A.
 
-## Tipos de Mensaje
+## 2. Formato de Mensajes
 
-### AgentMessage
+### 2.1 DispatchRequest (solicitud)
 
-```python
-@dataclass
-class AgentMessage:
-    from_agent: str          # "user" | "orchestrator" | "agent_name"
-    to_agent: str            # "orchestrator" | "agent_name" | "user"
-    content: dict            # payload flexible
-    message_type: str        # "query" | "response" | "delegation" | "alert"
-    correlation_id: str      # uuid4[:12], auto-generado
-    parent_id: str           # correlation_id del padre (para delegaciones anidadas)
-    timestamp: str           # ISO-8601, auto-generado
-```
+Definido en `DispatchRequest` (`src/orchestration/dispatch.py`):
 
-### AgentRequest (interno)
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `request_id` | `str` (autogenerado) | Identificador único de la solicitud |
+| `user_id` | `int` | ID del usuario |
+| `message` | `str` | Mensaje del usuario |
+| `intent` | `str` | Dominio de intención (vacío → se clasifica) |
+| `payload` | `dict` | Datos adicionales (macrodominio, filtros, etc.) |
+| `context` | `dict` | `user_profile`, `from_agent` y datos de contexto |
+| `conversation_history` | `list[dict]` | Historial reciente |
+| `correlation_id` | `str` | ID de correlación (trazabilidad) |
 
-```python
-@dataclass
-class AgentRequest:
-    message: str
-    user_id: int
-    user_profile: dict
-    conversation_history: list[Message]
-    context: dict  # intent, confidence, correlation_id, delegated_by
-```
+### 2.2 DispatchResponse (respuesta)
 
-### AgentResponse (interno)
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `request_id` | `str` | Idéntico a la solicitud |
+| `text` | `str` | Respuesta textual |
+| `agent` | `str` | Agente que respondió |
+| `intent` | `str` | Dominio atendido |
+| `safety_level` | `str` | `safe` \| `warning` \| `critical` |
+| `tool_chain` | `list[str]` | Tools ejecutadas |
+| `blocked` | `bool` | `True` si safety critical la bloqueó |
+| `duration_ms` | `float` | Tiempo total del despacho |
+| `metadata` | `dict` | `correlation_id` y extras |
 
-```python
-@dataclass
-class AgentResponse:
-    text: str
-    safety_level: str  # "safe" | "warning" | "critical"
-    tool_chain: list[str]
-    metadata: dict
-```
+### 2.3 Conversores
 
-## Flujo de Routing
+- `request_to_agent_message(request) -> AgentMessage` — al protocolo wire (S3-02).
+- `response_from_agent_message(message) -> DispatchResponse` — desde `AgentMessage`.
+- `response_to_dispatch_response(response, ...) -> DispatchResponse` — desde `AgentResponse`.
 
-1. **User envía mensaje** → `OrchestratorAgent.route(AgentMessage)`
-2. **Se genera correlation_id** si no existe
-3. **IntentClassifier** clasifica el dominio (keyword → LLM)
-4. **_select_agent()** selecciona agente por dominio
-5. **agent.handle(AgentRequest)** ejecuta el agente
-6. **Safety validation** bloquea respuestas críticas
-7. **Se retorna AgentMessage** con correlation_id preservado
+## 3. Mecanismo de Delegación y Retorno
 
-## Flujo de Delegación
-
-1. **Agente necesita ayuda** → llama `delegate_callback(from, to, task)`
-2. **OrchestratorAgent.delegate()** busca el agente destino
-3. **Se loguea** delegation_start con correlation_id
-4. **agent.handle(AgentRequest)** ejecuta el agente destino
-5. **Safety validation** bloquea respuestas críticas
-6. **Se loguea** delegation_end con timing y resultado
-7. **Se retorna dict** con text, safety_level, tool_chain, metadata
-
-## DelegateCallback
-
-Protocolo inyectable para que agentes deleguen sin conocer al orchestrator:
+### 3.1 Entry point: `orchestrator.dispatch(request)`
 
 ```python
-class DelegateCallback(Protocol):
-    async def __call__(self, from_agent: str, to_agent: str, task: dict) -> dict: ...
+async def dispatch(self, request: DispatchRequest) -> DispatchResponse:
+    # 1. Correlation id (request.correlation_id or request.request_id)
+    # 2. Guard anti-ciclo (correlation_id activo → OrchestrationError)
+    # 3. Intent: provisto o clasificado (IntentClassifier)
+    # 4. select_agent(intent) → agente destino
+    # 5. AgentRequest con contexto completo → agent.handle(request)
+    # 6. Safety: critical → respuesta bloqueada
+    # 7. dispatch_start / dispatch_end (logs) → DispatchResponse
 ```
 
-**Uso en agente:**
+### 3.2 Delegación directa (legado S3-02)
 
-```python
-class MyAgent:
-    def __init__(self, delegate_callback: DelegateCallback):
-        self._delegate = delegate_callback
+`route()` y `delegate()` del `OrchestratorAgent` continúan disponibles y
+comparten el mismo código de selección, safety y logging.
 
-    async def process(self, user_id, message):
-        result = await self._delegate(
-            from_agent="analytics",
-            to_agent="nutrition",
-            task={"message": "restricciones diabetes", "user_id": user_id}
-        )
-        return result
-```
+## 4. Colaboración Multiagente
 
-## WorkflowEngine
-
-Motor para flujos multi-paso:
+`WorkflowEngine` (`src/orchestration/protocol.py`) encadena pasos:
 
 ```python
 steps = [
-    WorkflowStep(agent="analytics", task_template={"message": "progress", "user_id": 1}),
-    WorkflowStep(
-        agent="nutrition",
-        task_template={"message": "{prev.text}", "user_id": 1},
-        condition="prev.safety_level != 'critical'",
-    ),
+    WorkflowStep(agent="wellness_coach", task_template={"message": "¿Cómo va mi progreso?", "user_id": 1}, step_id="coach"),
+    WorkflowStep(agent="nutrition", task_template={"message": "Consejo para: {prev.text}", "user_id": 1}, step_id="nutri"),
 ]
-engine = WorkflowEngine(orchestrator)
-results = await engine.execute(steps, {"user_id": 1}, correlation_id="wf_001")
+results = await engine.execute(steps, {"user_id": 1}, correlation_id="...")
 ```
 
-**Placeholders soportados:**
-- `{prev.text}` → texto de la respuesta del paso anterior
-- `{prev.safety_level}` → nivel de seguridad del paso anterior
-- `{ctx.user_id}` → user_id del contexto inicial
-- `{ctx.message}` → message del contexto inicial
+### Placeholders soportados
+- `{prev.text}` — texto del paso anterior
+- `{prev.safety_level}` — safety del paso anterior
+- `{ctx.user_id}`, `{ctx.message}` — contexto inicial
 
-## Trazabilidad
+### Condiciones
+- `condition="prev.safety_level != 'critical'"` — salta el paso si no se cumple.
 
-### OrchestrationLogger
+## 5. Trazabilidad
 
-Cada evento incluye:
+`OrchestrationLogger` emite eventos JSON por `correlation_id`:
+`route_start`, `intent_classified`, `agent_selected`, `delegation_start`,
+`delegation_end`, `safety_check`, `route_end`, `fallback_activated`,
+`workflow_step`, `dispatch_start`, `dispatch_end`.
 
-```json
-{
-  "timestamp": "2026-08-24T23:00:00Z",
-  "correlation_id": "abc123def456",
-  "event": "route_start",
-  "data": {"user_id": 1, "message_preview": "¿Qué debo comer?"}
-}
+La cadena completa de una solicitud se reconstruye agrupando eventos por
+`correlation_id` → `request_id`.
+
+## 6. Anti-Ciclos
+
+`dispatch()` mantiene `_active_correlations` (set de correlations en curso):
+- Reentrada con el mismo `correlation_id` → `OrchestrationError("Delegation cycle detected")`.
+- El diseño estructural impide ciclos agentes→orquestador (los agentes no
+  tienen referencia al orquestador; usan `DelegateCallback` si lo necesitan).
+
+## 7. Caso de Colaboración Verificado (S3-04)
+
+Escenario: `wellness_coach` → `nutrition` (real agents, mock LLM):
+
+```
+Usuario: "¿Cómo va mi progreso esta semana?"
+→ coach: "Has completado tus rutinas de la semana. Buenos progresos."
+→ nutrition({prev.text}): "Dame un consejo alimenticio para esta rutina: ..."
+→ respuesta nutricional contextualizada
 ```
 
-**Eventos disponibles:**
+Evidencia: `tests/integration/test_s3_collaboration.py` (66/66 tests).
 
-| Evento | Data | Descripción |
-|--------|------|-------------|
-| `route_start` | user_id, message_preview | Inicio del routing |
-| `intent_classified` | domain, confidence, method | Intención clasificada |
-| `agent_selected` | agent | Agente seleccionado |
-| `delegation_start` | from_agent, to_agent, parent_id | Inicio de delegación |
-| `delegation_end` | from_agent, to_agent, duration_ms, success, safety_level | Fin de delegación |
-| `safety_check` | agent, level, blocked | Validación de seguridad |
-| `route_end` | agent, duration_ms | Fin del routing |
-| `fallback_activated` | reason, fallback_agent | Activación de fallback |
-| `workflow_step` | step_index, agent, skipped | Paso de workflow |
+## 8. Evolución hacia MCP y A2A (nota arquitectónica)
 
-### Reconstrucción de flujo
+La arquitectura actual usa comunicación síncrona método-a-método con
+protocolos Python (`Agent`, `Tool`, `Orchestrator`). Para interoperar con
+ecosistemas externos:
 
-Para reconstruir el flujo de una solicitud:
+- **MCP (Model Context Protocol)** — exponer las 8 wellness tools como
+  recursos/heatmaps MCP reutilizables por cualquier cliente (sin tocar el
+  `Tool` Protocol en ejecución). Directorio reservado:
+  `src/orchestration/communication/mcp/`.
+- **A2A (Agent-to-Agent)** — desacoplar `AgentMessage` (ya portable como JSON)
+  hacia un transporte HTTP/async cuando los agentes se vuelvan servicios
+  independientes. Directorio reservado:
+  `src/orchestration/communication/a2a/`.
 
-```bash
-# Buscar todos los eventos de un correlation_id
-grep "abc123def456" logs/orchestration.log | jq .
-
-# Secuencia esperada:
-# route_start → intent_classified → agent_selected → delegation_start → delegation_end → route_end
-```
-
-## Safety Validation
-
-Tanto `route()` como `delegate()` validan `safety_level`:
-
-- **"safe"**: respuesta permitida
-- **"warning"**: respuesta permitida con log
-- **"critical"**: respuesta bloqueada, se retorna mensaje genérico de "consulta a un profesional"
-
-## Nota Técnica: Evolución hacia Estándares
-
-### MCP (Model Context Protocol)
-
-**Estado actual:** Tools hardcoded por agente (RAGSearchTool, SafetyCheckTool, etc.)
-
-**Evolución MCP:** Los agentes podrían exponer sus tools como recursos descubribles vía MCP servers. Un agente podría preguntar "¿qué tools tiene disponible nutrition?" y descubrir `rag_search` dinámicamente.
-
-**Impacto:** Desacoplaría la definición de tools del código del agente. Los tools serían registrados en un registry central y descubiertos por nombre/capacidad.
-
-### A2A (Agent-to-Agent)
-
-**Estado actual:** Hub-and-spoke — todos los mensajes pasan por el Orchestrator.
-
-**Evolución A2A:** Agentes con "agent cards" que describen sus capacidades. Un agente podría enviar un mensaje directamente a otro sin intermediario, usando el protocolo A2A de Google.
-
-**Impacto:** Permitiría comunicación directa entre agentes (ej. NutritionAgent → SafetyGuardianAgent) con descubrimiento automático. Reduciría la carga del orchestrator pero增加aría la complejidad de trazabilidad.
-
-### Recomendación
-
-Mantener el patrón Supervisor actual (hub-and-spoke) para la v1.0. Evaluar MCP/A2A cuando:
-- Hayan 5+ agentes especializados
-- Los agentes necesiten descubrir tools dinámicamente
-- Se requiera comunicación directa agente-agente sin intermediario
+> **Decisión**: S3-04 NO implementa MCP/A2A (fuera de alcance según la issue #20);
+> solo deja la nota y los placeholders. Ambas evoluciones preservan
+> `DispatchRequest`/`DispatchResponse` como contrato de nivel de aplicación.
