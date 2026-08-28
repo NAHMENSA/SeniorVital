@@ -429,6 +429,12 @@ graph LR
 - Endpoint `POST /chat` accesible vía gateway (`gateway/main.py` → `:8003`).
 - Evidencias: 55/55 tests en `tests/orchestration/` + `tests/integration/` (routing por dominio, safety crítica, fallback, workflows, performance, traceabilidad).
 
+**S3-03 (agente especializado del equipo):**
+- `NutritionAgent` formalizado como agente especializado del equipo (ADR-2).
+- `process(request: AgentRequest)` como entry point público (`src/agents/nutrition/agent.py`).
+- Documentación de capacidades/limitaciones en `docs/agents/nutrition-agent.md`.
+- Evidencias: 124/124 tests en `tests/nutrition/` + `tests/agents/`.
+
 **Planificado:**
 - `AnalyticsAgent`, `MotivationAgent`, `SafetyGuardianAgent`
 - Streaming inter-agente (evolución MCP/A2A)

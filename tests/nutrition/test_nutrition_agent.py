@@ -88,6 +88,28 @@ class TestNutritionAgentChat:
         assert mock_llm.generate.called
 
 
+class TestNutritionAgentProcess:
+    """Tests for NutritionAgent.process (entry point S3-03)."""
+
+    @pytest.mark.asyncio
+    async def test_process_returns_response(self, nutrition_agent, mock_llm):
+        mock_llm.generate = AsyncMock(
+            return_value='{"thought": "El usuario pregunta sobre hidratación.", "final_answer": "Te recomiendo beber 1.5 litros de agua al día."}'
+        )
+        request = AgentRequest(message="¿Cuánta agua debo tomar?", user_id=1)
+        response = await nutrition_agent.process(request)
+        assert "agua" in response.lower()
+
+    @pytest.mark.asyncio
+    async def test_process_delegates_to_chat(self, nutrition_agent, mock_llm):
+        mock_llm.generate = AsyncMock(
+            return_value='{"thought": "Respuesta de prueba.", "final_answer": "Prueba exitosa."}'
+        )
+        request = AgentRequest(message="test", user_id=7)
+        response = await nutrition_agent.process(request)
+        assert "prueba" in response.lower()
+
+
 # ── NutritionAgentAdapter Tests ──
 
 

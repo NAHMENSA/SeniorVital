@@ -16,6 +16,7 @@ from src.agents.nutrition.prompts import NutritionPromptBuilder
 from src.agents.wellness.config import WellnessConfig
 from src.agents.wellness.reasoning import ReActEngine
 from src.memory import MemoryStore, Message
+from src.orchestration.agent_protocol import AgentRequest
 from src.services.llm import LLMService
 from src.services.user_data import UserDataService
 from src.tools import Tool
@@ -103,7 +104,7 @@ class NutritionAgent:
         )
 
         # 4. Ejecutar ReAct
-        trace = await self._react_engine.run(system_prompt, user_prompt)
+        trace =         await self._react_engine.run(system_prompt, user_prompt)
 
         logger.info(
             f"NutritionAgent trace: {trace.iterations} iterations, "
@@ -136,6 +137,23 @@ class NutritionAgent:
                 logger.warning(f"Failed to save to memory: {e}")
 
         return trace.final_answer
+
+    async def process(self, request: AgentRequest) -> str:
+        """Procesa una solicitud (entry point de la tarea S3-03).
+
+        Delega en chat() con los datos del AgentRequest, manteniendo
+        una única fuente de lógica conversacional.
+
+        Args:
+            request: Solicitud con message y user_id.
+
+        Returns:
+            Respuesta del agente de nutrición en texto plano.
+        """
+        return await self.chat(
+            user_id=request.user_id,
+            message=request.message,
+        )
 
     async def _get_user_profile(self, user_id: int) -> dict:
         """Obtiene el perfil del usuario para el prompt.
