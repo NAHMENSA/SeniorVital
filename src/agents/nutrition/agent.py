@@ -48,6 +48,7 @@ class NutritionAgent:
         memory_store: MemoryStore | None = None,
         config: WellnessConfig | None = None,
         firestore_client: Any | None = None,
+        bigquery_client: Any | None = None,
     ) -> None:
         self._llm = llm
         self._user_data = user_data
@@ -55,6 +56,7 @@ class NutritionAgent:
         self._memory = memory_store
         self._config = config or WellnessConfig()
         self._firestore = firestore_client
+        self._bigquery = bigquery_client
         self._prompt_builder = NutritionPromptBuilder()
         self._react_engine = ReActEngine(
             llm=llm,
@@ -189,5 +191,14 @@ class NutritionAgent:
                     profile["height"] = health["height"]
             except Exception as e:
                 logger.warning(f"Failed to enrich profile from Firestore for {user_id}: {e}")
+
+        # Enrich with BigQuery analytics if available
+        if self._bigquery:
+            try:
+                weekly = await self._bigquery.get_weekly_progress(user_id, weeks=4)
+                if weekly:
+                    profile["weekly_insights"] = weekly[:3]
+            except Exception as e:
+                logger.warning(f"Failed to enrich profile from BigQuery for {user_id}: {e}")
 
         return profile

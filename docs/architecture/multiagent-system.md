@@ -443,6 +443,14 @@ graph LR
 - Documento: `docs/architecture/interaction-protocol.md` (incluye nota MCP/A2A).
 - Evidencias: 66/66 tests en `tests/orchestration/` + `tests/integration/`.
 
+**S3-05 (integración con datos y servicios):**
+- Agentes inyectados con `FirestoreClient`/`BigQueryClient` (dual-mode local/GCP) vía `_get_data_clients()`.
+- `bigquery_client` como parámetro opcional en `WellnessCoachAgent` y `NutritionAgent` (backward-compatible).
+- `_get_user_profile()` enriquece con hábitos/tracking (Firestore) y métricas analíticas (BigQuery).
+- Credenciales limpias en `.env.example`; `.env.template` con vars GCP documentadas.
+- Documento: `docs/architecture/data-integrations.md` (matriz agente→fuente, errores, env vars).
+- Evidencias: 6/6 tests `tests/integration/test_s3_data_integration.py` + suite completa.
+
 **Planificado:**
 - `AnalyticsAgent`, `MotivationAgent`, `SafetyGuardianAgent`
 - Streaming inter-agente (evolución MCP/A2A)

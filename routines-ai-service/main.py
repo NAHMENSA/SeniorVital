@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import json
 import re
+import logging
 from datetime import date
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -83,6 +84,32 @@ async def _get_refactored_agent():
     return _refactored_agent
 
 
+async def _get_data_clients():
+    """Crea los clientes de datos (Firestore/BigQuery) según DATA_CLIENT_MODE.
+
+    Local mode: PostgreSQL + DuckDB. GCP mode: Firestore + BigQuery.
+    Retorna (firestore_client, bigquery_client). Nunca levanta en local.
+    """
+    from src.clients import BigQueryClient, FirestoreClient, GCPConfig
+
+    gcp_config = GCPConfig()
+    try:
+        firestore = FirestoreClient(
+            mode=gcp_config.mode, pool=await get_pool(), config=gcp_config
+        )
+    except Exception as e:
+        logging.getLogger(__name__).warning(f"FirestoreClient init failed ({e}); using None")
+        firestore = None
+
+    try:
+        bigquery = BigQueryClient(mode=gcp_config.mode, config=gcp_config)
+    except Exception as e:
+        logging.getLogger(__name__).warning(f"BigQueryClient init failed ({e}); using None")
+        bigquery = None
+
+    return firestore, bigquery
+
+
 async def _get_coach_agent():
     """Lazy-init del Wellness Coach Agent 2.0 con memoria conversacional."""
     global _coach_agent
@@ -128,12 +155,16 @@ async def _get_coach_agent():
             SafetyCheckTool(session),
         ]
 
+        firestore_client, bigquery_client = await _get_data_clients()
+
         _coach_agent = WellnessCoachAgent(
             llm=llm,
             user_data=user_data,
             tools=tools,
             memory_store=memory,
             config=config,
+            firestore_client=firestore_client,
+            bigquery_client=bigquery_client,
         )
     return _coach_agent
 
@@ -184,11 +215,15 @@ async def _get_orchestrator_agent():
         user_data_nutrition = UserDataService(UserRepository(session_nutrition), ExerciseRepository(session_nutrition))
         nutrition_tools = [RAGSearchTool(), SafetyCheckTool(session_nutrition)]
 
+        nutrition_firestore, nutrition_bigquery = await _get_data_clients()
+
         nutrition_agent = NutritionAgent(
             llm=llm,
             user_data=user_data_nutrition,
             tools=nutrition_tools,
             memory_store=memory_nutrition,
+            firestore_client=nutrition_firestore,
+            bigquery_client=nutrition_bigquery,
         )
         nutrition_adapter = NutritionAgentAdapter(nutrition_agent)
         _orchestrator_agent.register_agent("nutrition", nutrition_adapter)
