@@ -5,13 +5,17 @@ Conecta a la base de datos, imprime la versión y lista las tablas.
 """
 import asyncio
 import asyncpg
+import os
 
 
 async def main():
     """Conecta a PostgreSQL, imprime versión y lista de tablas."""
-    conn = await asyncpg.connect(
-        "postgresql://postgres:9739185@localhost:5432/seniorvital"
-    )
+    dsn = os.getenv("DATABASE_URL")
+    if not dsn:
+        print("ERROR: DATABASE_URL no está configurada.")
+        return
+
+    conn = await asyncpg.connect(dsn)
     print("Connected!")
     ver = await conn.fetchval("SELECT version()")
     print(f"Version: {ver}")

@@ -22,7 +22,7 @@ from datetime import datetime, timedelta, date
 
 from seniorvital_shared import get_pool, HealthProfile, init_pool, close_pool, init_db
 
-JWT_SECRET = os.getenv("JWT_SECRET", "super-secret-key-change-in-production")
+JWT_SECRET = os.getenv("JWT_SECRET")
 JWT_ALG = "HS256"
 ACCESS_EXPIRY = timedelta(minutes=15)
 REFRESH_EXPIRY = timedelta(days=30)

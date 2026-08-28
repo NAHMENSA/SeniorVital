@@ -58,7 +58,7 @@ async def _get_refactored_agent():
         from src.database.repositories import UserRepository, ExerciseRepository, RoutineRepository
         from src.database import Database
 
-        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        db_url = os.getenv("DATABASE_URL")
         # Convert asyncpg URL to async SQLAlchemy URL
         db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
 
@@ -100,7 +100,7 @@ async def _get_coach_agent():
             RAGSearchTool, SafetyCheckTool,
         )
 
-        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        db_url = os.getenv("DATABASE_URL")
         db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
 
         db = Database(db_url_async)
@@ -174,7 +174,7 @@ async def _get_orchestrator_agent():
         from src.database import Database
         from src.memory.postgres_store import PostgresMemoryStore
 
-        db_url = os.getenv("DATABASE_URL", "postgresql://postgres:9739185@127.0.0.1:5432/seniorvital")
+        db_url = os.getenv("DATABASE_URL")
         db_url_async = db_url.replace("postgresql://", "postgresql+asyncpg://")
         db_nutrition = Database(db_url_async)
         session_nutrition = db_nutrition.session()
