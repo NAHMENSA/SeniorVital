@@ -383,6 +383,8 @@ graph LR
 | ADR-3 | Seguridad transversal validada en el Orchestrator | Validación por agente | Respuestas farmacéuticas/médicas críticas deben filtrarse en un único punto |
 | ADR-4 | Comunicación síncrona método-a-método (protocolos Python) | MCP / A2A | Simplicidad y pruebas con la pila actual; evolución a MCP/A2A documentada en `src/orchestration/communication/` (placeholders para S3-04) |
 | ADR-5 | Un solo modelo LLM compartido (phi3:mini) | Múltiples modelos | Recursos locales limitados; los agentes se diferencian por prompts, tools y dominios |
+| ADR-6 | Módulo de orquestación en `src/orchestration/` (no `src/agents/orchestrator/`) | Ruta sugerida en issue S3-02 | Código y tests ya existentes bajo `src/orchestration/` (prototipado en S2); moverlo rompería imports y tests. Se mantiene la ruta estable y se expone API pública: `select_agent(intent)` y `delegate_task(agent_name, task)` |
+| ADR-7 | API pública de orquestación explícita (`select_agent`, `delegate_task`, `route`, `delegate`) | Acceso directo a atributos internos | Cumple el contrato de S3-01/S3-02 sin exponer implementación; `_select_agent` se mantiene como alias de compatibilidad |
 
 ## 10. Limitaciones conocidas
 
@@ -421,6 +423,11 @@ graph LR
 - 8 wells tools (`src/tools/wellness/`)
 - `PostgresMemoryStore` (`src/memory/postgres_store.py`)
 - RAG pipeline + retriever por macrodominio (`src/rag/`)
+
+**S3-02 (pipeline completo verificado):**
+- API pública: `select_agent(intent)` y `delegate_task(agent_name, task)` (ADR-7).
+- Endpoint `POST /chat` accesible vía gateway (`gateway/main.py` → `:8003`).
+- Evidencias: 55/55 tests en `tests/orchestration/` + `tests/integration/` (routing por dominio, safety crítica, fallback, workflows, performance, traceabilidad).
 
 **Planificado:**
 - `AnalyticsAgent`, `MotivationAgent`, `SafetyGuardianAgent`

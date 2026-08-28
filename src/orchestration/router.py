@@ -231,7 +231,7 @@ class OrchestratorAgent:
         )
 
         # 2. Select agent
-        agent = self._select_agent(intent)
+        agent = self.select_agent(intent)
         if not agent:
             _orchestration_log.fallback_activated(
                 correlation_id, f"no_agent_for_{intent.domain}", "none"
@@ -401,8 +401,20 @@ class OrchestratorAgent:
             "metadata": response.metadata,
         }
 
-    def _select_agent(self, intent: IntentResult) -> Any:
-        """Selecciona el agente basado en la intención clasificada."""
+    def select_agent(self, intent: IntentResult) -> Any:
+        """Selecciona el agente basado en la intención clasificada.
+
+        Reglas centralizadas (no dispersas en componentes):
+        - Confianza baja (< CONFIDENCE_THRESHOLD) → agente fallback.
+        - Dominio con agente registrado → ese agente.
+        - Dominio sin agente → agente fallback.
+
+        Args:
+            intent: Resultado de la clasificación de intención.
+
+        Returns:
+            Agente destino o el fallback (nunca None si hay fallback).
+        """
         # Low confidence → fallback
         if intent.confidence < CONFIDENCE_THRESHOLD:
             return self._fallback_agent
@@ -414,3 +426,34 @@ class OrchestratorAgent:
 
         # Fallback
         return self._fallback_agent
+
+    # Backward-compatible alias
+    _select_agent = select_agent
+
+    async def delegate_task(
+        self, agent_name: str, task: dict, correlation_id: str = ""
+    ) -> dict:
+        """Delega una tarea a un agente registrado (API pública).
+
+        Wrapper de delegate() con la firma del diseño S3-01: el agente
+        destino se identifica por nombre y el task es un dict flexible
+        (message, user_id, user_profile, conversation_history, ...).
+
+        Args:
+            agent_name: Nombre del agente registrado (ej. "nutrition").
+            task: Descripción de la tarea a delegar.
+            correlation_id: ID de correlación para trazabilidad.
+
+        Returns:
+            Resultado de la tarea delegada (dict con text, safety_level,
+            tool_chain, metadata; o blocked si safety critical).
+
+        Raises:
+            AgentNotFoundError: Si el agente destino no existe.
+        """
+        return await self.delegate(
+            from_agent="orchestrator",
+            to_agent=agent_name,
+            task=task,
+            correlation_id=correlation_id,
+        )
