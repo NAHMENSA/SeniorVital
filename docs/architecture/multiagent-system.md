@@ -451,6 +451,13 @@ graph LR
 - Documento: `docs/architecture/data-integrations.md` (matriz agente→fuente, errores, env vars).
 - Evidencias: 6/6 tests `tests/integration/test_s3_data_integration.py` + suite completa.
 
+**S3-06 (evaluación y observabilidad):**
+- Evaluador `src/orchestration/evaluation.py` (métricas, trazas, summary).
+- 6 escenarios reproducibles en `data/evaluation/multiagent_scenarios.json`.
+- Delegación 100% correcta; colaboración coach→nutrition; safety crítico bloqueado.
+- Trazas verificadas: `dispatch_start → intent_classified → agent_selected → dispatch_end` (correlation_id).
+- Documento: `docs/evaluation/s3-06-results.md` (resultados, hallazgos, limitaciones).
+
 **Planificado:**
 - `AnalyticsAgent`, `MotivationAgent`, `SafetyGuardianAgent`
 - Streaming inter-agente (evolución MCP/A2A)
