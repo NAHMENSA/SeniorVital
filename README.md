@@ -1,7 +1,7 @@
 # SeniorVital
 
 <p align="center">
-  <img width="1024" alt="Engram — One Brain. Local or Cloud." src="assets/E:/SeniorVital-master/storage/img/SeniorVital_new.png" />
+  <img width="1024" alt="SeniorVital" src="assets/E:/SeniorVital-master/storage/img/SeniorVital_new.png" />
 </p>
 
 <p align="center">
