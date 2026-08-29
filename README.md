@@ -1,6 +1,12 @@
 # SeniorVital
 
-![SeniorVital — Plataforma Inteligente de Bienestar para Adultos Mayores](E:/SeniorVital-master/storage/img/SeniorVital_v6.png)
+<p align="center">
+  <img width="1024" alt="Engram — One Brain. Local or Cloud." src="assets/E:/SeniorVital-master/storage/img/SeniorVital_new.png" />
+</p>
+
+<p align="center">
+  <strong>SeniorVital — Plataforma Inteligente de Bienestar para Adultos Mayores</strong>
+</p>
 
 <p align="center">
   <strong>Plataforma Inteligente de Bienestar para Adultos Mayores</strong><br>
@@ -644,7 +650,7 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 
 ### WellnessAgent (Generador de rutinas)
 
-![eva — ícono del agente WellnessAgent](E:/SeniorVital-master/storage/img/eva.png)
+![eva — ícono del agente WellnessAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
 
 | Campo | Valor |
 |-------|-------|
@@ -658,7 +664,7 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 
 ### WellnessCoachAgent 2.0 (Conversacional)
 
-![eva — ícono del agente WellnessCoachAgent](E:/SeniorVital-master/storage/img/eva.png)
+![eva — ícono del agente WellnessCoachAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
 
 | Campo | Valor |
 |-------|-------|
