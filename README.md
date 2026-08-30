@@ -642,19 +642,11 @@ sequenceDiagram
 
 Documentacion detallada: **[docs/rag/](docs/rag/)**, **[docs/evaluation/](docs/evaluation/)**
 
-> **Imagen recomendada**: Grafica de barras comparando las metricas de evaluacion RAG.
-
-## Agente Wellness y Coach Conversacional
+<img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> Agente Wellness y Coach Conversacional
 
 El sistema incluye dos agentes de bienestar con roles diferentes:
 
-### WellnessAgent (Generador de rutinas)
-
-<<<<<<< HEAD
-![eva — ícono del agente WellnessAgent](storage/img/eva.png)
-=======
-![eva — ícono del agente WellnessAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
->>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
+<img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessAgent (Generador de rutinas)
 
 | Campo | Valor |
 |-------|-------|
@@ -666,13 +658,7 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 
 **Justificacion de refactorizacion**: La logica original estaba embebida en los HTTP route handlers de `routines-ai-service/main.py`. La refactorizacion extrae esta logica en una clase testable con dependency injection (LLMService, UserDataService, RoutineRepository), el dataclass `RoutineResult`, y manejo explicito de fallbacks.
 
-### WellnessCoachAgent 2.0 (Conversacional)
-
-<<<<<<< HEAD
-![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png)
-=======
-![eva — ícono del agente WellnessCoachAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
->>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
+<img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent 2.0 (Conversacional)
 
 | Campo | Valor |
 |-------|-------|
@@ -710,8 +696,6 @@ graph TD
     Answer --> Save
     Save --> Response["Respuesta al usuario"]
 ```
-
-> **Imagen recomendada**: Diagrama del flujo ReAct mostrando el ciclo observar-pensar-actuar con los tools disponibles.
 
 ### Herramientas del Coach (8 tools)
 
@@ -756,13 +740,8 @@ El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent ce
 
 | Agente | Dominio | Estado | Tools | Descripcion |
 |--------|---------|--------|-------|-------------|
-<<<<<<< HEAD
-| ![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png) **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
-| ![eva — ícono del agente NutritionAgent](storage/img/eva.png) **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
-=======
-| ![eva — ícono del agente WellnessCoachAgent](E:/SeniorVital-master/storage/img/eva.png) **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
-| ![eva — ícono del agente NutritionAgent](E:/SeniorVital-master/storage/img/eva.png) **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
->>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
+| <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent | General | Implementado | 8 tools | Conversaciones generales de bienestar |
+| <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> NutritionAgent | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
 
 ### Agentes planeados
 
@@ -1001,7 +980,6 @@ steps = [
 engine = WorkflowEngine(orchestrator)
 results = await engine.execute(steps, {"user_id": 1}, correlation_id="wf_001")
 ```
-
 **Placeholders soportados**: `{prev.text}`, `{prev.safety_level}`, `{ctx.user_id}`, `{ctx.message}`.
 
 ### Trazabilidad y observabilidad
