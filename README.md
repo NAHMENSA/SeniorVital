@@ -1,17 +1,50 @@
 # SeniorVital
 
-![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?logo=typescript&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-4-646CFF?logo=vite&logoColor=white)
-![Ollama](https://img.shields.io/badge/Ollama-Local_AI-FF6B35?logo=ollama&logoColor=white)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_Store-FFB13E?logo=chromadb&logoColor=black)
+<p align="center">
+  <img src="storage/img/SeniorVital_new.png" alt="" width="80%">
+</p>
 
-**Plataforma Inteligente de Bienestar para Adultos Mayores**
+<p align="center">
+  <strong>SeniorVital — Plataforma Inteligente de Bienestar para Adultos Mayores</strong>
+</p>
 
-## Descripcion del Proyecto
+<p align="center">
+  <strong>Plataforma Inteligente de Bienestar para Adultos Mayores</strong><br>
+  <em>IA local con Ollama, coach conversacional y sistema multiagente para un envejecimiento activo.</em>
+</p>
+
+<p align="center">
+  <a href="#inicio-rápido">Inicio Rápido</a> &bull;
+  <a href="#características-principales">Características</a> &bull;
+  <a href="#sincronización-offline">Sincronización Offline</a> &bull;
+  <a href="#tecnologías-utilizadas">Tecnologías</a> &bull;
+  <a href="#arquitectura-del-sistema">Arquitectura</a> &bull;
+  <a href="#pipeline-de-conocimiento-y-rag">Pipeline RAG</a> &bull;
+  <a href="#agente-wellness-y-coach-conversacional">Agentes</a> &bull;
+  <a href="#sistema-multiagente">Multiagente</a> &bull;
+  <a href="#modelo-de-base-de-datos">Base de Datos</a> &bull;
+  <a href="#guía-de-uso--api">Guía de Uso / API</a> &bull;
+  <a href="#puesta-en-marcha-y-demo">Demo</a> &bull;
+  <a href="#pruebas">Pruebas</a> &bull;
+  <a href="#documentación">Documentación</a> &bull;
+  <a href="#contribución">Contribución</a> &bull;
+  <a href="#licencia">Licencia</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white" alt="FastAPI 0.115+" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" alt="React 18" />
+  <img src="https://img.shields.io/badge/TypeScript-5.3-3178C6?logo=typescript&logoColor=white" alt="TypeScript 5.3" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL 16" />
+  <img src="https://img.shields.io/badge/Vite-4-646CFF?logo=vite&logoColor=white" alt="Vite 4" />
+  <img src="https://img.shields.io/badge/Ollama-Local_AI-FF6B35?logo=ollama&logoColor=white" alt="Ollama Local AI" />
+  <img src="https://img.shields.io/badge/ChromaDB-Vector_Store-FFB13E?logo=chromadb&logoColor=black" alt="ChromaDB Vector Store" />
+</p>
+
+---
+
+> **seniorvital** — _plataforma de bienestar_: salud y calidad de vida para adultos mayores, impulsada por inteligencia artificial local.
 
 SeniorVital es una plataforma digital integral disenada especificamente para promover el bienestar fisico y mejorar la calidad de vida de los adultos mayores. Combina tecnologia de vanguardia con **inteligencia artificial local** para ofrecer una experiencia personalizada, accesible y segura que empodera a los seniors en su proceso de envejecimiento activo.
 
@@ -77,36 +110,104 @@ flowchart TD
 
 Las tres capas de inteligencia de SeniorVital se organizan jerarquicamente: la **Capa 1** genera rutinas personalizadas usando IA local (Ollama), la **Capa 2** ofrece un coach conversacional con razonamiento ReAct y 8 herramientas, y la **Capa 3** coordina agentes especializados via un Orchestrator central. Todas las capas se alimentan del **Pipeline RAG** (363 chunks en 6 dominios), que actua como la base de conocimiento transversal del sistema.
 
-### Publico objetivo
+**Público objetivo**
 
 - **Adultos mayores**: usuarios principales que realizan las rutinas y registran su progreso.
 - **Cuidadores y familiares**: supervisan el bienestar, reciben alertas y reportes.
 - **Administradores / profesionales de salud**: gestionan usuarios y analizan metricas globales.
 
----
+## Inicio Rápido
 
-## Tabla de Contenidos
+### Prerrequisitos
 
-1. [Descripcion del Proyecto](#descripcion-del-proyecto)
-2. [Caracteristicas Principales](#caracteristicas-principales)
-3. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-4. [Arquitectura del Sistema](#arquitectura-del-sistema)
-5. [Pipeline de Conocimiento y RAG](#pipeline-de-conocimiento-y-rag)
-6. [Agente Wellness y Coach Conversacional](#agente-wellness-y-coach-conversacional)
-7. [Sistema Multiagente](#sistema-multiagente)
-8. [Modelo de Base de Datos](#modelo-de-base-de-datos)
-9. [Requisitos de Instalacion](#requisitos-de-instalacion)
-10. [Guia de Uso / API](#guia-de-uso--api)
-11. [Puesta en Marcha y Demo](#puesta-en-marcha-y-demo)
-12. [Pruebas](#pruebas)
-13. [Contribucion](#contribucion)
-14. [Licencia](#licencia)
+- **Python 3.12+**
+- **Node.js 18+** (para el frontend)
+- **PostgreSQL 16+** corriendo en el puerto 5432
+- **Ollama** corriendo en el puerto 11434, con el modelo `phi3:mini`
 
----
+### Pasos
 
-## ✨ Características Principales
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone <repo-url> seniorvital
+   cd seniorvital
+   ```
+
+2. **Instalar dependencias del backend** (todos los servicios)
+
+   ```bash
+   pip install -r auth-profile-service/requirements.txt
+   pip install -r catalog-service/requirements.txt
+   pip install -r routines-ai-service/requirements.txt
+   pip install -r tracking-service/requirements.txt
+   pip install -r dashboard-service/requirements.txt
+   pip install -r notification-service/requirements.txt
+   pip install -r gateway/requirements.txt
+   pip install duckdb pywebpush pytest httpx aiofiles
+   ```
+
+3. **Instalar dependencias del Pipeline RAG** (opcional, para knowledge base)
+
+   ```bash
+   pip install -r requirements_chunking.txt
+   # Incluye: chromadb, langchain, sentence-transformers, langchain-huggingface
+   ```
+
+4. **Instalar dependencias del frontend**
+
+   ```bash
+   cd frontend && npm install && cd ..
+   ```
+
+4. **Inicializar la base de datos**
+
+   - Crear la base `seniorvital` en PostgreSQL.
+   - Ejecutar `init_db.sql` en pgAdmin (crea el esquema completo).
+   - Ejecutar `scripts/migrations.sql` (columnas y tablas adicionales).
+
+   > Alternativamente, el esquema se auto-aplica al arrancar cada servicio
+   > (`CREATE TABLE IF NOT EXISTS` + `ALTER TABLE ADD COLUMN IF NOT EXISTS`).
+
+5. **Configurar variables de entorno**
+
+   ```bash
+   cp .env.example .env
+   # Editar según sea necesario (DATABASE_URL, JWT_SECRET, claves VAPID, OLLAMA_URL…)
+   ```
+
+6. **Descargar el modelo de IA**
+
+   ```bash
+   ollama pull phi3:mini
+   ```
+
+7. **Indexar la base de conocimiento** (opcional, para RAG)
+
+   ```bash
+   python -m src.rag.indexing.pipeline
+   ```
+
+### Variables de entorno (`.env`)
+
+| Variable | Descripcion | Ejemplo |
+|----------|-------------|---------|
+| `DATABASE_URL` | Conexion a PostgreSQL | `postgresql://postgres:pass@localhost:5432/seniorvital` |
+| `OLLAMA_URL` | URL del servicio de Ollama | `http://localhost:11434` |
+| `OLLAMA_MODEL` | Modelo de IA a usar | `phi3:mini` |
+| `OLLAMA_TIMEOUT` | Timeout de generacion (segundos) | `600` |
+| `JWT_SECRET` | Clave de firma de tokens JWT | *(aleatoria)* |
+| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | Claves Web Push | *(generadas con pywebpush)* |
+| `VAPID_CLAIM_EMAIL` | Email de contacto para VAPID | `admin@seniorvital.com` |
+| `USE_REACTORED_AGENT` | Activar WellnessAgent refactorizado | `true` / `false` |
+| `USE_ORCHESTRATOR_AGENT` | Activar sistema multiagente | `true` / `false` |
+| `DATA_CLIENT_MODE` | Modo de clientes de datos | `local` / `gcp` |
+| `VECTOR_STORE_DIR` | Directorio del vector store | `data/vector_store` |
+
+## Características Principales
 
 ### Para Adultos Mayores (Seniors)
+
 - **Rutinas personalizadas con IA**: ejercicios generados segun perfil de salud, edad, condicion fisica y restricciones medicas, con streaming en tiempo real (SSE) y mensaje informativo del origen de la rutina (IA / predeterminada).
 - **Coach de bienestar**: conversacion natural en espanol sobre nutricion, ejercicio, habitos y bienestar emocional, con razonamiento ReAct y acceso a una base de conocimiento RAG.
 - **Seguimiento de progreso**: visualizacion de racha de actividad, sesiones completadas y tendencia de esfuerzo percibido (RPE).
@@ -116,6 +217,7 @@ Las tres capas de inteligencia de SeniorVital se organizan jerarquicamente: la *
 - **Onboarding guiado**: configuración inicial paso a paso del perfil de salud.
 
 ### Para Cuidadores
+
 - **Vinculación con seniors**: conexión de cuidadores con adultos mayores para supervisión.
 - **Dashboard de monitoreo**: vista consolidada del progreso de todos los pacientes vinculados.
 - **Alertas automáticas**: notificaciones de fatiga alta (RPE ≥ 8) o inactividad prolongada (≥ 3 días).
@@ -123,12 +225,14 @@ Las tres capas de inteligencia de SeniorVital se organizan jerarquicamente: la *
 - **Vista detallada por paciente**: acceso a progreso individual, calendario de actividad y tendencias.
 
 ### Para Administradores
+
 - **Gestión de usuarios**: control de todos los usuarios de la plataforma.
 - **Analíticas globales**: métricas agregadas de uso y engagement.
 - **Semáforo de riesgo**: identificación visual de usuarios en riesgo (verde/amarillo/rojo).
 - **Logs del sistema**: monitoreo de eventos y troubleshooting.
 
 ### Caracteristicas Tecnicas
+
 - **Arquitectura de microservicios**: 8 servicios independientes para escalabilidad y mantenibilidad.
 - **IA local con Ollama**: procesamiento de datos sin exposicion a internet.
 - **Pipeline RAG**: base de conocimiento de bienestar indexada en ChromaDB (363 chunks, 6 dominios) consultable por agentes.
@@ -138,7 +242,7 @@ Las tres capas de inteligencia de SeniorVital se organizan jerarquicamente: la *
 - **Accesibilidad WCAG 2.1 AA**: cumplimiento de estandares de accesibilidad.
 - **Diseno responsive**: adaptado para moviles, tablets y desktop.
 
-### Sincronizacion offline (diagrama)
+## Sincronización Offline
 
 ```mermaid
 flowchart TD
@@ -169,9 +273,7 @@ flowchart TD
 
 Este diagrama muestra el mecanismo de resiliencia del frontend: cuando no hay conexion, las acciones del usuario se serializan en `localStorage` via Zustand (`sv-offline-store`). Al reconectarse, `processOfflineQueue()` itera la cola y reintenta cada peticion. Las entradas exitosas se eliminan; las fallidas permanecen para el proximo ciclo. El`getOfflineQueueSize()` permite al frontend mostrar el numero de acciones pendientes.
 
----
-
-## Tecnologias Utilizadas
+## Tecnologías Utilizadas
 
 > Extraidas de los archivos de configuracion del repositorio
 > (`package.json`, `requirements.txt` de cada servicio, `pytest.ini`, `vite.config.ts`).
@@ -212,6 +314,7 @@ Este diagrama muestra el mecanismo de resiliencia del frontend: cuando no hay co
 | **google-cloud-bigquery >= 3.25** | Cliente BigQuery (modo GCP) |
 
 ### Frontend
+
 | Tecnología | Uso |
 |------------|-----|
 | **React 18** | Librería de UI |
@@ -226,11 +329,10 @@ Este diagrama muestra el mecanismo de resiliencia del frontend: cuando no hay co
 | **Vitest + Testing Library** | Pruebas unitarias de frontend |
 
 ### Herramientas
+
 - **Pytest** (con `pytest-asyncio`): pruebas unitarias e integración del backend.
 - **Scripts PowerShell/Bash**: arranque y parada de todos los servicios.
 - **Node.js 18+**: requerido para el frontend (npm).
-
----
 
 ## Arquitectura del Sistema
 
@@ -423,8 +525,6 @@ Version completa con diagrama de secuencia e infraestructura: **[docs/architectu
 | Notification | 8006 | Notificaciones Web Push |
 | RAG Service | 8007 | Pipeline de Retrieval-Augmented Generation |
 
----
-
 ## Pipeline de Conocimiento y RAG
 
 SeniorVital incluye un pipeline de Retrieval-Augmented Generation (RAG) que permite a los agentes consultar una base de conocimiento especializada en bienestar para adultos mayores.
@@ -544,13 +644,13 @@ Documentacion detallada: **[docs/rag/](docs/rag/)**, **[docs/evaluation/](docs/e
 
 > **Imagen recomendada**: Grafica de barras comparando las metricas de evaluacion RAG.
 
----
-
 ## Agente Wellness y Coach Conversacional
 
 El sistema incluye dos agentes de bienestar con roles diferentes:
 
 ### WellnessAgent (Generador de rutinas)
+
+![eva — ícono del agente WellnessAgent](storage/img/eva.png)
 
 | Campo | Valor |
 |-------|-------|
@@ -563,6 +663,8 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 **Justificacion de refactorizacion**: La logica original estaba embebida en los HTTP route handlers de `routines-ai-service/main.py`. La refactorizacion extrae esta logica en una clase testable con dependency injection (LLMService, UserDataService, RoutineRepository), el dataclass `RoutineResult`, y manejo explicito de fallbacks.
 
 ### WellnessCoachAgent 2.0 (Conversacional)
+
+![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png)
 
 | Campo | Valor |
 |-------|-------|
@@ -638,8 +740,6 @@ El Coach utiliza un bucle ReAct con maximo 3 iteraciones:
 | Serializacion | JSON con `role`, `content`, `timestamp`, `metadata` |
 | Degradacion graceful | Si falla la memoria, el agente funciona sin historial |
 
----
-
 ## Sistema Multiagente
 
 El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent centraliza el routing, clasifica la intencion del usuario, delega al agente especializado apropiado, y valida la seguridad de las respuestas.
@@ -648,8 +748,8 @@ El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent ce
 
 | Agente | Dominio | Estado | Tools | Descripcion |
 |--------|---------|--------|-------|-------------|
-| **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
-| **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
+| ![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png) **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
+| ![eva — ícono del agente NutritionAgent](storage/img/eva.png) **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
 
 ### Agentes planeados
 
@@ -924,8 +1024,6 @@ El sistema incluye clientes duales para acceso a datos en modo local y GCP:
 
 Documentacion detallada: **[docs/architecture/multiagent-architecture.md](docs/architecture/multiagent-architecture.md)**, **[docs/architecture/orchestration.md](docs/architecture/orchestration.md)**
 
----
-
 ## Modelo de Base de Datos
 
 PostgreSQL (base `seniorvital`), esquema definido en `init_db.sql` y aplicado de forma idempotente por `seniorvital_shared/db.py`. **16 tablas** organizadas en cuatro grupos:
@@ -1127,118 +1225,41 @@ Diagrama ER completo con todas las tablas y relaciones: **[docs/database.mermaid
 | `event_queue` | Independiente (procesado por workers) |
 | `agent_queue` | Independiente (comandos del orchestrator) |
 
----
-
-## 🚀 Requisitos de Instalación
-
-### Prerrequisitos
-
-- **Python 3.12+**
-- **Node.js 18+** (para el frontend)
-- **PostgreSQL 16+** corriendo en el puerto 5432
-- **Ollama** corriendo en el puerto 11434, con el modelo `phi3:mini`
-
-### Pasos
-
-1. **Clonar el repositorio**
-   ```bash
-   git clone <repo-url> seniorvital
-   cd seniorvital
-   ```
-
-2. **Instalar dependencias del backend** (todos los servicios)
-   ```bash
-   pip install -r auth-profile-service/requirements.txt
-   pip install -r catalog-service/requirements.txt
-   pip install -r routines-ai-service/requirements.txt
-   pip install -r tracking-service/requirements.txt
-   pip install -r dashboard-service/requirements.txt
-   pip install -r notification-service/requirements.txt
-   pip install -r gateway/requirements.txt
-   pip install duckdb pywebpush pytest httpx aiofiles
-   ```
-
-3. **Instalar dependencias del Pipeline RAG** (opcional, para knowledge base)
-   ```bash
-   pip install -r requirements_chunking.txt
-   # Incluye: chromadb, langchain, sentence-transformers, langchain-huggingface
-   ```
-
-4. **Instalar dependencias del frontend**
-   ```bash
-   cd frontend && npm install && cd ..
-   ```
-
-4. **Inicializar la base de datos**
-   - Crear la base `seniorvital` en PostgreSQL.
-   - Ejecutar `init_db.sql` en pgAdmin (crea el esquema completo).
-   - Ejecutar `scripts/migrations.sql` (columnas y tablas adicionales).
-   > Alternativamente, el esquema se auto-aplica al arrancar cada servicio
-   > (`CREATE TABLE IF NOT EXISTS` + `ALTER TABLE ADD COLUMN IF NOT EXISTS`).
-
-5. **Configurar variables de entorno**
-   ```bash
-   cp .env.example .env
-   # Editar según sea necesario (DATABASE_URL, JWT_SECRET, claves VAPID, OLLAMA_URL…)
-   ```
-
-6. **Descargar el modelo de IA**
-   ```bash
-   ollama pull phi3:mini
-   ```
-
-7. **Indexar la base de conocimiento** (opcional, para RAG)
-   ```bash
-   python -m src.rag.indexing.pipeline
-   ```
-
-### Variables de entorno (`.env`)
-
-| Variable | Descripcion | Ejemplo |
-|----------|-------------|---------|
-| `DATABASE_URL` | Conexion a PostgreSQL | `postgresql://postgres:pass@localhost:5432/seniorvital` |
-| `OLLAMA_URL` | URL del servicio de Ollama | `http://localhost:11434` |
-| `OLLAMA_MODEL` | Modelo de IA a usar | `phi3:mini` |
-| `OLLAMA_TIMEOUT` | Timeout de generacion (segundos) | `600` |
-| `JWT_SECRET` | Clave de firma de tokens JWT | *(aleatoria)* |
-| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | Claves Web Push | *(generadas con pywebpush)* |
-| `VAPID_CLAIM_EMAIL` | Email de contacto para VAPID | `admin@seniorvital.com` |
-| `USE_REACTORED_AGENT` | Activar WellnessAgent refactorizado | `true` / `false` |
-| `USE_ORCHESTRATOR_AGENT` | Activar sistema multiagente | `true` / `false` |
-| `DATA_CLIENT_MODE` | Modo de clientes de datos | `local` / `gcp` |
-| `VECTOR_STORE_DIR` | Directorio del vector store | `data/vector_store` |
-
----
-
-## 🧑‍💻 Guía de Uso / API
+## Guía de Uso / API
 
 ### Ejecutar la aplicación
 
 **Iniciar todos los servicios del backend:**
+
 ```powershell
 # PowerShell
 .\scripts\start_all.ps1
 ```
+
 ```bash
 # Git Bash / WSL
 bash scripts/start_all.sh
 ```
 
 **Detener todos los servicios:**
+
 ```powershell
 .\scripts\stop_all.ps1
 ```
+
 ```bash
 bash scripts/stop_all.sh
 ```
 
 **Ejecutar un único servicio:**
+
 ```bash
 cd auth-profile-service
 uvicorn main:app --port 8001 --reload
 ```
 
 **Frontend en desarrollo (hot-reload):**
+
 ```bash
 cd frontend && npm run dev
 # http://localhost:5173 (proxy API → gateway :8000)
@@ -1251,7 +1272,8 @@ cd frontend && npm run dev
 
 Todas las rutas pasan por el gateway (`http://localhost:8000`). Cada servicio expone documentación interactiva en `/docs`.
 
-#### Auth & Profile (8001)
+**Auth & Profile (8001)**
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | POST | `/auth/register` | Registro de usuario |
@@ -1267,7 +1289,8 @@ Todas las rutas pasan por el gateway (`http://localhost:8000`). Cada servicio ex
 | GET | `/admin/users` | Listar usuarios (admin) |
 | PUT | `/admin/users/{id}/routine-override` | Anular rutina (admin) |
 
-#### Catalog (8002)
+**Catalog (8002)**
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/catalog/exercises` | Listar ejercicios |
@@ -1276,7 +1299,8 @@ Todas las rutas pasan por el gateway (`http://localhost:8000`). Cada servicio ex
 | POST | `/catalog/exercises/{id}/video` | Subir video |
 | GET | `/storage/videos/{filename}` | Servir video |
 
-#### Routines AI (8003)
+**Routines AI (8003)**
+
 | Metodo | Ruta | Descripcion |
 |--------|------|-------------|
 | POST | `/routines/generate` | Generar rutina (sincrono, con fallback) |
@@ -1285,14 +1309,16 @@ Todas las rutas pasan por el gateway (`http://localhost:8000`). Cada servicio ex
 | POST | `/chat` | Coach conversacional / Orchestrator multiagente |
 | GET | `/ollama/status` | Estado del modelo de IA |
 
-#### RAG Service (8007)
+**RAG Service (8007)**
+
 | Metodo | Ruta | Descripcion |
 |--------|------|-------------|
 | POST | `/rag/query` | Consulta RAG (retrieve + generate) |
 | GET | `/rag/health` | Health check del pipeline |
 | GET | `/rag/stats` | Estadisticas del vector store |
 
-#### Tracking (8004)
+**Tracking (8004)**
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | POST | `/tracking/record` | Registrar ejercicio completado |
@@ -1300,14 +1326,16 @@ Todas las rutas pasan por el gateway (`http://localhost:8000`). Cada servicio ex
 | GET | `/habits/today` | Hábitos del día |
 | POST | `/habits` | Registrar hábitos (agua/sueño) |
 
-#### Dashboard (8005)
+**Dashboard (8005)**
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/dashboard/progress/{user_id}` | Progreso completo |
 | GET | `/dashboard/projection/{user_id}` | Proyección |
 | GET | `/dashboard/insights/{user_id}` | Insights |
 
-#### Notification (8006)
+**Notification (8006)**
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | POST | `/notify/subscribe` | Suscribir al Web Push |
@@ -1438,28 +1466,27 @@ flowchart TD
 
 El replicator ejecuta un patron de polling con procesamiento idempotente: si un evento falla (por ejemplo, error de DuckDB), no se marca como procesado y se reintentara en el proximo ciclo. La tabla `weekly_progress` usa INSERT OR REPLACE para mantener una unica fila por usuario-semana, calculando automaticamente el promedio de RPE, el total de ejercicios, la racha de dias, y el nivel proyectado.
 
----
-
 ## Puesta en Marcha y Demo
 
 ### Escenario de demo: "Evaluacion del sistema multiagente"
 
 Esta demo demuestra las 3 capas de inteligencia del sistema: generacion de rutinas, coach conversacional, y routing multiagente.
 
-#### Pre-requisitos
+### Pre-requisitos
 
 - PostgreSQL corriendo en puerto 5432
 - Ollama corriendo en puerto 11434 con `phi3:mini`
 - Python 3.12+ con dependencias instaladas
 - Base de datos `seniorvital` inicializada con `init_db.sql`
 
-#### Paso 1: Iniciar servicios
+### Paso 1: Iniciar servicios
 
 ```powershell
 .\scripts\start_all.ps1
 ```
 
 Verificar que todos los servicios estan activos:
+
 ```powershell
 # Verificar gateway
 curl http://localhost:8000/docs
@@ -1468,15 +1495,17 @@ curl http://localhost:8000/docs
 curl http://localhost:11434/api/tags
 ```
 
-#### Paso 2: Activar el sistema multiagente
+### Paso 2: Activar el sistema multiagente
 
 Editar `routines-ai-service/.env` (o crear si no existe):
+
 ```env
 USE_ORCHESTRATOR_AGENT=true
 USE_REACTORED_AGENT=true
 ```
 
 Reiniciar el servicio de rutinas:
+
 ```powershell
 # Detener solo routines-ai
 Stop-Process -Name "uvicorn" -Filter "*8003*" -Force -ErrorAction SilentlyContinue
@@ -1486,7 +1515,7 @@ cd routines-ai-service
 uvicorn main:app --port 8003 --reload
 ```
 
-#### Paso 3: Query 1 — Nutricion (delega a NutritionAgent)
+### Paso 3: Query 1 — Nutricion (delega a NutritionAgent)
 
 ```bash
 curl -X POST http://localhost:8000/chat `
@@ -1505,7 +1534,7 @@ curl -X POST http://localhost:8000/chat `
 }
 ```
 
-#### Paso 4: Query 2 — Bienestar general (delega a WellnessCoachAgent)
+### Paso 4: Query 2 — Bienestar general (delega a WellnessCoachAgent)
 
 ```bash
 curl -X POST http://localhost:8000/chat `
@@ -1515,7 +1544,7 @@ curl -X POST http://localhost:8000/chat `
 
 **Respuesta esperada**: WellnessCoachAgent procesa la consulta y puede usar `exercise_catalog` o `get_routine` para dar recomendaciones.
 
-#### Paso 5: Query 3 — Safety critical (bloqueado por Orchestrator)
+### Paso 5: Query 3 — Safety critical (bloqueado por Orchestrator)
 
 ```bash
 curl -X POST http://localhost:8000/chat `
@@ -1534,7 +1563,7 @@ curl -X POST http://localhost:8000/chat `
 }
 ```
 
-#### Paso 6: Observar trazabilidad
+### Paso 6: Observar trazabilidad
 
 ```powershell
 # Ver logs de orquestacion
@@ -1543,7 +1572,7 @@ Get-Content logs/orchestration.log -Tail 20
 
 Cada request genera eventos JSON con `correlation_id`, permitiendo reconstruir el flujo completo: `route_start -> intent_classified -> agent_selected -> delegation_start -> delegation_end -> route_end`.
 
-#### Paso 7: Ejecutar pruebas de integracion
+### Paso 7: Ejecutar pruebas de integracion
 
 ```bash
 pytest tests/integration/ -v
@@ -1551,7 +1580,7 @@ pytest tests/integration/ -v
 
 **17 tests** cubren: routing por dominio, safety blocking, fallback, workflow chaining, performance, y trazabilidad.
 
-#### Troubleshooting
+### Troubleshooting
 
 | Problema | Solucion |
 |----------|---------|
@@ -1562,8 +1591,6 @@ pytest tests/integration/ -v
 | RAG no retorna resultados | Verificar que el vector store esta indexado: `GET /rag/stats` |
 
 > **Imagen recomendada**: Captura de pantalla de los logs de orquestacion mostrando el flujo completo con correlation_id.
-
----
 
 ## Pruebas
 
@@ -1617,9 +1644,18 @@ npm run test:watch  # modo watch
 No existe aún configuración de cobertura ni CI/CD automatizado en el repositorio.
 **Pendiente de definir.**
 
----
+## Documentación
 
-## 🤝 Contribución
+| Doc | Descripcion |
+|-----|-------------|
+| [docs/architecture.mermaid.md](docs/architecture.mermaid.md) | Versión completa con diagrama de secuencia e infraestructura |
+| [docs/database.mermaid.md](docs/database.mermaid.md) | Diagrama ER completo con todas las tablas y relaciones |
+| [docs/rag/](docs/rag/) | Documentacion detallada del pipeline RAG |
+| [docs/evaluation/](docs/evaluation/) | Metricas y evaluacion del RAG |
+| [docs/architecture/multiagent-architecture.md](docs/architecture/multiagent-architecture.md) | Arquitectura del sistema multiagente |
+| [docs/architecture/orchestration.md](docs/architecture/orchestration.md) | Protocolo y flujo del Orchestrator |
+
+## Contribución
 
 Por el momento el proyecto no define un proceso formal de contribución. Guías básicas:
 
@@ -1629,10 +1665,12 @@ Por el momento el proyecto no define un proceso formal de contribución. Guías 
 4. Ejecuta las pruebas: `pytest tests/ -v` y `npm test`.
 5. Envía un Pull Request con una descripción clara.
 
----
-
-## 📄 Licencia
+## Licencia
 
 **Pendiente de definir.** El repositorio no incluye actualmente un archivo
 `LICENSE` ni una declaración de licencia explícita. Antes de su uso comercial o
 distribución, consulta con el equipo del proyecto.
+
+---
+
+**SeniorVital — Plataforma Inteligente de Bienestar para Adultos Mayores.**
