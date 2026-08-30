@@ -1,7 +1,7 @@
 # SeniorVital
 
 <p align="center">
-  <img src="storage/img/SeniorVital_new.png" alt="" width="80%">
+  <img src="storage/img/SeniorVital_new.png" alt="" width="50%">
 </p>
 
 <p align="center">
