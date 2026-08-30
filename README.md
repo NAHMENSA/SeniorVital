@@ -642,16 +642,13 @@ sequenceDiagram
 
 Documentacion detallada: **[docs/rag/](docs/rag/)**, **[docs/evaluation/](docs/evaluation/)**
 
-<p align="left">
-  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
-  <span style="font-size: 20px; vertical-align: middle;">Agente Wellness y Coach Conversacional</span>
-</p>
+### gente Wellness y Coach Conversaciona
 
 El sistema incluye dos agentes de bienestar con roles diferentes:
 
 <p align="left">
-  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
-  <span style="font-size: 20px; vertical-align: middle;">WellnessAgent (Generador de rutinas)</span>
+  <img src="storage/img/eva.png" alt="Icono" width="5%" style="vertical-align: middle; margin-right: 2px;"> 
+  <span style="font-size: 30px; vertical-align: middle;">WellnessAgent (Generador de rutinas)</span>
 </p>
 
 | Campo | Valor |
@@ -665,8 +662,8 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 **Justificacion de refactorizacion**: La logica original estaba embebida en los HTTP route handlers de `routines-ai-service/main.py`. La refactorizacion extrae esta logica en una clase testable con dependency injection (LLMService, UserDataService, RoutineRepository), el dataclass `RoutineResult`, y manejo explicito de fallbacks.
 
 <p align="left">
-  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
-  <span style="font-size: 20px; vertical-align: middle;">WellnessCoachAgent 2.0 (Conversacional)</span>
+  <img src="storage/img/eva.png" alt="Icono" width="5%" style="vertical-align: middle; margin-right: 2px;"> 
+  <span style="font-size: 30px; vertical-align: middle;">WellnessCoachAgent 2.0 (Conversacional)</span>
 </p>
 
 | Campo | Valor |
@@ -749,8 +746,8 @@ El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent ce
 
 | Agente | Dominio | Estado | Tools | Descripcion |
 |--------|---------|--------|-------|-------------|
-| <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent | General | Implementado | 8 tools | Conversaciones generales de bienestar |
-| <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> NutritionAgent | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
+| <p align="left"> <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent </p> | General | Implementado | 8 tools | Conversaciones generales de bienestar |
+| <p align="left"> <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> NutritionAgent </p>| Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
 
 ### Agentes planeados
 
