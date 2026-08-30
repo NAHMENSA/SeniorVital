@@ -643,13 +643,15 @@ sequenceDiagram
 Documentacion detallada: **[docs/rag/](docs/rag/)**, **[docs/evaluation/](docs/evaluation/)**
 
 <p align="left">
-  <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> Agente Wellness y Coach Conversacional
+  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
+  <span style="font-size: 20px; vertical-align: middle;">Agente Wellness y Coach Conversacional</span>
 </p>
 
 El sistema incluye dos agentes de bienestar con roles diferentes:
 
 <p align="left">
-  <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessAgent (Generador de rutinas)
+  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
+  <span style="font-size: 20px; vertical-align: middle;">WellnessAgent (Generador de rutinas)</span>
 </p>
 
 | Campo | Valor |
@@ -663,7 +665,8 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 **Justificacion de refactorizacion**: La logica original estaba embebida en los HTTP route handlers de `routines-ai-service/main.py`. La refactorizacion extrae esta logica en una clase testable con dependency injection (LLMService, UserDataService, RoutineRepository), el dataclass `RoutineResult`, y manejo explicito de fallbacks.
 
 <p align="left">
-  <img src="storage/img/eva.png" width="20%"style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent 2.0 (Conversacional)
+  <img src="storage/img/eva.png" alt="Icono" width="10%" style="vertical-align: middle; margin-right: 2px;"> 
+  <span style="font-size: 20px; vertical-align: middle;">WellnessCoachAgent 2.0 (Conversacional)</span>
 </p>
 
 | Campo | Valor |
