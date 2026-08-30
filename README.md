@@ -642,7 +642,6 @@ sequenceDiagram
 
 Documentacion detallada: **[docs/rag/](docs/rag/)**, **[docs/evaluation/](docs/evaluation/)**
 
-
 ### Agente Wellness y Coach Conversaciona
 
 El sistema incluye dos agentes de bienestar con roles diferentes:
@@ -747,8 +746,8 @@ El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent ce
 
 | Agente | Dominio | Estado | Tools | Descripcion |
 |--------|---------|--------|-------|-------------|
-| <img src="storage/img/eva.png" width="20%" style="vertical-align: middle; margin-right: 10px;"> WellnessCoachAgent | General | Implementado | 8 tools | Conversaciones generales de bienestar |
-| <img src="storage/img/eva.png" width="20%" style="vertical-align: middle; margin-right: 10px;"> NutritionAgent | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
+| WellnessCoachAgent | General | Implementado | 8 tools | Conversaciones generales de bienestar |
+| NutritionAgent | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
 
 ### Agentes planeados
 
