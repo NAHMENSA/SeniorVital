@@ -135,6 +135,31 @@ class OrchestrationLogger:
             "skipped": skipped,
         })
 
+    def dispatch_start(
+        self, correlation_id: str, request_id: str, user_id: int, message: str,
+        intent: str = "",
+    ) -> None:
+        """Evento: inicio de un despacho (S3-04 DispatchRequest)."""
+        self._emit("dispatch_start", correlation_id, {
+            "request_id": request_id,
+            "user_id": user_id,
+            "intent": intent,
+            "message_preview": message[:100],
+        })
+
+    def dispatch_end(
+        self, correlation_id: str, request_id: str, agent: str,
+        duration_ms: float, safety_level: str = "safe", blocked: bool = False,
+    ) -> None:
+        """Evento: fin de un despacho con resultado y timing."""
+        self._emit("dispatch_end", correlation_id, {
+            "request_id": request_id,
+            "agent": agent,
+            "duration_ms": round(duration_ms, 1),
+            "safety_level": safety_level,
+            "blocked": blocked,
+        })
+
 
 def create_timer() -> tuple[callable]:
     """Crea un timer para medir duración de operaciones.

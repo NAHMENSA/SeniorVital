@@ -7,9 +7,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [equipo5-desarrollo]
+    branches: [main]
   push:
-    branches: [equipo5-desarrollo]
+    branches: [main]
 
 jobs:
   # ------------------------------------------------------------
@@ -84,7 +84,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
+<<<<<<< HEAD
           node-version: "18"
+=======
+          node-version: "22"
+>>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 

@@ -1,5 +1,10 @@
 # Arquitectura Multiagente — SeniorVital Wellness Platform
 
+> **Deprecado (Sprint 3)**: este documento fue reemplazado por
+> [`multiagent-system.md`](multiagent-system.md) como fuente de verdad de la
+> arquitectura multiagente. Se conserva como historial de la primera versión
+> del diseño (Sprint 1-2). No actualizar aquí el contenido nuevo.
+
 ## Visión general
 
 El sistema multiagente de SeniorVital coordina múltiples agentes especializados para responder consultas de bienestar de adultos mayores. Un **Orchestrator Agent** centraliza el routing de consultas, delega a agentes especializados, y valida la seguridad de las respuestas antes de enviarlas al usuario.

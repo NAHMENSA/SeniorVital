@@ -51,6 +51,7 @@ ROUTES = {
     "/admin/": "http://localhost:8001",
     "/catalog/": "http://localhost:8002",
     "/routines/": "http://localhost:8003",
+    "/chat": "http://localhost:8003",
     "/tracking/": "http://localhost:8004",
     "/habits": "http://localhost:8004",
     "/dashboard/": "http://localhost:8005",

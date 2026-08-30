@@ -16,6 +16,12 @@ from src.orchestration.agent_protocol import (
     AgentResponse,
     IntentResult,
 )
+from src.orchestration.dispatch import (
+    DispatchRequest,
+    DispatchResponse,
+    request_to_agent_message,
+    response_to_dispatch_response,
+)
 from src.orchestration.logging import OrchestrationLogger, create_timer
 from src.services.llm import LLMService
 
@@ -188,6 +194,7 @@ class OrchestratorAgent:
         self._agents: dict[str, Any] = {}
         self._classifier = IntentClassifier(llm)
         self._fallback_agent: Any = None
+        self._active_correlations: set[str] = set()
 
     def register_agent(self, name: str, agent: Any) -> None:
         """Registra un agente especializado.
@@ -231,7 +238,7 @@ class OrchestratorAgent:
         )
 
         # 2. Select agent
-        agent = self._select_agent(intent)
+        agent = self.select_agent(intent)
         if not agent:
             _orchestration_log.fallback_activated(
                 correlation_id, f"no_agent_for_{intent.domain}", "none"
@@ -401,8 +408,162 @@ class OrchestratorAgent:
             "metadata": response.metadata,
         }
 
-    def _select_agent(self, intent: IntentResult) -> Any:
-        """Selecciona el agente basado en la intención clasificada."""
+    async def dispatch(self, request: DispatchRequest) -> DispatchResponse:
+        """Despacha una solicitud estructurada (entry point S3-04).
+
+        Flujo:
+            1. Prefiere el intent provisto en la solicitud; si está vacío,
+               lo clasifica con IntentClassifier.
+            2. Selecciona el agente destino (select_agent).
+            3. Delega con contexto y recoge la respuesta.
+            4. Registra trazabilidad (dispatch_start/dispatch_end) y
+               bloquea respuestas critical.
+
+        Anti-ciclos: si el correlation_id de la solicitud coincide con el
+        de un despacho ya activo en la cadena (parent_id), se lanza
+        OrchestrationError — evita delegaciones recursivas.
+
+        Args:
+            request: Solicitud estructurada (DispatchRequest).
+
+        Returns:
+            DispatchResponse estructurada con agente, safety y timing.
+
+        Raises:
+            OrchestrationError: Si falla la orquestación o hay ciclo.
+        """
+        correlation_id = request.correlation_id or request.request_id
+        user_message = request.message
+        user_id = request.user_id
+
+        _orchestration_log.dispatch_start(
+            correlation_id, request.request_id, user_id, user_message, request.intent
+        )
+        timer = create_timer()
+
+        # Guard anti-ciclo: rechazar reentradas con el mismo correlation_id
+        if correlation_id in self._active_correlations:
+            raise OrchestrationError(
+                f"Delegation cycle detected for correlation_id={correlation_id}",
+                source_agent="orchestrator",
+            )
+        self._active_correlations.add(correlation_id)
+
+        try:
+            # 1. Intent (provisto o clasificado)
+            if request.intent:
+                intent = IntentResult(
+                    domain=request.intent, confidence=1.0, keywords=["provided"]
+                )
+                _orchestration_log.intent_classified(
+                    correlation_id, intent.domain, intent.confidence, "provided"
+                )
+            else:
+                intent = await self._classifier.classify(user_message)
+
+            # 2. Seleccionar agente
+            agent = self.select_agent(intent)
+            if not agent:
+                _orchestration_log.fallback_activated(
+                    correlation_id, f"no_agent_for_{intent.domain}", "none"
+                )
+                return response_to_dispatch_response(
+                    AgentResponse(
+                        text="Lo siento, no puedo ayudar con eso en este momento.",
+                        safety_level="safe",
+                    ),
+                    request_id=request.request_id,
+                    agent="none",
+                    intent=intent.domain,
+                    duration_ms=timer[0](),
+                )
+
+            agent_name = getattr(agent, "name", "unknown")
+            _orchestration_log.agent_selected(correlation_id, agent_name)
+
+            # 3. Delegar con contexto
+            try:
+                agent_request = AgentRequest(
+                    message=user_message,
+                    user_id=user_id,
+                    user_profile=request.context.get("user_profile", {}),
+                    conversation_history=request.conversation_history,
+                    context={
+                        "intent": intent.domain,
+                        "confidence": intent.confidence,
+                        "correlation_id": correlation_id,
+                        "request_id": request.request_id,
+                        "payload": request.payload,
+                        "parent_id": request.correlation_id,
+                    },
+                )
+                response = await agent.handle(agent_request)
+            except Exception as e:
+                logger.error(f"Agent {agent_name} failed in dispatch: {e}")
+                if self._fallback_agent and self._fallback_agent is not agent:
+                    _orchestration_log.fallback_activated(
+                        correlation_id, f"agent_error: {e}",
+                        getattr(self._fallback_agent, "name", "fallback"),
+                    )
+                    fallback_request = AgentRequest(
+                        message=user_message,
+                        user_id=user_id,
+                        user_profile=request.context.get("user_profile", {}),
+                        conversation_history=request.conversation_history,
+                    )
+                    response = await self._fallback_agent.handle(fallback_request)
+                    agent_name = getattr(self._fallback_agent, "name", "fallback")
+                else:
+                    raise OrchestrationError(
+                        f"Agent {agent_name} failed and no fallback available: {e}",
+                        source_agent=agent_name,
+                    )
+
+            # 4. Safety + respuesta
+            blocked = response.safety_level == "critical"
+            if blocked:
+                response = AgentResponse(
+                    text=(
+                        "No puedo darte esa recomendación. "
+                        "Por favor, consulta con un profesional de la salud."
+                    ),
+                    safety_level="critical",
+                )
+                _orchestration_log.safety_check(
+                    correlation_id, agent_name, "critical", True
+                )
+
+            duration = timer[0]()
+            _orchestration_log.dispatch_end(
+                correlation_id, request.request_id, agent_name, duration,
+                response.safety_level, blocked,
+            )
+
+            return response_to_dispatch_response(
+                response,
+                request_id=request.request_id,
+                agent=agent_name,
+                intent=intent.domain,
+                duration_ms=duration,
+                blocked=blocked,
+                metadata={"correlation_id": correlation_id},
+            )
+        finally:
+            self._active_correlations.discard(correlation_id)
+    def select_agent(self, intent: IntentResult) -> Any:
+        """Selecciona el agente basado en la intención clasificada.
+
+        Reglas centralizadas (no dispersas en componentes):
+        - Confianza baja (< CONFIDENCE_THRESHOLD) → agente fallback.
+        - Dominio con agente registrado → ese agente.
+        - Dominio sin agente → agente fallback.
+
+        Args:
+            intent: Resultado de la clasificación de intención.
+
+        Returns:
+            Agente destino o el fallback (nunca None si hay fallback).
+        """
         # Low confidence → fallback
         if intent.confidence < CONFIDENCE_THRESHOLD:
             return self._fallback_agent
@@ -414,3 +575,34 @@ class OrchestratorAgent:
 
         # Fallback
         return self._fallback_agent
+
+    # Backward-compatible alias
+    _select_agent = select_agent
+
+    async def delegate_task(
+        self, agent_name: str, task: dict, correlation_id: str = ""
+    ) -> dict:
+        """Delega una tarea a un agente registrado (API pública).
+
+        Wrapper de delegate() con la firma del diseño S3-01: el agente
+        destino se identifica por nombre y el task es un dict flexible
+        (message, user_id, user_profile, conversation_history, ...).
+
+        Args:
+            agent_name: Nombre del agente registrado (ej. "nutrition").
+            task: Descripción de la tarea a delegar.
+            correlation_id: ID de correlación para trazabilidad.
+
+        Returns:
+            Resultado de la tarea delegada (dict con text, safety_level,
+            tool_chain, metadata; o blocked si safety critical).
+
+        Raises:
+            AgentNotFoundError: Si el agente destino no existe.
+        """
+        return await self.delegate(
+            from_agent="orchestrator",
+            to_agent=agent_name,
+            task=task,
+            correlation_id=correlation_id,
+        )

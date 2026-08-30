@@ -650,7 +650,11 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 
 ### WellnessAgent (Generador de rutinas)
 
+<<<<<<< HEAD
 ![eva — ícono del agente WellnessAgent](storage/img/eva.png)
+=======
+![eva — ícono del agente WellnessAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
+>>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
 
 | Campo | Valor |
 |-------|-------|
@@ -664,7 +668,11 @@ El sistema incluye dos agentes de bienestar con roles diferentes:
 
 ### WellnessCoachAgent 2.0 (Conversacional)
 
+<<<<<<< HEAD
 ![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png)
+=======
+![eva — ícono del agente WellnessCoachAgent](<img src="E:/SeniorVital-master/storage/img/eva.png" />)
+>>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
 
 | Campo | Valor |
 |-------|-------|
@@ -748,8 +756,13 @@ El sistema multiagente utiliza el patron **Supervisor**: un OrchestratorAgent ce
 
 | Agente | Dominio | Estado | Tools | Descripcion |
 |--------|---------|--------|-------|-------------|
+<<<<<<< HEAD
 | ![eva — ícono del agente WellnessCoachAgent](storage/img/eva.png) **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
 | ![eva — ícono del agente NutritionAgent](storage/img/eva.png) **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
+=======
+| ![eva — ícono del agente WellnessCoachAgent](E:/SeniorVital-master/storage/img/eva.png) **WellnessCoachAgent** | General | Implementado | 8 tools | Conversaciones generales de bienestar |
+| ![eva — ícono del agente NutritionAgent](E:/SeniorVital-master/storage/img/eva.png) **NutritionAgent** | Nutricion | Implementado | rag_search, safety_check | Consultas de nutricion y dieta |
+>>>>>>> 8e9648008bb6a9e404990b49d1b93a374c043254
 
 ### Agentes planeados
 

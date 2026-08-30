@@ -16,6 +16,7 @@ from src.agents.nutrition.prompts import NutritionPromptBuilder
 from src.agents.wellness.config import WellnessConfig
 from src.agents.wellness.reasoning import ReActEngine
 from src.memory import MemoryStore, Message
+from src.orchestration.agent_protocol import AgentRequest
 from src.services.llm import LLMService
 from src.services.user_data import UserDataService
 from src.tools import Tool
@@ -47,6 +48,7 @@ class NutritionAgent:
         memory_store: MemoryStore | None = None,
         config: WellnessConfig | None = None,
         firestore_client: Any | None = None,
+        bigquery_client: Any | None = None,
     ) -> None:
         self._llm = llm
         self._user_data = user_data
@@ -54,6 +56,7 @@ class NutritionAgent:
         self._memory = memory_store
         self._config = config or WellnessConfig()
         self._firestore = firestore_client
+        self._bigquery = bigquery_client
         self._prompt_builder = NutritionPromptBuilder()
         self._react_engine = ReActEngine(
             llm=llm,
@@ -103,7 +106,7 @@ class NutritionAgent:
         )
 
         # 4. Ejecutar ReAct
-        trace = await self._react_engine.run(system_prompt, user_prompt)
+        trace =         await self._react_engine.run(system_prompt, user_prompt)
 
         logger.info(
             f"NutritionAgent trace: {trace.iterations} iterations, "
@@ -136,6 +139,23 @@ class NutritionAgent:
                 logger.warning(f"Failed to save to memory: {e}")
 
         return trace.final_answer
+
+    async def process(self, request: AgentRequest) -> str:
+        """Procesa una solicitud (entry point de la tarea S3-03).
+
+        Delega en chat() con los datos del AgentRequest, manteniendo
+        una única fuente de lógica conversacional.
+
+        Args:
+            request: Solicitud con message y user_id.
+
+        Returns:
+            Respuesta del agente de nutrición en texto plano.
+        """
+        return await self.chat(
+            user_id=request.user_id,
+            message=request.message,
+        )
 
     async def _get_user_profile(self, user_id: int) -> dict:
         """Obtiene el perfil del usuario para el prompt.
@@ -171,5 +191,14 @@ class NutritionAgent:
                     profile["height"] = health["height"]
             except Exception as e:
                 logger.warning(f"Failed to enrich profile from Firestore for {user_id}: {e}")
+
+        # Enrich with BigQuery analytics if available
+        if self._bigquery:
+            try:
+                weekly = await self._bigquery.get_weekly_progress(user_id, weeks=4)
+                if weekly:
+                    profile["weekly_insights"] = weekly[:3]
+            except Exception as e:
+                logger.warning(f"Failed to enrich profile from BigQuery for {user_id}: {e}")
 
         return profile

@@ -50,7 +50,7 @@ def test_build_prompt_contains_favorites():
 
 def test_build_prompt_system_prompt():
     builder = RoutinePromptBuilder()
-    system = builder.build_system_prompt()
+    system = builder.SYSTEM_PROMPT
     assert "adulto mayor" in system.lower() or "adultos mayores" in system.lower()
 
 
